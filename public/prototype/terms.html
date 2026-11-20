@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms and Conditions — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="terms" class="page--auth">
+<div data-chrome-header></div>
+
+<main class="auth-main auth-main--legal">
+  <div class="legal" style="width:960px;max-width:100%">
+    <div class="card legal__card">
+      <div class="card__body">
+        <h1>Terms and Conditions</h1>
+        <p class="legal__sub">Please read these terms carefully before using the Passport Tracking System.</p>
+
+        <nav class="toc" aria-label="Sections on this page">
+          <h2>On this page:</h2>
+          <div class="toc__grid">
+            <a href="#s1">1. Acceptance of Terms</a>
+            <a href="#s8">6. Use and Protection of Your Data</a>
+            <a href="#s6">2. Eligibility to Register</a>
+            <a href="#s4">7. Acceptable Use</a>
+            <a href="#s2">3. Account and Password Responsibility</a>
+            <a href="#s9">8. Service Availability</a>
+            <a href="#s7">4. Accuracy of Application Information</a>
+            <a href="#s5">9. Limitation of Liability</a>
+            <a href="#s3">5. Application Status Updates</a>
+            <a href="#s10">10. Changes to These Terms</a>
+            <a href="#s11">11. Contact Us</a>
+          </div>
+        </nav>
+
+        <section id="s1">
+          <h3><span class="num">1</span> Acceptance of Terms</h3>
+          <p>By accessing and registering an account with the Passport Tracking System, you agree to be bound by these Terms and Conditions. If you do not agree, you must not use this system.</p>
+        </section>
+
+        <section id="s6">
+          <h3><span class="num">2</span> Eligibility to Register</h3>
+          <p>You must be a citizen or legal resident eligible for a passport under national law. Any fraudulent registration will lead to immediate cancellation of your application.</p>
+        </section>
+
+        <section id="s2">
+          <h3><span class="num">3</span> Account and Password Responsibility</h3>
+          <p>You are responsible for maintaining the confidentiality of your Application ID and password. You agree to:</p>
+          <ul>
+            <li>Notify support immediately of any unauthorized use.</li>
+            <li>Ensure you log out at the end of each session.</li>
+            <li>Avoid sharing your login credentials with third parties.</li>
+          </ul>
+        </section>
+
+        <section id="s7">
+          <h3><span class="num">4</span> Accuracy of Application Information</h3>
+          <p>You must provide accurate, current, and complete information during registration and application submission. Providing false information is a punishable offense.</p>
+        </section>
+
+        <section id="s3">
+          <h3><span class="num">5</span> Application Status Updates</h3>
+          <div class="callout callout--info" style="font-size:12px;padding:12px 14px">
+            <span data-icon="info" data-size="16"></span>
+            <span>The system provides estimated tracking and status updates. These are indicative and subject to processing times of the passport authority.</span>
+          </div>
+        </section>
+
+        <section id="s8">
+          <h3><span class="num">6</span> Use and Protection of Your Data</h3>
+          <p>Your personal data, including biometrics, address, and contact details, will be processed securely in accordance with our Privacy Policy and relevant data protection laws.</p>
+        </section>
+
+        <section id="s4">
+          <h3><span class="num">7</span> Acceptable Use</h3>
+          <p>You may not:</p>
+          <ul>
+            <li>Use the system for any illegal or unauthorized purpose.</li>
+            <li>Attempt to bypass system security or access other users’ accounts.</li>
+            <li>Submit automated or bulk queries to the tracking database.</li>
+          </ul>
+        </section>
+
+        <section id="s9">
+          <h3><span class="num">8</span> Service Availability</h3>
+          <p>We strive to keep the tracking system online 24/7, but we do not guarantee uninterrupted access due to scheduled maintenance or unforeseen technical issues.</p>
+        </section>
+
+        <section id="s5">
+          <h3><span class="num">9</span> Limitation of Liability</h3>
+          <p>The Passport Tracking System is provided on an “as-is” basis. We are not liable for any direct or indirect damages arising from the use or inability to use the system.</p>
+        </section>
+
+        <section id="s10">
+          <h3><span class="num">10</span> Changes to These Terms</h3>
+          <p>We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting. Your continued use of the system constitutes acceptance of modified terms.</p>
+        </section>
+
+        <section id="s11">
+          <h3><span class="num">11</span> Contact Us</h3>
+          <p>For any questions or issues regarding these terms or your passport application, please contact our support team at <a href="mailto:support@passtrack.com">support@passtrack.com</a>.</p>
+        </section>
+
+        <div class="check" style="margin-top:22px">
+          <input type="checkbox" id="accept-terms">
+          <label for="accept-terms">I have read and agree to the Terms and Conditions</label>
+        </div>
+
+        <div class="legal__actions">
+          <button class="btn btn--ghost" type="button" id="decline">Decline</button>
+          <button class="btn btn--primary" type="button" id="accept" disabled>Accept &amp; Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const checkbox = document.getElementById("accept-terms");
+  const accept = document.getElementById("accept");
+  const back = new URLSearchParams(location.search).get("return") === "register";
+
+  checkbox.addEventListener("change", () => { accept.disabled = !checkbox.checked; });
+
+  document.getElementById("accept").addEventListener("click", function () {
+    if (!checkbox.checked) return;
+    PT.saveRegistration({ agreed: true });
+    window.location.href = back ? "register.html" : "register.html";
+  });
+
+  document.getElementById("decline").addEventListener("click", function () {
+    PT.saveRegistration({ agreed: false });
+    window.location.href = "register.html";
+  });
+})();
+</script>
+</body>
+</html>

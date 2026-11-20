@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passport Renewal · Eligibility — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="renewal-1">
+<div data-chrome-header></div>
+
+<main class="page-body renewal-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="dashboard.html">Dashboard</a>
+    <span data-icon="chevron-right" data-size="12"></span>
+    <span>Passport Renewal</span>
+  </nav>
+
+  <div class="intro">
+    <div>
+      <h1 class="intro__title">Passport Renewal</h1>
+      <p class="intro__desc">Renew your passport in a few simple steps.</p>
+    </div>
+    <span class="app-chip"><span>Application ID</span> <strong data-app-id>PS-12345</strong>
+      <button type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="14"></button>
+    </span>
+  </div>
+
+  <div class="renewal-grid">
+    <section class="card renewal-form">
+      <div class="card__head">
+        <h2 class="card__title">Eligibility Check</h2>
+        <p class="card__sub">Tell us about your current passport to start your renewal.</p>
+      </div>
+      <div class="card__body">
+        <div class="stepper stepper--4" aria-label="Renewal progress">
+          <div class="stepper__step is-current" aria-current="step"><span class="stepper__num">1</span><span class="stepper__label">Eligibility</span></div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step"><span class="stepper__num">2</span><span class="stepper__label">Personal Details</span></div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step"><span class="stepper__num">3</span><span class="stepper__label">Documents</span></div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step"><span class="stepper__num">4</span><span class="stepper__label">Review &amp; Submit</span></div>
+        </div>
+
+        <form id="step1-form" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <div class="label-row"><label class="label" for="passport-number">Current Passport Number</label><span class="req">*</span></div>
+              <input class="control" id="passport-number" name="passportNumber" type="text" placeholder="Enter your passport number" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="expiry">Passport Expiry Date</label><span class="req">*</span></div>
+              <div class="input-icon">
+                <input class="control" id="expiry" name="expiry" type="text" placeholder="DD / MM / YYYY" required>
+                <span class="icon-trail" data-icon="calendar" data-size="17"></span>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field field--full">
+              <div class="label-row"><label class="label" for="reason">Reason for Renewal</label><span class="req">*</span></div>
+              <div class="select-wrap">
+                <select class="control" id="reason" name="reason" required>
+                  <option value="Expiring passport">Expiring passport</option>
+                  <option value="Lost passport">Lost passport</option>
+                  <option value="Damaged passport">Damaged passport</option>
+                  <option value="Name change">Name change</option>
+                </select>
+                <span class="chev" data-icon="chevron-down" data-size="18"></span>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field field--full">
+              <div class="label-row"><span class="label">Processing Type</span><span class="req">*</span></div>
+              <div class="option-cards" role="radiogroup" aria-label="Processing type">
+                <label class="option is-selected">
+                  <input class="radio" type="radio" name="processing" value="Regular" checked>
+                  <span class="option__body">
+                    <span class="option__title">Regular Processing</span>
+                    <span class="option__sub">10–12 working days</span>
+                  </span>
+                  <span class="option__price">₱950</span>
+                </label>
+                <label class="option">
+                  <input class="radio" type="radio" name="processing" value="Express">
+                  <span class="option__body">
+                    <span class="option__title">Express Processing</span>
+                    <span class="option__sub">5–7 working days</span>
+                  </span>
+                  <span class="option__price">₱1,200</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-strip" style="margin-top:24px">
+            You can renew your passport up to 6 months before it expires. Lost or damaged passports follow a separate process.
+          </div>
+
+          <div class="form-actions" style="margin-top:24px">
+            <a class="btn btn--outline" href="dashboard.html">Cancel</a>
+            <button class="btn btn--primary" type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="rail renewal-rail" data-renewal-rail></aside>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script src="js/renewal.js"></script>
+<script>
+(function () {
+  const draft = PT.renewal.draft;
+  const form = document.getElementById("step1-form");
+
+  const displayDate = (value) => {
+    const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return match ? match[3] + " / " + match[2] + " / " + match[1] : value || "";
+  };
+  const isoDate = (value) => {
+    const match = String(value || "").match(/^(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{4})$/);
+    return match ? match[3] + "-" + match[2].padStart(2, "0") + "-" + match[1].padStart(2, "0") : value;
+  };
+
+  form.elements.passportNumber.value = draft.passportNumber || "";
+  form.elements.expiry.value = displayDate(draft.expiry);
+  form.elements.reason.value = draft.reason || "Expiring passport";
+  form.querySelectorAll('input[name="processing"]').forEach((radio) => {
+    radio.checked = radio.value === (draft.processing || "Regular");
+    radio.closest(".option").classList.toggle("is-selected", radio.checked);
+    radio.addEventListener("change", () => {
+      form.querySelectorAll(".option").forEach((option) => option.classList.remove("is-selected"));
+      if (radio.checked) radio.closest(".option").classList.add("is-selected");
+    });
+  });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!PTui.validate(form)) return;
+    PT.saveRenewalDraft({
+      passportNumber: form.elements.passportNumber.value.trim(),
+      expiry: isoDate(form.elements.expiry.value.trim()),
+      reason: form.elements.reason.value,
+      processing: form.querySelector('input[name="processing"]:checked').value
+    });
+    window.location.href = "renewal-2.html";
+  });
+
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(PT.application.id, "Application ID copied"));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registration · Personal Details — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="register-personal" class="page--auth">
+<div data-chrome-header></div>
+
+<main class="auth-main auth-main--reg">
+  <div class="reg-shell">
+    <div class="reg-card">
+      <div class="reg-card__head">
+        <h1 class="reg-card__title">Personal Details</h1>
+        <p class="reg-card__sub">Tell us about yourself to start your passport application.</p>
+      </div>
+      <div class="reg-card__body">
+        <div class="stepper stepper--reg" aria-label="Registration progress">
+          <div class="stepper__step is-current" aria-current="step">
+            <span class="stepper__num">1</span>
+            <span class="stepper__label">Personal Details</span>
+          </div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step">
+            <span class="stepper__num">2</span>
+            <span class="stepper__label">ID Details</span>
+          </div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step">
+            <span class="stepper__num">3</span>
+            <span class="stepper__label">Create Account</span>
+          </div>
+        </div>
+
+        <form class="reg-form" id="personal-form" novalidate>
+          <div class="field">
+            <div class="label-row"><label class="label" for="first">First Name</label><span class="req">*</span></div>
+            <input class="control" id="first" name="first" type="text" placeholder="Enter your first name" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="middle">Middle Name</label><small class="hint">(optional)</small></div>
+            <input class="control" id="middle" name="middle" type="text" placeholder="Enter your middle name">
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="last">Last Name</label><span class="req">*</span></div>
+            <input class="control" id="last" name="last" type="text" placeholder="Enter your last name" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="birthday">Birthday</label><span class="req">*</span></div>
+            <div class="input-icon">
+              <input class="control" id="birthday" name="birthday" type="text" placeholder="Enter your birthdate" required>
+              <span class="icon-trail" data-icon="calendar" data-size="18"></span>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="phone">Contact Number</label><span class="req">*</span></div>
+            <div class="phone-row">
+              <div class="cc"><span>+63</span><span data-icon="chevron-down" data-size="16"></span></div>
+              <input class="control" id="phone" name="phone" type="tel" inputmode="numeric" placeholder="Enter your mobile number" required>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="email">Email Address</label><span class="req">*</span></div>
+            <input class="control" id="email" name="email" type="email" placeholder="Enter your email address" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="sex">Sex</label><span class="req">*</span></div>
+            <div class="select-wrap is-placeholder">
+              <select class="control" id="sex" name="sex" required>
+                <option value="" selected disabled>Select your sex</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+              <span class="chev" data-icon="chevron-down" data-size="18"></span>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="civil">Civil Status</label><span class="req">*</span></div>
+            <div class="select-wrap is-placeholder">
+              <select class="control" id="civil" name="civil" required>
+                <option value="" selected disabled>Select your civil status</option>
+                <option>Single</option>
+                <option>Married</option>
+                <option>Widowed</option>
+                <option>Separated</option>
+              </select>
+              <span class="chev" data-icon="chevron-down" data-size="18"></span>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="birthplace">Place of Birth</label><span class="req">*</span></div>
+            <input class="control" id="birthplace" name="birthplace" type="text" placeholder="Enter your place of birth" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="citizenship">Citizenship</label><span class="req">*</span></div>
+            <div class="select-wrap is-placeholder">
+              <select class="control" id="citizenship" name="citizenship" required>
+                <option value="" selected disabled>Select your citizenship</option>
+                <option>Filipino</option>
+                <option>Dual Citizen</option>
+                <option>Foreign National</option>
+              </select>
+              <span class="chev" data-icon="chevron-down" data-size="18"></span>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="form-foot">
+            <button class="btn btn--primary" type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const form = document.getElementById("personal-form");
+  const saved = PT.registration.personal || {};
+  Object.keys(saved).forEach((key) => {
+    const input = form.elements[key];
+    if (input) input.value = saved[key];
+  });
+
+  form.querySelectorAll("select").forEach((select) => {
+    const sync = () => select.closest(".select-wrap").classList.toggle("is-placeholder", !select.value);
+    select.addEventListener("change", sync);
+    sync();
+  });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!PTui.validate(form)) return;
+    const data = {};
+    ["first", "middle", "last", "birthday", "phone", "email", "sex", "civil", "birthplace", "citizenship"].forEach((key) => {
+      data[key] = form.elements[key].value.trim();
+    });
+    PT.saveRegistration({ personal: data });
+    window.location.href = "register-id.html";
+  });
+})();
+</script>
+</body>
+</html>

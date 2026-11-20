@@ -1,0 +1,632 @@
+/* ------------------------------------------------------------------
+   Screen-specific styles (auth, dashboard, inquiries, status, renewal)
+   Complements css/app.css. Figma "Member UI" measurements.
+   ------------------------------------------------------------------ */
+
+/* --------------------------------------------------------------- auth */
+.login-shell { position: relative; width: 656px; max-width: 100%; }
+.login-shell .alert {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(100% + 20px);
+  width: auto;
+  margin: 0;
+}
+
+.auth-main--login { padding-top: 150px; }
+.auth-main--reg { padding: 32px 24px 60px; }
+.auth-main--center { padding: 216px 24px 60px; }
+.auth-main--success { padding: 80px 24px 60px; }
+.auth-main--legal { padding: 36px 24px 60px; }
+
+/* --------------------------------------------------------- registration */
+.reg-shell { width: 720px; max-width: 100%; margin: 0 auto; }
+.reg-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.reg-card__head { padding: 24px 32px 22px; border-bottom: 1px solid var(--border-soft); }
+.reg-card__title { font-size: 30px; font-weight: 700; line-height: 1.2; letter-spacing: -.2px; }
+.reg-card__sub { font-size: 15px; color: var(--text-secondary); margin-top: 4px; line-height: 1.4; }
+.reg-card__body { padding: 26px 30px 30px; }
+
+.reg-form { display: flex; flex-direction: column; gap: 18px; }
+.reg-form .field + .field { margin-top: 0; }
+.reg-form .field { gap: 7px; }
+.reg-form .form-foot { display: flex; justify-content: flex-end; padding-top: 4px; }
+
+.stepper--reg { gap: 10px; margin-bottom: 18px; }
+.stepper--reg .stepper__num { width: 30px; height: 30px; font-size: 14px; }
+.stepper--reg .stepper__label { font-size: 14px; font-weight: 500; color: var(--text); }
+.stepper--reg .stepper__step.is-current .stepper__label { color: var(--primary); font-weight: 600; }
+.stepper--reg .stepper__step.is-done .stepper__label { color: var(--text); font-weight: 500; }
+.stepper--reg .stepper__bar { width: 58px; background: var(--border); }
+.stepper--reg .stepper__bar.is-done { background: var(--primary); }
+
+.stepper__num .icon { display: block; }
+.stepper--4 .stepper__bar { width: 64px; }
+
+.stepper--4 { width: 100%; flex-wrap: nowrap; gap: 16px; margin-bottom: 24px; }
+.stepper--4 .stepper__step { gap: 12px; flex: none; }
+.stepper--4 .stepper__num { width: 32px; height: 32px; font-size: 14px; }
+.stepper--4 .stepper__label { font-size: 14px; font-weight: 700; }
+.stepper--4 .stepper__bar { flex: 1 1 24px; width: auto; min-width: 20px; background: var(--border); }
+.stepper--4 .stepper__bar.is-done { background: var(--primary); }
+.stepper--4 .stepper__num .icon { width: 16px; height: 16px; }
+
+/* create account step */
+.ca-card { width: 720px; max-width: 100%; margin: 0 auto; }
+.ca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 24px; }
+.ca-grid .field { gap: 7px; }
+.ca-options { display: flex; align-items: center; gap: 22px; height: 44px; }
+.ca-terms { margin-top: 2px; }
+.ca-actions { display: grid; grid-template-columns: 1fr 1.63fr; gap: 22px; margin-top: 4px; }
+.ca-login { text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.ca-login a { font-weight: 700; }
+
+/* --------------------------------------------------------------- success */
+.success-card {
+  width: 720px;
+  max-width: 100%;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.success-card__head { display: flex; gap: 16px; align-items: flex-start; padding: 26px 32px 22px; }
+.success-card__title { font-size: 29px; font-weight: 700; line-height: 1.2; }
+.success-card__sub { font-size: 14px; color: var(--text-secondary); margin-top: 3px; }
+.success-card__body { padding: 0 30px 24px; }
+
+.cred-block {
+  position: relative;
+  background: #edf3fd;
+  border-radius: 10px;
+  padding: 16px 20px 18px;
+  margin-bottom: 18px;
+}
+.cred-block__label { font-size: 13px; font-weight: 700; color: var(--text); }
+.cred-block__value { font-size: 30px; font-weight: 700; color: var(--primary); margin-top: 6px; letter-spacing: .2px; line-height: 1.2; }
+.cred-block .btn-copy {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  height: 34px;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+.success-note {
+  background: #edf3fd;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+.success-card__foot { display: flex; flex-direction: column; gap: 10px; padding-bottom: 22px; }
+.success-card__foot .btn { height: 44px; }
+.success-card__link { text-align: center; font-size: 13px; font-weight: 600; }
+
+/* ---------------------------------------------------------- status page */
+.status-app { padding: 40px 60px 44px; }
+.tracking-card { padding: 40px; gap: 28px; border-radius: 14px; }
+.tracking-head h1 { font-size: 24px; }
+.chip--app { border-color: #cfe0fa; background: #fff; font-size: 14px; padding: 6px 12px; gap: 6px; }
+.chip--app .chip__label { font-size: 11px; letter-spacing: .3px; }
+
+.status-panel { padding: 26px 28px; border-radius: 14px; gap: 14px; }
+.status-panel__title { font-size: 36px; font-weight: 700; color: var(--navy); line-height: 1.05; letter-spacing: -.5px; }
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid #bcd2f7;
+  background: #fff;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-pill--green { background: var(--green-bg); border-color: #bbf7d0; color: var(--green-text); }
+.status-pill--rose { background: var(--rose-bg); border-color: #fecdd3; color: var(--rose-text); }
+.status-copy { font-size: 16px; line-height: 1.6; color: var(--slate-body); max-width: 1000px; }
+.status-meta { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; margin-top: 6px; }
+.status-meta__row { display: flex; gap: 16px; font-size: 14px; align-items: baseline; }
+.status-meta__row .k { color: var(--text); font-weight: 700; }
+.status-meta__row .v { color: var(--text); font-weight: 600; }
+
+.tracker { margin-top: 18px; }
+.tracker__phases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.tracker__steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; position: relative; }
+.tracker__line, .tracker__fill { top: 24px; height: 2px; }
+.tracker__line { left: 8.3333%; right: 8.3333%; background: #b9c6da; }
+.tracker__fill { left: 8.3333%; background: var(--primary); }
+.step__marker { width: 48px; height: 48px; font-size: 15px; }
+.step.is-done .step__marker { background: var(--primary); border-color: var(--primary); }
+.step.is-current .step__marker { border-width: 2px; font-weight: 700; }
+.step__label { font-size: 16px; }
+.step__meta { font-size: 13px; color: var(--text-secondary); max-width: 150px; margin-left: auto; margin-right: auto; }
+
+.tracking-foot { padding-top: 4px; }
+.tracking-foot .meta { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.tracking-foot .meta strong { display: block; color: var(--text); font-size: 13px; font-weight: 700; }
+.help-cta span { font-size: 12px; font-weight: 700; color: var(--text); }
+
+/* -------------------------------------------------------------- dashboard */
+.dash-grid { gap: 22px; }
+.dash-card { padding: 24px 26px; min-height: 268px; border-radius: 14px; }
+.dash-card__top { gap: 8px; }
+.dash-status { gap: 8px; }
+.dash-status strong { font-size: 24px; }
+.dash-copy { max-width: 470px; }
+.dash-card__mid { margin: 18px 0; }
+.progress-meta { font-size: 11px; }
+.progress { height: 8px; }
+.dash-card__foot .meta { font-size: 12px; }
+.ticket-line { gap: 10px; font-size: 12px; }
+.ticket-line .icon { color: #16a34a; }
+
+.greeting__id .eyebrow { font-size: 11px; letter-spacing: .32px; font-weight: 700; color: #1d4ed8; }
+.greeting__id strong { font-size: 18px; }
+.greeting__id .icon-btn { width: 30px; height: 30px; }
+
+.app-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid #cfe0fa;
+  background: #e9f1ff;
+  color: #1d4ed8;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+.app-chip strong { font-size: 14px; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.app-chip button { border: 0; background: none; padding: 2px; color: #1d4ed8; cursor: pointer; display: flex; }
+
+/* -------------------------------------------------------------- inquiries */
+.inquiries-page { padding: 30px 40px 40px; }
+.inquiries-head { margin-bottom: 18px; }
+.inquiries-head .intro__title { font-size: 30px; }
+.inquiries-head .intro__desc { font-size: 14px; margin-top: 4px; }
+.inquiries-actions { display: flex; align-items: center; gap: 16px; }
+
+.filters { gap: 8px; margin-bottom: 16px; }
+.filters .filter { height: 29px; font-size: 12px; padding: 0 12px; color: var(--text-secondary); }
+.filters .filter.is-active { background: #fff; border-color: var(--border); color: var(--text); font-weight: 700; }
+
+.list-card { border-radius: 12px; }
+.list-head { padding: 16px 18px 14px; align-items: center; }
+.list-head h2 { font-size: 17px; }
+.list-head p { font-size: 11px; margin-top: 3px; }
+.list-head .search { width: 210px; }
+.list-head .search .control { height: 36px; font-size: 13px; }
+
+.table th { font-size: 10px; padding-top: 9px; padding-bottom: 9px; background: #f8faff; }
+.table td { height: 58px; font-size: 12px; padding: 0 18px; }
+.table th:first-child, .table td:first-child { padding-left: 18px; }
+.table .cell-id { font-size: 12px; }
+.table .cell-subject { font-size: 12px; font-weight: 700; }
+.table .cell-category { font-size: 11px; }
+.table .cell-date { font-size: 11px; color: var(--text-secondary); }
+.table .cell-actions { width: 62px; }
+.row-btn { width: 34px; height: 32px; border-radius: 7px; }
+
+.badge--sm { font-size: 10px; padding: 5px 10px; font-weight: 600; }
+
+/* --------------------------------------------------------- inquiry detail */
+.inquiry-page { padding: 26px 40px 40px; }
+.breadcrumb { font-size: 12px; margin-bottom: 8px; }
+.inquiry-title { font-size: 25px; font-weight: 700; letter-spacing: -.2px; margin-bottom: 16px; }
+
+.ticket-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(37,99,235,.05);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+.ticket-head__icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: #eaf2ff;
+  color: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.ticket-head__id { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+.ticket-head__subject { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+.detail-grid { display: grid; grid-template-columns: minmax(0, 976px) 400px; gap: 24px; align-items: start; }
+
+.thread-card { border-radius: 12px; overflow: hidden; }
+.thread-card__head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 16px 24px 14px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.thread-card__head h2 { font-size: 17px; font-weight: 700; }
+.thread-card__head p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.secure-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 26px; padding: 0 10px;
+  border-radius: var(--r-pill);
+  background: var(--primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  flex: none;
+}
+
+.thread { padding: 24px 24px 12px; gap: 24px; }
+.msg { max-width: 82%; gap: 5px; }
+.msg__head { font-size: 11px; gap: 6px; }
+.msg__head strong { font-size: 11px; }
+.msg__head .msg__avatar { width: 24px; height: 24px; font-size: 9px; background: #edf2fb; color: #5b6b8c; }
+.msg--me .msg__head .msg__avatar { background: #dbe9ff; color: #2563eb; }
+.msg__bubble { font-size: 12px; line-height: 1.55; padding: 10px 14px; border-radius: 8px; }
+.msg--me .msg__bubble { background: #eef4fe; border-color: #e1ebfa; }
+.msg__time { font-size: 10px; }
+
+.composer { padding: 16px 24px 20px; }
+.composer__head { margin-bottom: 6px; }
+.composer__title { font-size: 13px; }
+.composer__note { font-size: 10px; }
+.composer textarea.control { min-height: 76px; font-size: 13px; }
+.composer__actions { margin-top: 10px; }
+.btn--send { height: 34px; min-height: 34px; font-size: 12px; padding: 0 18px; }
+.btn--attach { height: 34px; min-height: 34px; font-size: 12px; padding: 0 14px; background: #f4f8ff; border-color: #d9e6f9; color: var(--primary); }
+
+.rail--detail { gap: 18px; }
+.rail-card--info { padding: 18px 20px; border-radius: 12px; }
+.rail-card--info h3 { font-size: 17px; margin-bottom: 12px; }
+.info-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 11px; padding: 5px 0; color: var(--text-secondary); }
+.info-row strong { font-size: 11px; color: var(--text); font-weight: 500; }
+.rail-note { display: flex; gap: 8px; background: #edf3fd; border-radius: 8px; padding: 10px 12px; font-size: 10px; line-height: 1.45; color: var(--text-secondary); margin-top: 10px; }
+.rail-note .icon { color: var(--primary); margin-top: 1px; }
+
+.related-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: #fff; box-shadow: 0 4px 10px rgba(37,99,235,.05); }
+.related-card__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.related-card__head h3 { font-size: 14px; font-weight: 700; }
+.related-card__id { font-size: 11px; font-weight: 700; color: var(--primary); }
+.related-card__label { display: flex; align-items: center; justify-content: space-between; font-size: 10px; font-weight: 600; margin-bottom: 5px; }
+.related-card__label span:last-child { color: var(--text-secondary); font-weight: 500; }
+.related-card .btn { height: 34px; min-height: 34px; font-size: 11px; margin-top: 12px; }
+
+/* ---------------------------------------------------------------- renewal */
+.renewal-page { padding: 26px 60px 40px; }
+.renewal-page .breadcrumb { margin-bottom: 6px; }
+.renewal-page .intro { margin-bottom: 24px; align-items: flex-start; }
+.renewal-page .intro__title { font-size: 30px; }
+.renewal-page .intro__desc { font-size: 15px; margin-top: 4px; }
+
+.renewal-grid { display: grid; grid-template-columns: minmax(0, 896px) 400px; gap: 24px; align-items: start; }
+.renewal-form { border-radius: 16px; }
+.renewal-form .card__head { padding: 24px 32px 20px; gap: 8px; }
+.renewal-form .card__title { font-size: 28px; }
+.renewal-form .card__sub { font-size: 16px; }
+.renewal-form .card__body { padding: 32px; gap: 18px; }
+.renewal-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.renewal-form .field { gap: 8px; }
+.renewal-form .field + .field { margin-top: 0; }
+.renewal-form .field--full { grid-column: 1 / -1; }
+.renewal-form .label { font-size: 14px; }
+.renewal-form .control { height: 44px; font-size: 16px; }
+.renewal-form .form-actions { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; }
+.renewal-form .form-actions .btn { height: 44px; min-height: 44px; font-size: 16px; }
+.renewal-form .form-actions .btn--primary { min-width: 160px; }
+.renewal-form .form-actions .btn--outline { min-width: 160px; }
+
+.option-cards { gap: 24px; }
+.option { padding: 16px; gap: 12px; border-radius: 12px; }
+.option input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  flex: none;
+  border: 1.5px solid #9aa9c3;
+  border-radius: 50%;
+  background: #fff;
+  position: relative;
+  cursor: pointer;
+}
+.option input[type="radio"]:checked { border: 5px solid var(--primary); }
+.option__body { gap: 4px; }
+.option__title { font-size: 15px; }
+.option__sub { font-size: 13px; }
+.option__price { font-size: 16px; }
+.option.is-selected { border-color: var(--primary); background: #eaf2ff; box-shadow: inset 0 0 0 1px var(--primary); }
+
+.note-strip {
+  background: #eaf2ff;
+  border: 1px solid #dce6f3;
+  border-radius: 8px;
+  padding: 15px 16px;
+  font-size: 15px;
+  line-height: 1.22;
+  color: var(--text);
+}
+
+.upload-stack { display: flex; flex-direction: column; gap: 12px; }
+.upload-stack:empty { display: none; }
+.upload-row { padding: 19px 20px; border-radius: 8px; min-height: 80px; }
+.upload-row__icon { width: 40px; height: 40px; font-size: 16px; }
+.upload-row__body { display: flex; align-items: center; gap: 10px; }
+.upload-row__name { font-size: 14px; font-weight: 500; }
+.upload-row__meta { font-size: 12px; margin-top: 2px; }
+.upload-row .ok { width: 24px; height: 24px; }
+.upload-row .row-btn { width: 36px; height: 36px; }
+
+.dropzone { padding: 15px 16px; gap: 12px; border-radius: 10px; min-height: 120px; }
+.dropzone__row { gap: 12px; }
+.dropzone__title { font-size: 14px; font-weight: 500; }
+.dropzone__hint { font-size: 12px; }
+.dropzone .btn { height: 36px; min-height: 36px; font-size: 13px; padding: 0 14px; }
+
+.time-slots { gap: 8px; }
+.time-slot { height: 44px; font-size: 14px; padding: 0 10px; flex: 1 1 0; }
+
+.renewal-rail { gap: 18px; }
+.renewal-rail .rail-card { padding: 20px; border-radius: 16px; box-shadow: 0 4px 10px rgba(37,99,235,.04); }
+.renewal-rail .rail-card h3 { font-size: 16px; margin-bottom: 14px; }
+.renewal-rail .rail-list { gap: 12px; }
+.renewal-rail .rail-list li { font-size: 13px; gap: 10px; line-height: 1.45; align-items: flex-start; }
+.renewal-rail .rail-list .icon { color: var(--primary); margin-top: 0; width: 20px; height: 20px; border-radius: 50%; background: #dbeafe; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.renewal-rail .rail-list .icon svg { width: 14px; height: 14px; }
+.rail-row { font-size: 13px; padding: 5px 0; }
+.rail-row strong { font-size: 14px; }
+.renewal-rail .note-box { background: #eaf2ff; font-size: 12px; display: flex; gap: 8px; padding: 16px; line-height: 1.45; border-radius: 8px; }
+.renewal-rail .note-box strong { color: var(--text); }
+.renewal-rail .note-box .icon { color: var(--primary); margin-top: 1px; }
+.renewal-rail p.hint { font-size: 13px; line-height: 1.5; }
+
+.summary-grid { gap: 24px; }
+.summary-card { padding: 16px 20px; border-radius: 12px; }
+.summary-card h3 { font-size: 16px; padding-bottom: 10px; margin-bottom: 10px; }
+.summary-row { font-size: 13px; padding: 5px 0; }
+.summary-row dd { text-align: right; font-size: 14px; }
+
+/* renewal review (step 4) */
+.renewal-4-page .renewal-grid { grid-template-columns: 870px 400px; gap: 20px; }
+.renewal-4-page .renewal-form .card__head { padding: 24px 25px 0; gap: 6px; background: #fff; border-bottom: 0; }
+.renewal-4-page .renewal-form .card__title { font-size: 24px; line-height: 29px; }
+.renewal-4-page .renewal-form .card__sub { font-size: 13px; line-height: 17px; }
+.renewal-4-page .renewal-form .card__body { padding: 20px 25px 25px; }
+.renewal-4-page .stepper--4 { margin-bottom: 20px; }
+.renewal-4-page .summary-grid { display: grid; grid-template-columns: 400px 400px; gap: 16px; }
+.renewal-4-page .summary-card { width: 390px; padding: 18px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px; }
+.renewal-4-page .summary-card h3 { font-size: 16px; line-height: 19px; padding: 0; margin: 0; border: 0; }
+.renewal-4-page .summary-card dl { display: flex; flex-direction: column; gap: 6px; }
+.renewal-4-page .summary-row { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; line-height: 17px; padding: 0; }
+.renewal-4-page .summary-row dd { font-size: 14px; font-weight: 600; text-align: right; }
+.renewal-4-page .confirm-box { margin-top: 20px; padding: 16px; border-radius: 8px; gap: 12px; font-size: 12px; line-height: 16px; }
+.renewal-4-page .confirm-box strong { font-size: 13px; line-height: 17px; margin-bottom: 4px; }
+.renewal-4-page .form-actions { margin-top: 20px; }
+.renewal-4-page .form-actions .btn--primary { min-width: 240px; }
+.renewal-4-page .form-actions .btn--outline { min-width: 160px; }
+
+.confirm-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #eaf2ff;
+  border: 1px solid #dce6f3;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 24px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.confirm-box strong { display: block; font-size: 15px; margin-bottom: 2px; }
+.confirm-box .check { align-items: flex-start; }
+
+/* renewal submitted */
+.submit-shell { width: 760px; max-width: 100%; margin: 26px auto 0; }
+.submit-card { border-radius: 16px; padding: 32px; }
+.submit-card .success-card__head { padding: 0; margin-bottom: 20px; gap: 16px; align-items: center; }
+.submit-card .success-mark { width: 52px; height: 52px; }
+.submit-card .success-card__head > div { display: flex; flex-direction: column; gap: 5px; }
+.submit-card .success-card__title { font-size: 24px; line-height: 1.2; }
+.submit-card .success-card__sub { font-size: 14px; margin-top: 0; }
+.submit-card__body { padding: 0; display: flex; flex-direction: column; gap: 20px; }
+.submit-ref { background: #eaf2ff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.submit-ref__label { font-size: 12px; font-weight: 600; letter-spacing: .3px; text-transform: uppercase; color: var(--text-secondary); line-height: 15px; }
+.submit-ref__value { font-size: 28px; line-height: 34px; font-weight: 700; color: var(--primary); margin: 0; }
+.submit-ref__status { font-size: 14px; line-height: 17px; font-weight: 600; color: var(--text); }
+.submit-card__copy { font-size: 14px; line-height: 1.22; color: var(--text-secondary); margin: 0; }
+.submit-card__buttons { display: flex; gap: 12px; }
+.submit-card__buttons .btn { height: 44px; min-height: 44px; font-size: 16px; }
+.submit-card__buttons .btn:first-child { width: 220px; }
+.submit-card__buttons .btn:last-child { width: 190px; }
+.submit-card__note { font-size: 12px; color: var(--text-secondary); margin: 0; }
+
+/* renewal status */
+.renewal-status-page .intro { margin-bottom: 18px; }
+.renewal-status-grid { display: grid; grid-template-columns: minmax(0, 830px) 400px; gap: 24px; align-items: start; }
+.status-card { border-radius: 14px; }
+.status-card .card__body { padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+.status-card__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.status-card__head h2 { font-size: 22px; line-height: 27px; font-weight: 700; }
+.status-card__ref { font-size: 13px; line-height: 16px; color: var(--text-secondary); margin-top: 5px; }
+.status-card__copy { font-size: 14px; line-height: 17px; color: var(--text-secondary); margin: 0; }
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  flex: none;
+}
+.status-badge--pending { background: #eaf2ff; color: var(--primary); }
+.status-badge--approved { background: #eaf7ef; color: #15803d; }
+.status-badge--rejected { background: #fee2e2; color: #dc2626; }
+
+.request-summary { background: #eaf2ff; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.request-summary h3 { font-size: 16px; line-height: 19px; font-weight: 700; margin: 0; }
+.request-summary__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; margin: 0; }
+.request-summary dt { font-size: 11px; line-height: 13px; font-weight: 600; letter-spacing: .3px; text-transform: uppercase; color: var(--text-secondary); margin: 0 0 4px; }
+.request-summary dd { margin: 0; font-size: 14px; line-height: 17px; font-weight: 600; }
+
+.status-progress { display: flex; flex-direction: column; gap: 6px; }
+.status-progress h3 { font-size: 16px; line-height: 19px; font-weight: 600; margin: 0; }
+.progress-list { display: flex; flex-direction: column; gap: 6px; margin: 0; }
+.progress-item { display: flex; align-items: center; gap: 14px; padding: 12px; }
+.progress-item__body { flex: 1; min-width: 0; }
+.progress-item__title { font-size: 14px; line-height: 17px; font-weight: 600; }
+.progress-item__meta { font-size: 12px; line-height: 15px; margin-top: 3px; color: var(--text-secondary); }
+.progress-item__state { font-size: 11px; line-height: 13px; font-weight: 600; white-space: nowrap; }
+.progress-item .dot { width: 28px; height: 28px; margin-top: 0; display: inline-flex; align-items: center; justify-content: center; color: #fff; flex: none; }
+.progress-item .dot--green { background: #16a34a; }
+.progress-item .dot--muted { background: #d6e2f5; }
+.progress-item .dot .icon { stroke-width: 2.8; }
+.progress-item__state.is-done { color: #16a34a; }
+
+.status-note { background: #eaf2ff; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 4px; }
+.status-note strong { font-size: 13px; font-weight: 600; color: var(--text); }
+.status-note p { font-size: 12px; line-height: 15px; color: var(--text-secondary); margin: 0; }
+
+.status-rail { padding: 20px; border-radius: 14px; display: flex; flex-direction: column; gap: 16px; }
+.renewal-rail .status-rail h3 { font-size: 18px; font-weight: 600; margin: 0; }
+.status-rail .what-next { padding: 0; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; font-size: 13px; line-height: 16px; color: var(--text-secondary); }
+.status-rail .what-next li { padding: 0; }
+.status-help { background: #eaf2ff; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.status-help strong { font-size: 14px; font-weight: 600; color: var(--text); }
+.status-help p { font-size: 12px; line-height: 15px; color: var(--text-secondary); margin: 0; }
+.status-rail .btn { width: 200px; height: 44px; min-height: 44px; font-size: 16px; }
+
+/* approved appointment slip */
+.appointment-box { border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.appointment-box h3 { font-size: 13px; font-weight: 700; margin: 0 0 8px; }
+.appointment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+.appointment-grid dt { font-size: 10px; color: var(--text-secondary); margin: 0; }
+.appointment-grid dd { margin: 1px 0 0; font-size: 12px; font-weight: 700; }
+.status-actions { display: flex; gap: 12px; }
+.status-actions .btn { height: 44px; min-height: 44px; font-size: 15px; }
+
+.what-next { padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 1.45; color: var(--text-secondary); }
+.what-next li { padding-left: 2px; }
+
+/* ------------------------------------------------------------- legal page */
+.legal { margin: 0 auto; }
+.legal__card { border-radius: 12px; }
+.legal__card .card__body { padding: 40px; }
+.legal h1 { font-size: 32px; }
+.legal__sub { font-size: 14px; margin-top: 8px; }
+.toc { padding: 18px 22px; margin: 24px 0 8px; }
+.toc h2 { font-size: 13px; margin-bottom: 12px; }
+.toc__grid { gap: 8px 24px; }
+.toc a { font-size: 11px; }
+.legal section { padding: 18px 0; }
+.legal h3 { font-size: 15px; gap: 10px; margin-bottom: 8px; }
+.legal h3 .num { width: 24px; height: 24px; border-radius: 50%; font-size: 11px; }
+.legal p { font-size: 12px; line-height: 1.6; }
+.legal ul { font-size: 12px; margin-top: 8px; line-height: 1.6; }
+.legal__actions { padding-top: 18px; margin-top: 18px; }
+.legal__actions .btn { height: 40px; min-height: 40px; font-size: 13px; }
+.legal__actions .btn--ghost { color: var(--primary); }
+
+/* --------------------------------------------------------------- nav link */
+.link-quiet { font-size: 12px; font-weight: 600; }
+
+/* -------------------------------------------------------------- responsive */
+@media (max-width: 1180px) {
+  .detail-grid { grid-template-columns: minmax(0, 1fr) 340px; }
+  .renewal-grid, .renewal-status-grid { grid-template-columns: minmax(0, 1fr) 340px; }
+  .status-app { padding: 32px 40px 40px; }
+  .renewal-page { padding: 24px 40px 40px; }
+}
+
+@media (max-width: 960px) {
+  .auth-main--login { padding-top: 64px; }
+  .auth-main--center { padding-top: 64px; }
+  .status-app, .renewal-page, .inquiry-page, .inquiries-page { padding: 24px; }
+  .detail-grid, .renewal-grid, .renewal-status-grid { grid-template-columns: minmax(0, 1fr); }
+  .renewal-4-page .renewal-grid { grid-template-columns: minmax(0, 1fr); }
+  .renewal-4-page .renewal-form { width: 100%; }
+  .rail--detail, .renewal-rail { display: grid; grid-template-columns: 1fr 1fr; }
+  .tracking-card { padding: 28px 24px; }
+  .status-meta { grid-template-columns: 1fr; }
+  .tracker__steps { grid-template-columns: repeat(3, 1fr); gap: 26px 12px; }
+  .tracker__line, .tracker__fill { display: none; }
+  .tracker__phases { margin-bottom: 4px; }
+  .step__meta { max-width: none; }
+  .dash-grid { grid-template-columns: 1fr; }
+  .ca-grid { grid-template-columns: 1fr; gap: 18px; }
+  .ca-actions { grid-template-columns: 1fr 1fr; }
+  .login-shell .alert { position: static; width: auto; margin-bottom: 16px; }
+  .auth-main { padding-top: 64px; }
+  .legal__card .card__body { padding: 24px; }
+  .legal__actions { flex-wrap: wrap; }
+}
+
+@media (max-width: 720px) {
+  .head-actions .btn-head:not(:last-child) { display: none; }
+  .site-head__inner { padding: 0 16px; gap: 12px; }
+  .brand { gap: 10px; }
+  .brand__name { font-size: 19px; }
+  .brand__sub { display: none; }
+  .stepper--4 .stepper__step:not(.is-current) .stepper__label { display: none; }
+  .stepper--4 { gap: 10px; }
+  .stepper--reg { gap: 8px; }
+  .stepper--reg .stepper__step:not(.is-current) .stepper__label { display: none; }
+  .stepper--reg .stepper__bar { flex: 1 1 20px; width: auto; }
+  .renewal-page { padding: 20px 16px 32px; }
+  .renewal-form .card__head { padding: 20px; }
+  .renewal-form .card__body { padding: 20px; }
+  .renewal-form .card__title { font-size: 24px; }
+  .renewal-form .card__sub { font-size: 14px; }
+  .renewal-page .intro__title { font-size: 26px; }
+  .renewal-form .form-grid { grid-template-columns: 1fr; }
+  .renewal-4-page .summary-grid { grid-template-columns: 1fr; }
+  .renewal-4-page .summary-card { width: auto; }
+  .option-cards { grid-template-columns: 1fr; }
+  .rail--detail, .renewal-rail { grid-template-columns: 1fr; }
+  .inquiries-head { flex-direction: column; align-items: flex-start; }
+  .inquiries-actions { width: 100%; justify-content: space-between; }
+  .table .col-hide { display: none; }
+  .list-head { flex-direction: column; align-items: stretch; gap: 12px; }
+  .list-head .search { width: 100%; }
+  .ticket-head { align-items: flex-start; }
+  .submit-shell { margin-top: 8px; }
+  .submit-card__buttons { flex-direction: column; }
+  .status-card__head { flex-direction: column; }
+  .request-summary__grid { grid-template-columns: 1fr; }
+  .tracker__phases { font-size: 12px; }
+  .ca-actions { grid-template-columns: 1fr; }
+  .cred-block__value { font-size: 24px; }
+  .legal__actions { flex-direction: column-reverse; }
+}
+
+@media print {
+  .demo-bar, .status-actions, .renewal-rail, .site-head, .site-foot { display: none !important; }
+}

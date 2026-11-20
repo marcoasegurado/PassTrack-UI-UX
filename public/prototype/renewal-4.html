@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passport Renewal · Review — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="renewal-4">
+<div data-chrome-header></div>
+
+<main class="page-body renewal-page renewal-4-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="dashboard.html">Dashboard</a>
+    <span data-icon="chevron-right" data-size="12"></span>
+    <span>Passport Renewal</span>
+  </nav>
+
+  <div class="intro">
+    <div>
+      <h1 class="intro__title">Passport Renewal</h1>
+      <p class="intro__desc">Review your information before submitting your renewal request.</p>
+    </div>
+    <span class="app-chip"><span>Application ID</span> <strong data-app-id>PS-12345</strong>
+      <button type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="14"></button>
+    </span>
+  </div>
+
+  <div class="renewal-grid">
+    <section class="card renewal-form">
+      <div class="card__head">
+        <h2 class="card__title">Review &amp; Submit</h2>
+        <p class="card__sub">Check that your details are correct before sending your passport renewal request.</p>
+      </div>
+      <div class="card__body">
+        <div class="stepper stepper--4" aria-label="Renewal progress">
+          <div class="stepper__step is-done"><span class="stepper__num" data-icon="check" data-size="15"></span><span class="stepper__label">Eligibility</span></div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-done"><span class="stepper__num" data-icon="check" data-size="15"></span><span class="stepper__label">Personal Details</span></div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-done"><span class="stepper__num" data-icon="check" data-size="15"></span><span class="stepper__label">Documents</span></div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-current" aria-current="step"><span class="stepper__num">4</span><span class="stepper__label">Review &amp; Submit</span></div>
+        </div>
+
+        <div class="summary-grid">
+          <section class="summary-card">
+            <h3>Personal Details</h3>
+            <dl>
+              <div class="summary-row"><dt>Full name</dt><dd id="sum-name">Demo User</dd></div>
+              <div class="summary-row"><dt>Date of birth</dt><dd id="sum-dob">January 15, 2005</dd></div>
+              <div class="summary-row"><dt>Contact number</dt><dd id="sum-phone">000-000-0000</dd></div>
+              <div class="summary-row"><dt>Email address</dt><dd id="sum-email">demo@example.test</dd></div>
+              <div class="summary-row"><dt>Home address</dt><dd id="sum-city">Quezon City</dd></div>
+            </dl>
+          </section>
+
+          <section class="summary-card">
+            <h3>Documents &amp; Appointment</h3>
+            <dl>
+              <div class="summary-row"><dt>Passport copy</dt><dd id="sum-passport">Uploaded</dd></div>
+              <div class="summary-row"><dt>Government ID</dt><dd id="sum-gov">government_id.jpg</dd></div>
+              <div class="summary-row"><dt>Supporting documents</dt><dd id="sum-supporting">None added</dd></div>
+              <div class="summary-row"><dt>Preferred branch</dt><dd id="sum-branch">Quezon City Consular Office</dd></div>
+              <div class="summary-row"><dt>Appointment</dt><dd id="sum-appointment">November 26, 2026 · 10:30 AM</dd></div>
+            </dl>
+          </section>
+
+          <section class="summary-card">
+            <h3>Current Passport</h3>
+            <dl>
+              <div class="summary-row"><dt>Passport number</dt><dd id="sum-passport-number">DEMO-12345</dd></div>
+              <div class="summary-row"><dt>Expiry date</dt><dd id="sum-expiry">December 14, 2026</dd></div>
+              <div class="summary-row"><dt>Reason for renewal</dt><dd id="sum-reason">Expiring passport</dd></div>
+              <div class="summary-row"><dt>Processing type</dt><dd id="sum-processing">Regular</dd></div>
+            </dl>
+          </section>
+        </div>
+
+        <form id="step4-form" novalidate>
+          <div class="confirm-box">
+            <label class="check" style="width:100%">
+              <input type="checkbox" id="confirm" checked required>
+              <span>
+                <strong>Confirmation</strong>
+                I confirm that the information and documents provided are true and correct to the best of my knowledge.
+              </span>
+            </label>
+          </div>
+
+          <div class="form-actions" style="margin-top:24px">
+            <a class="btn btn--outline" href="renewal-3.html">Back to Documents</a>
+            <button class="btn btn--primary" type="submit">Submit Renewal Request</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="rail renewal-rail" data-renewal-rail></aside>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script src="js/renewal.js"></script>
+<script>
+(function () {
+  const draft = PT.renewal.draft;
+
+  document.getElementById("sum-name").textContent = [draft.first, draft.middle, draft.last].filter(Boolean).join(" ") || "Demo User";
+  document.getElementById("sum-dob").textContent = PTui.fmtDate(draft.dob);
+  document.getElementById("sum-phone").textContent = draft.phone || "000-000-0000";
+  document.getElementById("sum-email").textContent = draft.email || "demo@example.test";
+  document.getElementById("sum-city").textContent = draft.city || "Quezon City";
+  document.getElementById("sum-passport").textContent = draft.passportCopy ? "Uploaded" : "Not uploaded";
+  document.getElementById("sum-gov").textContent = draft.governmentId || "Not uploaded";
+  document.getElementById("sum-supporting").textContent = draft.supporting && draft.supporting.length ? draft.supporting.length + " file" + (draft.supporting.length > 1 ? "s" : "") : "None added";
+  document.getElementById("sum-branch").textContent = draft.branch || "Quezon City Consular Office";
+  document.getElementById("sum-appointment").textContent = PTui.fmtDate(draft.date) + " · " + (draft.time || "10:30 AM");
+  document.getElementById("sum-passport-number").textContent = draft.passportNumber || "DEMO-12345";
+  document.getElementById("sum-expiry").textContent = PTui.fmtDate(draft.expiry);
+  document.getElementById("sum-reason").textContent = draft.reason || "Expiring passport";
+  document.getElementById("sum-processing").textContent = draft.processing || "Regular";
+
+  const form = document.getElementById("step4-form");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!PTui.validate(form)) return;
+    PT.submitRenewal();
+    window.location.href = "renewal-submitted.html";
+  });
+
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(PT.application.id, "Application ID copied"));
+})();
+</script>
+</body>
+</html>

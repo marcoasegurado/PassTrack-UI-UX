@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create Account — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="register" class="page--auth">
+<div data-chrome-header></div>
+
+<main class="auth-main auth-main--center">
+  <div class="ca-card">
+    <div class="reg-card">
+      <div class="reg-card__head">
+        <h1 class="reg-card__title">Create Your Account</h1>
+        <p class="reg-card__sub">Choose your application type. Your password is generated for you after you submit.</p>
+      </div>
+      <div class="reg-card__body">
+        <div class="stepper stepper--reg" aria-label="Registration progress" style="margin-bottom:22px">
+          <div class="stepper__step is-done">
+            <span class="stepper__num" data-icon="check" data-size="15"></span>
+            <span class="stepper__label">Personal Details</span>
+          </div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-done">
+            <span class="stepper__num" data-icon="check" data-size="15"></span>
+            <span class="stepper__label">ID Details</span>
+          </div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-current" aria-current="step">
+            <span class="stepper__num">3</span>
+            <span class="stepper__label">Create Account</span>
+          </div>
+        </div>
+
+        <form id="create-form" novalidate>
+          <div class="ca-grid">
+            <div class="field">
+              <div class="label-row"><label class="label" for="app-type">Application Type</label><span class="req">*</span></div>
+              <div class="select-wrap is-placeholder">
+                <select class="control" id="app-type" name="appType" required>
+                  <option value="" selected disabled>Select application type</option>
+                  <option>New Passport</option>
+                  <option>Renewal</option>
+                </select>
+                <span class="chev" data-icon="chevron-down" data-size="18"></span>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <div class="label-row"><span class="label">Processing Type</span><span class="req">*</span></div>
+              <div class="ca-options" role="radiogroup" aria-label="Processing type">
+                <label class="radio"><input type="radio" name="processingType" value="Regular" checked> Regular</label>
+                <label class="radio"><input type="radio" name="processingType" value="Express"> Express</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="ca-terms check">
+            <input type="checkbox" id="agree" required>
+            <label for="agree">I agree to the <a href="terms.html?return=register">Terms and Conditions</a></label>
+          </div>
+
+          <div class="ca-actions">
+            <a class="btn btn--outline" href="register-id.html">Back</a>
+            <button class="btn btn--primary" type="submit" id="submit-application" disabled>Submit Application</button>
+          </div>
+
+          <p class="ca-login">Already have an account? <a href="login.html">Login</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const form = document.getElementById("create-form");
+  const agree = document.getElementById("agree");
+  const submit = document.getElementById("submit-application");
+  const saved = PT.registration || {};
+
+  if (!saved.personal || !saved.personal.first) {
+    window.location.replace("register-personal.html");
+    return;
+  }
+
+  if (saved.appType) form.elements.appType.value = saved.appType;
+  if (saved.processingType) {
+    const radios = form.querySelectorAll('input[name="processingType"]');
+    radios.forEach((radio) => { radio.checked = radio.value === saved.processingType; });
+  }
+  if (saved.agreed) agree.checked = true;
+
+  const syncAgree = () => { submit.disabled = !agree.checked; };
+  agree.addEventListener("change", syncAgree);
+  syncAgree();
+
+  form.elements.appType.addEventListener("change", () => {
+    form.elements.appType.closest(".select-wrap").classList.toggle("is-placeholder", !form.elements.appType.value);
+  });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!PTui.validate(form)) return;
+    if (!agree.checked) return;
+    PT.saveRegistration({
+      appType: form.elements.appType.value,
+      processingType: form.querySelector('input[name="processingType"]:checked').value
+    });
+    PT.completeRegistration();
+    window.location.href = "success.html";
+  });
+})();
+</script>
+</body>
+</html>

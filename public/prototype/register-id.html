@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registration · ID Details — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="register-id" class="page--auth">
+<div data-chrome-header></div>
+
+<main class="auth-main auth-main--reg">
+  <div class="reg-shell">
+    <div class="reg-card">
+      <div class="reg-card__head">
+        <h1 class="reg-card__title">ID Details</h1>
+        <p class="reg-card__sub">We use this to verify your identity.</p>
+      </div>
+      <div class="reg-card__body">
+        <div class="stepper stepper--reg" aria-label="Registration progress">
+          <div class="stepper__step is-done">
+            <span class="stepper__num" data-icon="check" data-size="15"></span>
+            <span class="stepper__label">Personal Details</span>
+          </div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-current" aria-current="step">
+            <span class="stepper__num">2</span>
+            <span class="stepper__label">ID Details</span>
+          </div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step">
+            <span class="stepper__num">3</span>
+            <span class="stepper__label">Create Account</span>
+          </div>
+        </div>
+
+        <form class="reg-form" id="id-form" novalidate>
+          <div class="field">
+            <div class="label-row"><label class="label" for="nationality">Nationality</label><span class="req">*</span></div>
+            <div class="select-wrap is-placeholder">
+              <select class="control" id="nationality" name="nationality" required>
+                <option value="" selected disabled>Select your nationality</option>
+                <option>Filipino</option>
+                <option>American</option>
+                <option>Australian</option>
+                <option>British</option>
+                <option>Canadian</option>
+                <option>Japanese</option>
+                <option>Other</option>
+              </select>
+              <span class="chev" data-icon="chevron-down" data-size="18"></span>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="address">Address</label><span class="req">*</span></div>
+            <input class="control" id="address" name="address" type="text" placeholder="Enter your street address" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="city">City</label><span class="req">*</span></div>
+            <input class="control" id="city" name="city" type="text" placeholder="Enter your city" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="province">Province</label><span class="req">*</span></div>
+            <input class="control" id="province" name="province" type="text" placeholder="Enter your province" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="postal">Postal Code</label><span class="req">*</span></div>
+            <input class="control" id="postal" name="postal" type="text" inputmode="numeric" placeholder="Enter your postal code" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="mother">Mother’s Maiden Name</label><span class="req">*</span></div>
+            <input class="control" id="mother" name="mother" type="text" placeholder="Enter your mother’s maiden name" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="father">Father’s Full Name</label><span class="req">*</span></div>
+            <input class="control" id="father" name="father" type="text" placeholder="Enter your father’s full name" required>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="id-type">Type of ID</label><span class="req">*</span></div>
+            <div class="select-wrap is-placeholder">
+              <select class="control" id="id-type" name="idType" required>
+                <option value="" selected disabled>Select your ID type</option>
+                <option>Driver’s License</option>
+                <option>Passport</option>
+                <option>PhilSys National ID</option>
+                <option>UMID</option>
+                <option>Voter’s ID</option>
+              </select>
+              <span class="chev" data-icon="chevron-down" data-size="18"></span>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><label class="label" for="valid-id">Valid ID</label><span class="req">*</span></div>
+            <div class="dropzone" id="id-dropzone">
+              <input class="sr-only" id="valid-id" name="validId" type="file" accept="image/jpeg,image/png,application/pdf" required>
+              <div class="dropzone__row">
+                <span class="upload-row__icon" id="id-drop-icon" data-icon="upload" data-size="16"></span>
+                <div>
+                  <div class="dropzone__title" id="id-drop-title">Upload a clear photo of your ID</div>
+                  <div class="dropzone__hint" id="id-drop-hint">JPG, PNG or PDF, up to 10 MB</div>
+                </div>
+              </div>
+              <button class="btn btn--ghost" type="button" id="browse-id">Browse</button>
+            </div>
+            <p class="field-error" hidden></p>
+          </div>
+
+          <div class="form-foot" style="justify-content:space-between">
+            <a class="btn btn--outline" href="register-personal.html">Back</a>
+            <button class="btn btn--primary" type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const form = document.getElementById("id-form");
+  if (!PT.registration.personal || !PT.registration.personal.first) {
+    window.location.replace("register-personal.html");
+    return;
+  }
+  const fileInput = document.getElementById("valid-id");
+  const saved = PT.registration.id || {};
+  ["nationality", "address", "city", "province", "postal", "mother", "father"].forEach((key) => {
+    if (saved[key] && form.elements[key]) form.elements[key].value = saved[key];
+  });
+  if (saved.idType) form.elements.idType.value = saved.idType;
+  if (saved.file) setFile(saved.file);
+
+  form.querySelectorAll("select").forEach((select) => {
+    const sync = () => select.closest(".select-wrap").classList.toggle("is-placeholder", !select.value);
+    select.addEventListener("change", sync);
+    sync();
+  });
+
+  document.getElementById("browse-id").addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files && fileInput.files[0]) setFile(fileInput.files[0].name);
+  });
+
+  function setFile(name) {
+    document.getElementById("id-drop-title").textContent = name;
+    document.getElementById("id-drop-hint").textContent = "Uploaded · click Browse to replace";
+    const icon = document.getElementById("id-drop-icon");
+    icon.style.background = "#dcfce7";
+    icon.style.color = "#15803d";
+    icon.innerHTML = PTui.icon("check", 16);
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!PTui.validate(form)) return;
+    const data = { file: document.getElementById("id-drop-title").textContent };
+    ["nationality", "address", "city", "province", "postal", "mother", "father", "idType"].forEach((key) => {
+      data[key] = form.elements[key].value.trim();
+    });
+    PT.saveRegistration({ id: data });
+    window.location.href = "register.html";
+  });
+})();
+</script>
+</body>
+</html>

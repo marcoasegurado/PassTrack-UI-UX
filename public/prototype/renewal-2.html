@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passport Renewal · Personal Details — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="renewal-2">
+<div data-chrome-header></div>
+
+<main class="page-body renewal-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="dashboard.html">Dashboard</a>
+    <span data-icon="chevron-right" data-size="12"></span>
+    <span>Passport Renewal</span>
+  </nav>
+
+  <div class="intro">
+    <div>
+      <h1 class="intro__title">Passport Renewal</h1>
+      <p class="intro__desc">Renew your passport in a few simple steps.</p>
+    </div>
+    <span class="app-chip"><span>Application ID</span> <strong data-app-id>PS-12345</strong>
+      <button type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="14"></button>
+    </span>
+  </div>
+
+  <div class="renewal-grid">
+    <section class="card renewal-form">
+      <div class="card__head">
+        <h2 class="card__title">Personal Details</h2>
+        <p class="card__sub">Confirm your details exactly as they appear on your records.</p>
+      </div>
+      <div class="card__body">
+        <div class="stepper stepper--4" aria-label="Renewal progress">
+          <div class="stepper__step is-done"><span class="stepper__num" data-icon="check" data-size="15"></span><span class="stepper__label">Eligibility</span></div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-current" aria-current="step"><span class="stepper__num">2</span><span class="stepper__label">Personal Details</span></div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step"><span class="stepper__num">3</span><span class="stepper__label">Documents</span></div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step"><span class="stepper__num">4</span><span class="stepper__label">Review &amp; Submit</span></div>
+        </div>
+
+        <form id="step2-form" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <div class="label-row"><label class="label" for="first">First Name</label><span class="req">*</span></div>
+              <input class="control" id="first" name="first" type="text" placeholder="Enter your first name" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="middle">Middle Name</label><small class="hint">(optional)</small></div>
+              <input class="control" id="middle" name="middle" type="text" placeholder="Enter your middle name">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="last">Last Name</label><span class="req">*</span></div>
+              <input class="control" id="last" name="last" type="text" placeholder="Enter your last name" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="dob">Date of Birth</label><span class="req">*</span></div>
+              <div class="input-icon">
+                <input class="control" id="dob" name="dob" type="text" placeholder="DD / MM / YYYY" required>
+                <span class="icon-trail" data-icon="calendar" data-size="17"></span>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="sex">Sex</label><span class="req">*</span></div>
+              <div class="select-wrap">
+                <select class="control" id="sex" name="sex" required>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+                <span class="chev" data-icon="chevron-down" data-size="18"></span>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="civil">Civil Status</label><span class="req">*</span></div>
+              <div class="select-wrap">
+                <select class="control" id="civil" name="civil" required>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Widowed">Widowed</option>
+                  <option value="Separated">Separated</option>
+                </select>
+                <span class="chev" data-icon="chevron-down" data-size="18"></span>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="phone">Contact Number</label><span class="req">*</span></div>
+              <div class="phone-row">
+                <div class="cc"><span>+63</span><span data-icon="chevron-down" data-size="16"></span></div>
+                <input class="control" id="phone" name="phone" type="tel" inputmode="numeric" placeholder="Enter your mobile number" required>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="email">Email Address</label><span class="req">*</span></div>
+              <input class="control" id="email" name="email" type="email" placeholder="Enter your email address" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field field--full">
+              <div class="label-row"><label class="label" for="address">Home Address</label><span class="req">*</span></div>
+              <input class="control" id="address" name="address" type="text" placeholder="Enter your street address" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="city">City</label><span class="req">*</span></div>
+              <input class="control" id="city" name="city" type="text" placeholder="Enter your city" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="province">Province</label><span class="req">*</span></div>
+              <input class="control" id="province" name="province" type="text" placeholder="Enter your province" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="postal">Postal Code</label><span class="req">*</span></div>
+              <input class="control" id="postal" name="postal" type="text" inputmode="numeric" placeholder="Enter your postal code" required>
+              <p class="field-error" hidden></p>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label" for="citizenship">Citizenship</label><span class="req">*</span></div>
+              <div class="select-wrap">
+                <select class="control" id="citizenship" name="citizenship" required>
+                  <option value="Filipino">Filipino</option>
+                  <option value="Dual Citizen">Dual Citizen</option>
+                  <option value="Foreign National">Foreign National</option>
+                </select>
+                <span class="chev" data-icon="chevron-down" data-size="18"></span>
+              </div>
+              <p class="field-error" hidden></p>
+            </div>
+          </div>
+
+          <div class="form-actions" style="margin-top:24px">
+            <a class="btn btn--outline" href="renewal-1.html">Back</a>
+            <button class="btn btn--primary" type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="rail renewal-rail" data-renewal-rail></aside>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script src="js/renewal.js"></script>
+<script>
+(function () {
+  const draft = PT.renewal.draft;
+  const form = document.getElementById("step2-form");
+  const keys = ["first", "middle", "last", "phone", "email", "address", "city", "province", "postal"];
+
+  const displayDate = (value) => {
+    const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return match ? match[3] + " / " + match[2] + " / " + match[1] : value || "";
+  };
+  const isoDate = (value) => {
+    const match = String(value || "").match(/^(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{4})$/);
+    return match ? match[3] + "-" + match[2].padStart(2, "0") + "-" + match[1].padStart(2, "0") : value;
+  };
+
+  keys.forEach((key) => {
+    if (draft[key] != null && form.elements[key]) form.elements[key].value = draft[key];
+  });
+  form.elements.dob.value = displayDate(draft.dob);
+  form.elements.sex.value = draft.sex || "Male";
+  form.elements.civil.value = draft.civil || "Single";
+  form.elements.citizenship.value = draft.citizenship || "Filipino";
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!PTui.validate(form)) return;
+    const data = {
+      first: form.elements.first.value.trim(),
+      middle: form.elements.middle.value.trim(),
+      last: form.elements.last.value.trim(),
+      dob: isoDate(form.elements.dob.value.trim()),
+      sex: form.elements.sex.value,
+      civil: form.elements.civil.value,
+      phone: form.elements.phone.value.trim(),
+      email: form.elements.email.value.trim(),
+      address: form.elements.address.value.trim(),
+      city: form.elements.city.value.trim(),
+      province: form.elements.province.value.trim(),
+      postal: form.elements.postal.value.trim(),
+      citizenship: form.elements.citizenship.value
+    };
+    PT.saveRenewalDraft(data);
+    window.location.href = "renewal-3.html";
+  });
+
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(PT.application.id, "Application ID copied"));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="dashboard">
+<div data-chrome-header></div>
+
+<main class="page-body">
+  <section class="greeting-bar">
+    <div class="greeting">
+      <h1 id="welcome">Welcome, User!</h1>
+      <p>Passtrack Travel Agency</p>
+    </div>
+    <div class="greeting__id">
+      <span class="eyebrow">Application ID</span>
+      <div class="id-row">
+        <strong data-app-id>PS-12345</strong>
+        <button class="icon-btn" type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="16"></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="dash-grid">
+    <article class="dash-card">
+      <div class="dash-card__top">
+        <span class="eyebrow">Application Status</span>
+        <div class="dash-status">
+          <span class="dot" id="status-dot"></span>
+          <strong id="status-title">Processing</strong>
+        </div>
+        <p class="dash-copy" id="status-copy">Initial checks complete. Your application is queued for security background validation.</p>
+      </div>
+      <div class="dash-card__mid">
+        <div class="progress-meta"><span id="progress-stage">Stage 3 of 6</span><span id="progress-percent">50% Complete</span></div>
+        <div class="progress"><span id="progress-fill" style="width:50%"></span></div>
+      </div>
+      <div class="dash-card__foot">
+        <span class="meta" id="updated-label">Updated 4 hours ago</span>
+        <a class="btn btn--primary btn--pill" href="status.html">View status</a>
+      </div>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-card__top">
+        <span class="eyebrow">Inquiry</span>
+        <div class="dash-status">
+          <span class="dot dot--green"></span>
+          <strong id="active-count">2 Active Inquiries</strong>
+        </div>
+        <p class="dash-copy">Review response from officers regarding document clarifications. No actions pending from your side.</p>
+      </div>
+      <div class="dash-card__mid" style="display:flex;flex-direction:column;gap:14px">
+        <div class="ticket-line" id="ticket-resolved">
+          <span data-icon="check-circle" data-size="16"></span>
+          <span>Ticket <strong>#INQ-882</strong>: Completed</span>
+        </div>
+        <div class="ticket-line" id="ticket-awaiting">
+          <span data-icon="clock" data-size="16" style="color:#d97706"></span>
+          <span>Ticket <strong>#INQ-901</strong> awaiting final stamp</span>
+        </div>
+      </div>
+      <div class="dash-card__foot">
+        <span class="meta"></span>
+        <a class="btn btn--primary btn--pill" href="inquiries.html">View inquiry</a>
+      </div>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-card__top">
+        <span class="eyebrow">Application Information</span>
+        <strong style="font-size:24px;line-height:1.2" id="app-name">Demo User</strong>
+        <p class="dash-copy" id="app-meta">Passport Type: Regular (38 Pages) · Processing Type: Express</p>
+        <div class="stack stack--sm" style="margin-top:10px">
+          <div class="ticket-line" style="gap:8px"><strong>Primary Email:</strong> <span id="app-email">username@gmail.com</span></div>
+          <div class="ticket-line" style="gap:8px"><strong>Submission Date:</strong> <span id="app-submitted">September 8, 2026</span></div>
+        </div>
+      </div>
+      <div class="dash-card__foot" style="margin-top:18px">
+        <span class="meta" style="font-weight:700">Document security validated</span>
+        <a class="btn btn--primary btn--pill" href="status.html">View details</a>
+      </div>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-card__top">
+        <span class="eyebrow">Passport Renewal</span>
+        <strong style="font-size:24px;line-height:1.2">Current Passport Expiring</strong>
+        <p class="dash-copy" id="renewal-copy">Your current physical book expires on Dec 14, 2026. Keep in mind that many airlines require 6 months validity.</p>
+      </div>
+      <div class="dash-card__foot" style="margin-top:auto">
+        <span class="meta" id="renewal-state">Renewal queue open</span>
+        <a class="btn btn--primary btn--pill" href="renewal-1.html">Renew passport</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const app = PT.application;
+  const stage = Math.min(6, Math.max(1, app.stage || 3));
+  const step = app.steps[stage - 1] || app.steps[0];
+  const percent = app.delivered ? 100 : Math.round((stage / 6) * 100);
+
+  document.getElementById("welcome").textContent = "Welcome, " + (app.name || "User").split(" ")[0] + "!";
+  document.getElementById("status-title").textContent = app.delivered ? "Delivered" : step.label;
+  document.getElementById("progress-stage").textContent = "Stage " + stage + " of 6";
+  document.getElementById("progress-percent").textContent = percent + "% Complete";
+  document.getElementById("progress-fill").style.width = percent + "%";
+  document.getElementById("app-name").textContent = app.name || "Demo User";
+  document.getElementById("app-meta").textContent = "Passport Type: " + app.passportType + " · Processing Type: " + app.processingType;
+  document.getElementById("app-email").textContent = app.email;
+  document.getElementById("app-submitted").textContent = PTui.fmtDate(app.submittedAt);
+
+  const copyMap = {
+    submitted: "Your application has been submitted and is awaiting initial review.",
+    review: "Your documents are being reviewed by a passport officer.",
+    processing: "Initial checks complete. Your application is queued for security background validation.",
+    ready: "Your passport has been printed and is awaiting release.",
+    approved: "Your application has been approved and is awaiting delivery dispatch.",
+    delivery: "Your passport has been handed to the courier for delivery."
+  };
+  document.getElementById("status-copy").textContent = app.delivered
+    ? "Your passport has been delivered. Keep your passport number safe and report any issue within 48 hours."
+    : copyMap[step.key] || copyMap.processing;
+
+  const dot = document.getElementById("status-dot");
+  dot.className = "dot " + (app.delivered ? "dot--green" : stage >= 4 ? "dot--green" : stage >= 2 ? "dot--primary" : "dot--amber");
+
+  const openCount = PT.inquiries.filter((i) => i.status === "open").length;
+  document.getElementById("active-count").textContent = openCount + " Active Inquir" + (openCount === 1 ? "y" : "ies");
+
+  const awaiting = PT.inquiries.find((i) => i.status === "awaiting");
+  const resolved = PT.inquiries.find((i) => i.status === "resolved");
+  if (awaiting) {
+    document.getElementById("ticket-awaiting").innerHTML = '<span data-icon="clock" data-size="16" style="color:#d97706"></span><span>Ticket <strong>' +
+      awaiting.id + '</strong> awaiting response</span>';
+  }
+  if (resolved) {
+    document.getElementById("ticket-resolved").innerHTML = '<span data-icon="check-circle" data-size="16"></span><span>Ticket <strong>' +
+      resolved.id + '</strong>: Completed</span>';
+  }
+
+  const updated = new Date(app.updatedAt || app.submittedAt);
+  const hours = Math.max(1, Math.round((Date.now() - updated.getTime()) / 3600000));
+  document.getElementById("updated-label").textContent = "Updated " + (hours < 24 ? hours + (hours === 1 ? " hour ago" : " hours ago") : PTui.fmtDate(updated));
+
+  const renewal = PT.renewal;
+  const expiry = renewal.draft.expiry;
+  document.getElementById("renewal-copy").textContent = "Your current physical book expires on " + PTui.fmtDate(expiry) + ". Keep in mind that many airlines require 6 months validity.";
+  document.getElementById("renewal-state").textContent = renewal.status === "pending" ? "Renewal request under review" : renewal.status === "approved" ? "Renewal approved" : "Renewal needs attention";
+
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(app.id, "Application ID copied"));
+  PTui.hydrateIcons();
+})();
+</script>
+</body>
+</html>

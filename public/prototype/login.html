@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Member Login — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="login" class="page--auth">
+<div data-chrome-header></div>
+
+<main class="auth-main auth-main--login">
+  <div class="login-shell">
+    <div class="alert alert--error" id="login-error" role="alert" hidden>
+      <span data-icon="alert-circle" data-size="18"></span>
+      <span>Login failed. Please check your Application ID and Password and try again.</span>
+    </div>
+
+    <form class="login-card" id="login-form" novalidate>
+      <div class="login-card__head">
+        <h1 class="login-card__title">Member Login</h1>
+        <p class="login-card__sub">enter your application ID and Password to continue</p>
+      </div>
+
+      <div class="login-card__body">
+        <div class="login-field">
+          <label class="label" for="app-id">Application ID</label>
+          <input class="login-input" id="app-id" name="appId" type="text" autocomplete="username"
+                 placeholder="Enter your Application ID(e.g.PS-12345)" required>
+        </div>
+
+        <div class="login-field">
+          <label class="label" for="password">Password</label>
+          <input class="login-input" id="password" name="password" type="password" autocomplete="current-password"
+                 placeholder="Enter your Password" required>
+        </div>
+
+        <div class="login-actions">
+          <button class="btn btn--primary btn--block btn--lg btn--login" type="submit">Login</button>
+        </div>
+
+        <div class="login-foot">
+          <div class="login-foot__rule"></div>
+          <div class="login-foot__row">
+            <span>Don’t have an application ID?</span>
+            <a href="register-personal.html"><strong>Register for a new passport</strong></a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const form = document.getElementById("login-form");
+  const error = document.getElementById("login-error");
+  const params = new URLSearchParams(location.search);
+
+  if (PT.isLoggedIn() && !params.has("stay")) {
+    window.location.replace("dashboard.html");
+    return;
+  }
+  if (params.get("id")) document.getElementById("app-id").value = params.get("id");
+  if (params.get("pw")) document.getElementById("password").value = params.get("pw");
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const appId = document.getElementById("app-id").value.trim();
+    const password = document.getElementById("password").value;
+    error.hidden = true;
+
+    if (!appId || !password) {
+      error.hidden = false;
+      error.querySelector("span:last-child").textContent = "Enter your Application ID and Password to continue.";
+      document.getElementById(!appId ? "app-id" : "password").focus();
+      return;
+    }
+    if (PT.login(appId, password)) {
+      window.location.href = "dashboard.html";
+    } else {
+      error.hidden = false;
+      error.querySelector("span:last-child").textContent = "Login failed. Please check your Application ID and Password and try again.";
+      document.getElementById("password").select();
+    }
+  });
+})();
+</script>
+</body>
+</html>

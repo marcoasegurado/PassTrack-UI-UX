@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Application Status — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="status">
+<div data-chrome-header></div>
+
+<main class="page-body status-app">
+  <section class="tracking-card">
+    <div class="tracking-head">
+      <h1>Application Progress</h1>
+      <span class="chip chip--app">
+        <span class="chip__label">Application ID</span>
+        <strong data-app-id>PS-12345</strong>
+        <button type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="15"></button>
+      </span>
+    </div>
+
+    <div class="status-panel">
+      <div class="status-panel__top">
+        <h2 class="status-panel__title" id="status-title">Processing</h2>
+        <span class="status-pill" id="status-pill">In progress</span>
+      </div>
+      <p class="status-copy" id="status-copy"></p>
+      <div class="status-meta">
+        <div class="status-meta__row"><span class="k">Next step</span><span class="v" id="next-step">Security background validation</span></div>
+        <div class="status-meta__row"><span class="k">Estimated time</span><span class="v" id="estimated-time">Not yet available</span></div>
+      </div>
+    </div>
+
+    <div class="tracker">
+      <div class="tracker__phases" aria-hidden="true">
+        <span>Phase A: Intake &amp; Verification</span>
+        <span>Phase B: Delivery &amp; Issuance</span>
+      </div>
+      <div class="tracker__steps" id="tracker">
+        <span class="tracker__line" aria-hidden="true"></span>
+        <span class="tracker__fill" id="tracker-fill" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <div class="tracking-foot">
+      <div class="meta">
+        <strong id="last-updated">Last updated: 9 Sep 2026</strong>
+        Auto-refreshes every 10 minutes
+      </div>
+      <div class="help-cta">
+        <span>Have a question?</span>
+        <a class="btn btn--primary btn--pill" href="inquiries.html">View inquiry</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const app = PT.application;
+  let stage = Number(params.get("stage")) || app.stage || 1;
+  stage = Math.min(6, Math.max(1, stage));
+  const delivered = params.get("delivered") === "1" || app.delivered;
+
+  const COPY = {
+    submitted: "Your application has been submitted and is awaiting initial review.",
+    review: "Your documents are being reviewed by a passport officer.",
+    processing: "Initial checks complete. Your application is queued for security background validation. No in-person visit is required; keep your contact channels active.",
+    ready: "Your passport has been printed and is awaiting release to the delivery partner.",
+    approved: "Your application has been approved and is awaiting delivery dispatch.",
+    delivery: "Your passport has been handed to the courier. Keep your phone available for the delivery contact."
+  };
+  const ESTIMATE = [null, "Not yet available", "5–7 business days", "Not yet available", "3–5 business days", "2–3 business days", "1–2 business days"];
+
+  const steps = app.steps.map((step, index) => {
+    const isDone = delivered || index + 1 < stage;
+    const isCurrent = !delivered && index + 1 === stage;
+    return {
+      ...step,
+      label: step.key === "delivery" && delivered ? "Delivered" : step.label,
+      state: isDone ? "done" : isCurrent ? "current" : "upcoming",
+      meta: isDone
+        ? (step.key === "delivery" && delivered ? "Delivered" : PTui.fmtDate(step.at || app.submittedAt) + " · " + PTui.fmtTime(step.at || app.submittedAt))
+        : isCurrent
+          ? (step.key === "delivery" ? "Out for delivery" : "In progress")
+          : (step.key === "delivery" ? "Awaiting delivery dispatch" : "Pending previous phase completion")
+    };
+  });
+
+  const current = steps[stage - 1];
+  const next = steps[stage] || steps[5];
+
+  document.getElementById("status-title").textContent = delivered ? "Delivered" : current.label;
+  document.getElementById("status-pill").textContent = delivered ? "Completed" : "In progress";
+  document.getElementById("status-pill").className = "status-pill" + (delivered ? " status-pill--green" : "");
+  document.getElementById("status-copy").textContent = delivered
+    ? "Your passport has been delivered. Keep your passport number safe and report any issue within 48 hours."
+    : COPY[current.key] || COPY.processing;
+  document.getElementById("next-step").textContent = delivered ? "None — application complete" : next.label;
+  document.getElementById("estimated-time").textContent = delivered ? "Delivered" : (ESTIMATE[stage] || "Not yet available");
+  document.getElementById("last-updated").textContent = "Last updated: " + PTui.fmtDateLong(app.updatedAt || app.submittedAt);
+
+  const tracker = document.getElementById("tracker");
+  const icons = { done: PTui.icon("check", 20) };
+  steps.forEach((step, index) => {
+    const el = document.createElement("div");
+    el.className = "step is-" + step.state;
+    if (step.state === "current") el.setAttribute("aria-current", "step");
+    const marker = step.state === "done" ? icons.done : String(index + 1);
+    el.innerHTML = '<span class="step__marker">' + marker + '</span>' +
+      '<div class="step__label">' + step.label + '</div>' +
+      '<div class="step__meta">' + step.meta + '</div>';
+    tracker.appendChild(el);
+  });
+
+  const visualStage = delivered ? 6 : stage;
+  document.getElementById("tracker-fill").style.width = ((visualStage - 1) / 5 * 83.3333) + "%";
+
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(app.id, "Application ID copied"));
+})();
+</script>
+</body>
+</html>

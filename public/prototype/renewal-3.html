@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passport Renewal · Documents — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="renewal-3">
+<div data-chrome-header></div>
+
+<main class="page-body renewal-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="dashboard.html">Dashboard</a>
+    <span data-icon="chevron-right" data-size="12"></span>
+    <span>Passport Renewal</span>
+  </nav>
+
+  <div class="intro">
+    <div>
+      <h1 class="intro__title">Passport Renewal</h1>
+      <p class="intro__desc">Renew your passport in a few simple steps.</p>
+    </div>
+    <span class="app-chip"><span>Application ID</span> <strong data-app-id>PS-12345</strong>
+      <button type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="14"></button>
+    </span>
+  </div>
+
+  <div class="renewal-grid">
+    <section class="card renewal-form">
+      <div class="card__head">
+        <h2 class="card__title">Documents &amp; Appointment</h2>
+        <p class="card__sub">Upload your documents and choose when to visit.</p>
+      </div>
+      <div class="card__body">
+        <div class="stepper stepper--4" aria-label="Renewal progress">
+          <div class="stepper__step is-done"><span class="stepper__num" data-icon="check" data-size="15"></span><span class="stepper__label">Eligibility</span></div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-done"><span class="stepper__num" data-icon="check" data-size="15"></span><span class="stepper__label">Personal Details</span></div>
+          <span class="stepper__bar is-done"></span>
+          <div class="stepper__step is-current" aria-current="step"><span class="stepper__num">3</span><span class="stepper__label">Documents</span></div>
+          <span class="stepper__bar"></span>
+          <div class="stepper__step"><span class="stepper__num">4</span><span class="stepper__label">Review &amp; Submit</span></div>
+        </div>
+
+        <form id="step3-form" novalidate>
+          <div class="stack stack--sm" style="gap:24px">
+            <div class="field">
+              <div class="label-row"><span class="label">Current Passport Copy</span><span class="req">*</span></div>
+              <div id="upload-passport"></div>
+              <p class="field-error" id="err-passport" hidden></p>
+            </div>
+
+            <div class="field">
+              <div class="label-row"><span class="label">Valid Government ID</span><span class="req">*</span></div>
+              <div id="upload-gov"></div>
+              <p class="field-error" id="err-gov" hidden></p>
+            </div>
+
+            <div class="field">
+              <div class="label-row"><label class="label" for="supporting-title">Supporting Documents</label><small class="hint">(optional)</small></div>
+              <div class="upload-stack" id="supporting-list"></div>
+              <div class="dropzone" id="supporting-drop">
+                <input class="sr-only" id="supporting-file" type="file" accept="image/jpeg,image/png,application/pdf">
+                <div class="dropzone__row">
+                  <span class="upload-row__icon" data-icon="upload" data-size="16"></span>
+                  <div>
+                    <div class="dropzone__title" id="supporting-title">Upload proof of name change or other supporting files</div>
+                    <div class="dropzone__hint">JPG, PNG or PDF, up to 10 MB</div>
+                  </div>
+                </div>
+                <button class="btn btn--outline" type="button" id="browse-supporting">Browse</button>
+              </div>
+            </div>
+          </div>
+
+          <hr class="divider" style="margin:24px 0">
+
+          <div>
+            <h3 style="font-size:20px;font-weight:700;line-height:24px;margin:0">Appointment</h3>
+            <p class="section-sub" style="font-size:14px;margin:4px 0 24px">Choose where and when you’d like to submit your documents in person.</p>
+
+            <div class="field">
+              <div class="label-row"><label class="label" for="branch">Preferred Branch</label><span class="req">*</span></div>
+              <div class="select-wrap">
+                <select class="control" id="branch" name="branch" required>
+                  <option>Quezon City Consular Office</option>
+                  <option>Makati Consular Office</option>
+                  <option>Manila Consular Office</option>
+                  <option>Cebu Consular Office</option>
+                </select>
+                <span class="chev" data-icon="chevron-down" data-size="18"></span>
+              </div>
+            </div>
+
+            <div class="form-grid" style="margin-top:24px">
+              <div class="field">
+                <div class="label-row"><label class="label" for="appointment-date">Preferred Date</label><span class="req">*</span></div>
+                <div class="input-icon">
+                  <input class="control" id="appointment-date" name="date" type="text" placeholder="DD / MM / YYYY" required>
+                  <span class="icon-trail" data-icon="calendar" data-size="17"></span>
+                </div>
+                <p class="field-error" hidden></p>
+              </div>
+              <div class="field">
+                <div class="label-row"><span class="label">Preferred Time</span><span class="req">*</span></div>
+                <div class="time-slots" id="time-slots" role="group" aria-label="Preferred time">
+                  <button class="time-slot" type="button" data-time="9:00 AM">9:00 AM</button>
+                  <button class="time-slot is-active" type="button" data-time="10:30 AM">10:30 AM</button>
+                  <button class="time-slot" type="button" data-time="1:00 PM">1:00 PM</button>
+                  <button class="time-slot" type="button" data-time="2:30 PM">2:30 PM</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-strip" style="margin-top:24px">
+            Please arrive 15 minutes early and bring the original copies of the documents you uploaded.
+          </div>
+
+          <div class="form-actions" style="margin-top:24px">
+            <a class="btn btn--outline" href="renewal-2.html">Back</a>
+            <button class="btn btn--primary" type="submit">Next</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="rail renewal-rail" data-renewal-rail></aside>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script src="js/renewal.js"></script>
+<script>
+(function () {
+  const draft = PT.renewal.draft;
+  const form = document.getElementById("step3-form");
+  const files = {
+    passport: draft.passportCopy || "passport_copy.jpg",
+    gov: draft.governmentId || "government_id.jpg",
+    supporting: (draft.supporting || []).slice()
+  };
+  let selectedTime = draft.time || "10:30 AM";
+
+  const displayDate = (value) => {
+    const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return match ? match[3] + " / " + match[2] + " / " + match[1] : value || "";
+  };
+
+  function uploadRow(kind, name) {
+    return '<div class="upload-row">' +
+      '<span class="upload-row__icon" data-icon="upload" data-size="16"></span>' +
+      '<div class="upload-row__body"><div><div class="upload-row__name">' + name + '</div>' +
+      '<div class="upload-row__meta">JPG, PNG or PDF, up to 10 MB</div></div></div>' +
+      '<button class="row-btn" type="button" data-remove="' + kind + '" aria-label="Remove ' + name + '">' + PTui.icon("trash", 15) + '</button>' +
+      '<span class="ok">' + PTui.icon("check", 14) + '</span>' +
+    '</div>';
+  }
+
+  function dropzone(kind, title) {
+    return '<div class="dropzone">' +
+      '<input class="sr-only" id="file-' + kind + '" type="file" accept="image/jpeg,image/png,application/pdf">' +
+      '<div class="dropzone__row">' +
+        '<span class="upload-row__icon" data-icon="upload" data-size="16"></span>' +
+        '<div><div class="dropzone__title">' + title + '</div><div class="dropzone__hint">JPG, PNG or PDF, up to 10 MB</div></div>' +
+      '</div>' +
+      '<button class="btn btn--outline" type="button" data-browse="' + kind + '">Browse</button>' +
+    '</div>';
+  }
+
+  function renderUploads() {
+    document.getElementById("upload-passport").innerHTML = files.passport
+      ? uploadRow("passport", files.passport)
+      : dropzone("passport", "Upload a clear photo of your passport data page");
+    document.getElementById("upload-gov").innerHTML = files.gov
+      ? uploadRow("gov", files.gov)
+      : dropzone("gov", "Upload a clear photo of your government ID");
+
+    const list = document.getElementById("supporting-list");
+    list.innerHTML = files.supporting.map((name, index) =>
+      uploadRow("supporting", name).replace('data-remove="supporting"', 'data-remove="supporting" data-index="' + index + '"')
+    ).join("");
+
+    document.querySelectorAll("[data-remove]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const kind = btn.getAttribute("data-remove");
+        if (kind === "supporting") {
+          files.supporting.splice(Number(btn.getAttribute("data-index")), 1);
+        } else {
+          files[kind] = null;
+        }
+        renderUploads();
+      });
+    });
+    document.querySelectorAll("[data-browse]").forEach((btn) => {
+      btn.addEventListener("click", () => document.getElementById("file-" + btn.getAttribute("data-browse")).click());
+    });
+    document.querySelectorAll("#upload-passport input[type=file], #upload-gov input[type=file]").forEach((input) => {
+      input.addEventListener("change", () => {
+        if (!input.files || !input.files[0]) return;
+        if (input.id === "file-passport") files.passport = input.files[0].name;
+        if (input.id === "file-gov") files.gov = input.files[0].name;
+        renderUploads();
+      });
+    });
+  }
+
+  document.getElementById("supporting-file").addEventListener("change", function () {
+    if (this.files && this.files[0]) {
+      files.supporting.push(this.files[0].name);
+      this.value = "";
+      renderUploads();
+    }
+  });
+  document.getElementById("browse-supporting").addEventListener("click", () => document.getElementById("supporting-file").click());
+
+  form.elements.branch.value = draft.branch || "Quezon City Consular Office";
+  form.elements.date.value = displayDate(draft.date || "2026-11-26");
+
+  document.querySelectorAll(".time-slot").forEach((slot) => {
+    slot.classList.toggle("is-active", slot.getAttribute("data-time") === selectedTime);
+    slot.addEventListener("click", () => {
+      selectedTime = slot.getAttribute("data-time");
+      document.querySelectorAll(".time-slot").forEach((el) => el.classList.remove("is-active"));
+      slot.classList.add("is-active");
+    });
+  });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    let valid = PTui.validate(form);
+    const passportError = document.getElementById("err-passport");
+    const govError = document.getElementById("err-gov");
+    passportError.hidden = Boolean(files.passport);
+    govError.hidden = Boolean(files.gov);
+    if (!files.passport) { passportError.textContent = "Upload a copy of your current passport"; valid = false; }
+    if (!files.gov) { govError.textContent = "Upload one valid government-issued ID"; valid = false; }
+    if (!valid) return;
+
+    const match = form.elements.date.value.trim().match(/^(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{4})$/);
+    PT.saveRenewalDraft({
+      branch: form.elements.branch.value,
+      date: match ? match[3] + "-" + match[2].padStart(2, "0") + "-" + match[1].padStart(2, "0") : form.elements.date.value,
+      time: selectedTime,
+      passportCopy: files.passport,
+      governmentId: files.gov,
+      supporting: files.supporting
+    });
+    window.location.href = "renewal-4.html";
+  });
+
+  renderUploads();
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(PT.application.id, "Application ID copied"));
+})();
+</script>
+</body>
+</html>

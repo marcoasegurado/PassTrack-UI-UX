@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Renewal Status — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="renewal-status">
+<div data-chrome-header></div>
+
+<main class="page-body renewal-page renewal-status-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="dashboard.html">Dashboard</a>
+    <span data-icon="chevron-right" data-size="12"></span>
+    <span>Passport Renewal</span>
+  </nav>
+
+  <div class="intro">
+    <div>
+      <h1 class="intro__title">Renewal Status</h1>
+      <p class="intro__desc">Track the administrator’s decision on your passport renewal request.</p>
+    </div>
+    <span class="app-chip"><span>Application ID</span> <strong data-app-id>PS-12345</strong>
+      <button type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="14"></button>
+    </span>
+  </div>
+
+  <div class="renewal-status-grid">
+    <section class="card status-card">
+      <div class="card__body">
+        <div class="status-card__head">
+          <div>
+            <h2>Renewal Request Status</h2>
+            <p class="status-card__ref">Reference <span id="ref">RN-2026-0001</span></p>
+          </div>
+          <span class="status-badge" id="badge">Pending review</span>
+        </div>
+
+        <p class="status-card__copy" id="status-copy"></p>
+
+        <div class="request-summary">
+          <h3>Request summary</h3>
+          <dl class="request-summary__grid">
+            <div><dt>Reference number</dt><dd id="sum-ref">RN-2026-0001</dd></div>
+            <div><dt>Current passport</dt><dd id="sum-passport">DEMO-12345</dd></div>
+            <div><dt>Date submitted</dt><dd id="sum-submitted">November 19, 2026</dd></div>
+            <div><dt>Processing type</dt><dd id="sum-processing">Regular</dd></div>
+          </dl>
+        </div>
+
+        <div class="status-progress">
+          <h3>Request progress</h3>
+          <div class="progress-list" id="progress"></div>
+        </div>
+
+        <div id="approved-panel"></div>
+        <div class="status-note" id="note"></div>
+        <div class="status-actions" id="actions"></div>
+      </div>
+    </section>
+
+    <aside class="rail renewal-rail">
+      <section class="rail-card status-rail">
+        <h3>What happens next?</h3>
+        <ol class="what-next" id="what-next"></ol>
+        <div class="status-help">
+          <strong>Need help?</strong>
+          <p>Send an enquiry to Passport Services if you have a question about your renewal request.</p>
+        </div>
+        <a class="btn btn--primary" href="inquiries.html?new=1">View my inquiries</a>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const requested = params.get("state");
+  const renewal = PT.renewal;
+  const state = requested === "approved" || requested === "rejected" ? requested : (renewal.status === "approved" || renewal.status === "rejected" ? renewal.status : "pending");
+  const draft = renewal.draft;
+  const decisionDate = PTui.fmtDate(renewal.decisionAt || new Date());
+
+  const COPY = {
+    pending: "Your request has been submitted and is waiting for the administrator to review your information and supporting documents.",
+    approved: "Your renewal request has been approved by the administrator.",
+    rejected: "Your renewal request was rejected by the administrator. Review the reason below and contact Passport Services if you need clarification."  };
+  const BADGE = {
+    pending: ["Pending review", "status-badge--pending"],
+    approved: ["Approved", "status-badge--approved"],
+    rejected: ["Rejected", "status-badge--rejected"]
+  };
+  const NEXT = {
+    pending: [
+      "The administrator reviews your renewal request.",
+      "The administrator records an approval or rejection decision.",
+      "The decision appears here so you can check the result."
+    ],
+    approved: [
+      "Your renewal request was approved.",
+      "Attend your scheduled appointment.",
+      "Bring your original documents and follow the consular office instructions."
+    ],
+    rejected: [
+      "The administrator reviewed your renewal request.",
+      "The request was rejected. Check the reason or contact support.",
+      "You may need to correct the details or submit a new request."
+    ]
+  };
+
+  document.getElementById("ref").textContent = renewal.ref;
+  document.getElementById("sum-ref").textContent = renewal.ref;
+  document.getElementById("sum-passport").textContent = draft.passportNumber || "DEMO-12345";
+  document.getElementById("sum-submitted").textContent = PTui.fmtDate(renewal.submittedAt);
+  document.getElementById("sum-processing").textContent = draft.processing || "Regular";
+  document.getElementById("status-copy").textContent = COPY[state];
+  document.getElementById("badge").textContent = BADGE[state][0];
+  document.getElementById("badge").className = "status-badge " + BADGE[state][1];
+
+  const progress = [
+    { title: "Request submitted", meta: PTui.fmtDate(renewal.submittedAt), state: "Complete", tone: "done" },
+    {
+      title: "Administrator review",
+      meta: state === "pending" ? "Your documents and information are being checked." : state === "approved" ? "The review of your information and documents is complete." : "The administrator has completed the review.",
+      state: state === "pending" ? "Current" : "Complete",
+      tone: state === "pending" ? "current" : "done"
+    },
+    {
+      title: "Administrator decision",
+      meta: state === "pending" ? "The request will be marked Approved or Rejected." : state === "approved" ? "Your renewal request was approved on " + decisionDate + "." : "Your renewal request was rejected on " + decisionDate + ". See the administrator notes.",
+      state: state === "pending" ? "Upcoming" : state === "approved" ? "Approved" : "Rejected",
+      tone: state === "pending" ? "upcoming" : state === "approved" ? "done" : "rejected"
+    }
+  ];
+
+  document.getElementById("progress").innerHTML = progress.map((item) =>
+    '<div class="progress-item">' +
+      '<span class="dot dot--' + (item.tone === "done" ? "green" : item.tone === "current" ? "primary" : item.tone === "rejected" ? "rose" : "muted") + '">' + (item.tone === "done" ? PTui.icon("check", 14) : item.tone === "rejected" ? PTui.icon("x", 14) : "") + '</span>' +
+      '<div class="progress-item__body"><div class="progress-item__title">' + item.title + '</div>' +
+      '<div class="progress-item__meta">' + item.meta + '</div></div>' +
+      '<span class="progress-item__state is-' + item.tone + '">' + item.state + '</span>' +
+    '</div>'
+  ).join("");
+
+  if (state === "pending") {
+    document.getElementById("note").innerHTML = '<strong>What should I do now?</strong><p>No further action is required unless the administrator contacts you for clarification or additional information.</p>';
+  } else if (state === "approved") {
+    document.getElementById("note").innerHTML = '<strong>What should I do now?</strong><p>Your renewal request is approved. Please follow the appointment instructions and bring your original documents.</p>';
+    document.getElementById("approved-panel").innerHTML =
+      '<div class="appointment-box">' +
+        '<h3>Confirmed appointment</h3>' +
+        '<dl class="appointment-grid">' +
+          '<div><dt>Branch</dt><dd>' + (draft.branch || "Quezon City Consular Office") + '</dd></div>' +
+          '<div><dt>Date &amp; time</dt><dd>' + PTui.fmtDate(draft.date) + ' · ' + (draft.time || "10:30 AM") + '</dd></div>' +
+        '</dl>' +
+      '</div>';
+    document.getElementById("actions").innerHTML =
+      '<button class="btn btn--outline" type="button" onclick="window.print()">' + PTui.icon("printer", 15) + ' Print appointment slip</button>' +
+      '<a class="btn btn--ghost" href="dashboard.html">Back to dashboard</a>';
+  } else if (state === "rejected") {
+    document.getElementById("note").innerHTML = '<strong>Administrator notes</strong><p>' + (renewal.notes || "The uploaded ID image is unclear. Please provide a clearer copy and contact Passport Services.") + '</p>';
+    document.getElementById("actions").innerHTML =
+      '<a class="btn btn--primary" href="renewal-1.html">Start a new request</a>' +
+      '<a class="btn btn--ghost" href="inquiries.html?new=1">Contact support</a>';
+  }
+
+  document.getElementById("what-next").innerHTML = NEXT[state].map((line, i) => "<li>" + (i + 1) + ". " + line + "</li>").join("");
+
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(PT.application.id, "Application ID copied"));
+})();
+</script>
+</body>
+</html>

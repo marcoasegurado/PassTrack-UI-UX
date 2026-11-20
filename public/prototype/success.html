@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Application Received — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="success" class="page--auth">
+<div data-chrome-header></div>
+
+<main class="auth-main auth-main--success">
+  <div class="success-card">
+    <div class="success-card__head">
+      <span class="success-mark" data-icon="check" data-size="24"></span>
+      <div>
+        <h1 class="success-card__title">Application Received</h1>
+        <p class="success-card__sub">We’ve received your application.</p>
+      </div>
+    </div>
+
+    <div class="success-card__body">
+      <div class="cred-block">
+        <div class="cred-block__label">Your Application ID</div>
+        <div class="cred-block__value" id="cred-id">PS-12345</div>
+        <button class="btn btn--primary btn-copy" type="button" id="copy-id">Copy</button>
+      </div>
+
+      <div class="cred-block">
+        <div class="cred-block__label">Your Temporary Password</div>
+        <div class="cred-block__value" id="cred-password">Pw-8Kq27xM</div>
+        <button class="btn btn--primary btn-copy" type="button" id="copy-password">Copy</button>
+      </div>
+
+      <div class="success-note">
+        Save your Application ID and password. You’ll need both to log in and track your application.
+      </div>
+
+      <div class="success-card__foot">
+        <a class="btn btn--primary btn--block" id="go-login" href="login.html">Go to Login</a>
+        <a class="success-card__link" href="#" id="download-details">Download or email my login details</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const result = (PT.registration && PT.registration.result) || { appId: PT.DEMO_ID, password: PT.DEMO_PASSWORD };
+  document.getElementById("cred-id").textContent = result.appId;
+  document.getElementById("cred-password").textContent = result.password;
+  document.getElementById("go-login").href = "login.html?id=" + encodeURIComponent(result.appId) + "&pw=" + encodeURIComponent(result.password);
+
+  document.getElementById("copy-id").addEventListener("click", () => PTui.copyText(result.appId, "Application ID copied"));
+  document.getElementById("copy-password").addEventListener("click", () => PTui.copyText(result.password, "Temporary password copied"));
+
+  document.getElementById("download-details").addEventListener("click", function (event) {
+    event.preventDefault();
+    const text = [
+      "PASSTRACK — Passport Application & Tracking System",
+      "",
+      "Application ID: " + result.appId,
+      "Temporary password: " + result.password,
+      "",
+      "Log in at: " + location.origin + location.pathname.replace(/success\.html$/, "login.html")
+    ].join("\n");
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+    link.download = "passtrack-login-details.txt";
+    link.click();
+    URL.revokeObjectURL(link.href);
+    PTui.toast("Login details downloaded");
+  });
+})();
+</script>
+</body>
+</html>

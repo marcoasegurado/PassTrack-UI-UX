@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Renewal Request Submitted — PASSTRACK</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body data-page="renewal-submitted">
+<div data-chrome-header></div>
+
+<main class="page-body renewal-page">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="dashboard.html">Dashboard</a>
+    <span data-icon="chevron-right" data-size="12"></span>
+    <span>Passport Renewal</span>
+  </nav>
+
+  <div class="intro">
+    <div>
+      <h1 class="intro__title">Renewal Request Submitted</h1>
+      <p class="intro__desc">Your renewal request has been sent to the administrator.</p>
+    </div>
+    <span class="app-chip"><span>Application ID</span> <strong data-app-id>PS-12345</strong>
+      <button type="button" data-copy-app aria-label="Copy application ID" data-icon="copy" data-size="14"></button>
+    </span>
+  </div>
+
+  <div class="submit-shell">
+    <section class="card submit-card">
+      <div class="success-card__head">
+        <span class="success-mark" data-icon="check" data-size="24"></span>
+        <div>
+          <h2 class="success-card__title">Renewal Request Submitted</h2>
+          <p class="success-card__sub">Your passport renewal request has been received.</p>
+        </div>
+      </div>
+      <div class="submit-card__body">
+        <div class="submit-ref">
+          <div class="submit-ref__label">Renewal reference number</div>
+          <div class="submit-ref__value" id="ref-number">RN-2026-0001</div>
+          <div class="submit-ref__status" id="ref-status">Status: Pending administrator review</div>
+        </div>
+
+        <p class="submit-card__copy">
+          The administrator will review your submitted information and documents, then approve or reject the renewal request. You can check the decision on the Renewal Status page.
+        </p>
+
+        <div class="submit-card__buttons">
+          <a class="btn btn--primary" href="renewal-status.html?state=pending">View Renewal Status</a>
+          <a class="btn btn--outline" href="dashboard.html">Back to Dashboard</a>
+        </div>
+
+        <p class="submit-card__note">Please keep your renewal reference number for future inquiries.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div data-chrome-footer></div>
+
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chrome.js"></script>
+<script>
+(function () {
+  const renewal = PT.renewal;
+  document.getElementById("ref-number").textContent = renewal.ref || "RN-2026-0001";
+  document.getElementById("ref-status").textContent = "Status: " + (renewal.status === "pending" ? "Pending administrator review" : renewal.status === "approved" ? "Approved" : "Rejected");
+  document.querySelector("[data-copy-app]").addEventListener("click", () => PTui.copyText(PT.application.id, "Application ID copied"));
+})();
+</script>
+</body>
+</html>
