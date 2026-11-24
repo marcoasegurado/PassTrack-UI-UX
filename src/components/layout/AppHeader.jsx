@@ -66,7 +66,7 @@ export function AppHeader({
         className,
       )}
     >
-      <div className="pointer-events-none absolute left-[500px] top-0 hidden h-[106px] w-[620px] overflow-hidden [mask-image:linear-gradient(90deg,transparent_0%,#000_20%,#000_78%,transparent_100%)] lg:block">
+      <div className="pointer-events-none absolute top-0 hidden h-[106px] overflow-hidden [mask-image:linear-gradient(90deg,transparent_0%,#000_20%,#000_78%,transparent_100%)] lg:block lg:left-[300px] lg:w-[420px] xl:left-[500px] xl:w-[620px]">
         <img
           src="/assets/plane.jpeg"
           alt=""

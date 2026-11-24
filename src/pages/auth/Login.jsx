@@ -207,6 +207,7 @@ export function Login() {
                   type="button"
                   onClick={() => setShowPassword((value) => !value)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
                   className="absolute right-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-muted hover:bg-tint hover:text-brand"
                 >
                   <Icon name={showPassword ? "eye-off" : "eye"} size={19} />
@@ -311,6 +312,7 @@ export function Login() {
                       aria-label={
                         showSavedPassword ? "Hide saved password" : "Show saved password"
                       }
+                      aria-pressed={showSavedPassword}
                       className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-control border border-line bg-white text-muted hover:border-brand hover:text-brand"
                     >
                       <Icon name={showSavedPassword ? "eye-off" : "eye"} size={15} />

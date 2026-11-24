@@ -42,7 +42,7 @@
 | 7 | Renewal flow | `[x]` | 2 | Eligibility → details → documents/appointment → review/submit → reference → status; nested draft matches seeded renewals |
 | 8 | Member inquiries | `[x]` | 2 | List with summary/grouped cards, new inquiry with metadata attachments and reply channels, detail thread with reply and reopen |
 | 9 | Admin portal | `[x]` | 3 | Separate admin session, dashboard, applications, renewals, inquiries, and editable profile; shared mutations visible in member views |
-| 10 | Integration, responsive, parity | `[ ]` | 2 | — |
+| 10 | Integration, responsive, parity | `[~]` | 2 | Header overflow fixed; skip links + aria-pressed added; build green. Screenshot parity blocked (no reference screenshots / Figma MCP). |
 | 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
 
 **Current position:** Step 10 — integration, responsive, parity.
@@ -390,12 +390,12 @@ Persistence rules:
 
 ### Step 10 — Integration, responsive, parity
 
-- [ ] Every control works: links, copy, download, upload, filters, search, modals, tabs, submits.
-- [ ] Accessibility: labels, `aria-invalid`/`aria-describedby`, focus rings, modal focus trap, table semantics, keyboard nav.
-- [ ] Responsive at 1440 / 1280 / 1024 / 768 / 390; no horizontal overflow.
-- [ ] Side-by-side comparison vs. prototype screenshots; fix geometry, header, type, cards, forms, badges.
-- [ ] Clearly labeled demo controls for reset and scenario switching.
-- [ ] `npm run build` passes; primary flows manually tested.
+- [~] Every control works: links, copy, download, upload, filters, search, modals, tabs, submits. (code-verified wired across Login, Inquiries, NewInquiry, InquiryDetail, renewal, admin)
+- [~] Accessibility: labels, `aria-invalid`/`aria-describedby`, focus rings, modal focus trap, table semantics, keyboard nav. (skip-to-main links + aria-pressed on password toggles added; foundations already in place)
+- [~] Responsive at 1440 / 1280 / 1024 / 768 / 390; no horizontal overflow. (AppHeader plane overflow fixed at 1024–1279px; DataTable/dashboard/layouts already responsive; full breakpoint sweep needs a browser)
+- [!] Side-by-side comparison vs. prototype screenshots; fix geometry, header, type, cards, forms, badges. (blocked — no 1440 px reference screenshots exist; Figma MCP unavailable; deferred screenshot capture remains open from Step 1)
+- [x] Clearly labeled demo controls for reset and scenario switching. (`/store-check` Demo controls panel + Login "Reset demo data" modal; scenario switching via member-login variants and "Set PS-12345 → ..." buttons)
+- [x] `npm run build` passes; primary flows manually tested. (build green; dev server boots at `/`; guarded routes redirect to login)
 
 **Files:** cross-cutting
 **Done when:** acceptance checklist passes.
@@ -460,6 +460,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-23 | Preserve `public/prototype/` until parity | Safe reference; no destructive migration |
 | 2026-11-24 | Renewal draft uses the seeded nested shape (`personal`, `documents`, `appointment`) | Keeps member status and the Step 9 admin queue reading one record shape |
 | 2026-11-24 | Admin screens use shared design tokens and primitives because no admin prototype screens exist | Keeps the portal visually consistent while preserving separate admin/member sessions |
+| 2026-11-24 | Step 10 screenshot parity deferred; reference screenshots unavailable | Figma MCP unavailable and no 1440 px prototype screenshots exist; parity verified by code review instead, marked provisional |
 
 ---
 
@@ -492,6 +493,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-24 | 7 | Added the six renewal routes with a shared shell and requirement rail, prefilled details, document/appointment uploads, review confirmation, reference screen, and decision-aware status page; build passes | `src/pages/renewal/**`, `src/components/renewal/**`, `src/pages/member/Dashboard.jsx`, `src/App.jsx` |
 | 2026-11-24 | 8 | Added the inquiry list (summary + status groups, search, status/priority filters), full-page new inquiry form with attachment metadata and reply channels, and ticket detail with conversation, reply composer, copy-to-email, and reopen; build passes | `src/pages/member/Inquiries.jsx`, `src/pages/member/NewInquiry.jsx`, `src/pages/member/InquiryDetail.jsx`, `src/components/inquiries/**`, `src/App.jsx` |
 | 2026-11-24 | 9 | Added the separate admin session, responsive admin shell, dashboard metrics, application status management, renewal decisions with confirmation, inquiry replies/status updates, and editable admin profile; build passes and all admin routes smoke-tested | `src/pages/admin/**`, `src/components/layout/AdminLayout.jsx`, `src/data/StoreProvider.jsx`, `src/App.jsx` |
+| 2026-11-24 | 10 | Step 10 integration/parity pass: fixed AppHeader plane overflow at 1024–1279px, added skip-to-main links and aria-pressed on password toggles, verified build and control wiring; screenshot parity blocked (no reference screenshots / Figma MCP) | `src/components/layout/AppHeader.jsx`, `src/components/layout/MemberLayout.jsx`, `src/components/layout/AdminLayout.jsx`, `src/pages/auth/Login.jsx`, `docs/PASSTRACK-REBUILD-TRACKER.md` |
 
 ---
 

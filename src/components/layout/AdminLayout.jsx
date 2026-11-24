@@ -21,6 +21,12 @@ export function AdminLayout({ title = "Admin Dashboard", description, actions, c
 
   return (
     <div className="flex min-h-screen flex-col">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand focus:text-white focus:rounded-control focus:font-semibold"
+      >
+        Skip to main content
+      </a>
       <AppHeader
         context="Admin Portal"
         homeTo="/admin/dashboard"
@@ -37,7 +43,7 @@ export function AdminLayout({ title = "Admin Dashboard", description, actions, c
           onClose={() => setSidebarOpen(false)}
           onLogout={handleLogout}
         />
-        <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <main id="main-content" className="min-w-0 flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
           <div className="mx-auto w-full max-w-[1400px]">
             <header className="mb-6 flex flex-wrap items-start justify-between gap-4">
               <div>
