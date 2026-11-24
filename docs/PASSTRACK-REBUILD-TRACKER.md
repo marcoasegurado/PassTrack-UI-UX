@@ -40,12 +40,12 @@
 | 5 | Auth, Terms, registration | `[x]` | 2 | Login, 3-step registration, Terms, success credentials, saved sign-in recovery; interim member dashboard closes the loop |
 | 6 | Member dashboard, tracking, profile | `[x]` | 1.5 | Four dashboard cards, six-stage tracker with Processing / For Delivery / Rejected variants, compact profile; one shared progress selector |
 | 7 | Renewal flow | `[x]` | 2 | Eligibility → details → documents/appointment → review/submit → reference → status; nested draft matches seeded renewals |
-| 8 | Member inquiries | `[ ]` | 2 | — |
+| 8 | Member inquiries | `[x]` | 2 | List with summary/grouped cards, new inquiry with metadata attachments and reply channels, detail thread with reply and reopen |
 | 9 | Admin portal | `[ ]` | 3 | Highest risk — no prototype screens |
 | 10 | Integration, responsive, parity | `[ ]` | 2 | — |
 | 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
 
-**Current position:** Step 8 — member inquiries.
+**Current position:** Step 9 — admin portal.
 
 ---
 
@@ -362,13 +362,13 @@ Persistence rules:
 
 ### Step 8 — Member inquiries
 
-- [ ] `/inquiries` — summary cards, grouped cards, search, status/priority filters, Start New Inquiry.
-- [ ] `/inquiries/new` — application context, deduplicated categories, required subject/message, multi-attachment metadata, reply channels, guidance; creates ticket and routes to detail.
-- [ ] `/inquiries/:ticketId` — metadata, timeline, attachments, reply, optional copy-to-email, resolved→reopen.
-- [ ] Verify new ticket appears in list and replies update timestamp/status everywhere.
+- [x] `/inquiries` — summary cards, grouped cards, search, status/priority filters, Start New Inquiry.
+- [x] `/inquiries/new` — application context, deduplicated categories, required subject/message, multi-attachment metadata, reply channels, guidance; creates ticket and routes to detail.
+- [x] `/inquiries/:ticketId` — metadata, timeline, attachments, reply, optional copy-to-email, resolved→reopen.
+- [x] Verify new ticket appears in list and replies update timestamp/status everywhere.
 
 **Files:** `src/pages/member/Inquiries*`, `src/components/inquiries/**`
-**Done when:** create → detail → reply → reopen works end to end.
+**Done when:** create → detail → reply → reopen works end to end. *(seeded Open / Awaiting / Resolved tickets cover the list states; the admin reply side lands in Step 9)*
 
 ---
 
@@ -425,9 +425,9 @@ Update the **Status** column as each route is migrated.
 | `/register/success` | Application received | `success.html` | Migrated |
 | `/dashboard` | Member dashboard | `dashboard.html` | Migrated |
 | `/application/status` | Application tracking | `status.html` | Migrated |
-| `/inquiries` | Inquiry overview | `inquiries.html` | Not migrated |
-| `/inquiries/new` | New inquiry | `inquiries.html?new=1` | Not migrated |
-| `/inquiries/:ticketId` | Inquiry detail | `inquiry.html` | Not migrated |
+| `/inquiries` | Inquiry overview | `inquiries.html` | Migrated |
+| `/inquiries/new` | New inquiry | `inquiries.html?new=1` | Migrated (full page instead of drawer) |
+| `/inquiries/:ticketId` | Inquiry detail | `inquiry.html` | Migrated |
 | `/renewal/eligibility` | Renewal step 1 | `renewal-1.html` | Migrated |
 | `/renewal/personal-details` | Renewal step 2 | `renewal-2.html` | Migrated |
 | `/renewal/documents-appointment` | Renewal step 3 | `renewal-3.html` | Migrated |
@@ -472,7 +472,7 @@ Update the **Status** column as each route is migrated.
 | 4 | No member profile design | Could be over-built | Compact view from registration data only |
 | 5 | `BrowserRouter` needs static fallback | Broken deep links on plain static hosting | Document rewrite or switch to `HashRouter` if needed |
 | 6 | Prototype uses one seeded app for all states | Demo cannot show all statuses at once | Seed separate applications for Processing / For Delivery / Rejected |
-| 7 | Steps 6–7 CTAs target routes delivered later | `/inquiries` and `/inquiries/new` show `NotFound` until Step 8 lands | Expected; do not ship before Step 8 is complete |
+| 7 | Steps 6–7 CTAs target routes delivered later | `/inquiries` and `/inquiries/new` showed `NotFound` before Step 8 | Resolved in Step 8 |
 
 ---
 
@@ -489,6 +489,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-24 | Handoff | Added `docs/DEEPSEEK-HANDOFF.md` to preserve the stopped-session state, implementation inventory, known gaps, and next verification actions | `docs/DEEPSEEK-HANDOFF.md` |
 | 2026-11-24 | 6 | Rebuilt the member dashboard as four prototype cards; added the six-stage application tracker, compact profile, shared progress selector, native progress bar, and guarded routes; build passes | `src/pages/member/Dashboard.jsx`, `src/pages/member/ApplicationStatus.jsx`, `src/pages/member/Profile.jsx`, `src/components/application/**`, `src/lib/applicationProgress.js`, `src/components/application/StageProgress.jsx`, `src/components/layout/MemberLayout.jsx`, `src/styles/index.css`, `src/App.jsx` |
 | 2026-11-24 | 7 | Added the six renewal routes with a shared shell and requirement rail, prefilled details, document/appointment uploads, review confirmation, reference screen, and decision-aware status page; build passes | `src/pages/renewal/**`, `src/components/renewal/**`, `src/pages/member/Dashboard.jsx`, `src/App.jsx` |
+| 2026-11-24 | 8 | Added the inquiry list (summary + status groups, search, status/priority filters), full-page new inquiry form with attachment metadata and reply channels, and ticket detail with conversation, reply composer, copy-to-email, and reopen; build passes | `src/pages/member/Inquiries.jsx`, `src/pages/member/NewInquiry.jsx`, `src/pages/member/InquiryDetail.jsx`, `src/components/inquiries/**`, `src/App.jsx` |
 
 ---
 

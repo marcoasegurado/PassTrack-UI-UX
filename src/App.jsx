@@ -15,6 +15,9 @@ import { RegisterSuccess } from "./pages/auth/RegisterSuccess";
 import { Dashboard } from "./pages/member/Dashboard";
 import { ApplicationStatus } from "./pages/member/ApplicationStatus";
 import { Profile } from "./pages/member/Profile";
+import { Inquiries } from "./pages/member/Inquiries";
+import { NewInquiry } from "./pages/member/NewInquiry";
+import { InquiryDetail } from "./pages/member/InquiryDetail";
 import { RenewalEligibility } from "./pages/renewal/Eligibility";
 import { RenewalPersonalDetails } from "./pages/renewal/PersonalDetails";
 import { RenewalDocumentsAppointment } from "./pages/renewal/DocumentsAppointment";
@@ -75,6 +78,31 @@ export default function App() {
               element={
                 <MemberOnly>
                   <Profile />
+                </MemberOnly>
+              }
+            />
+
+            <Route
+              path="/inquiries"
+              element={
+                <MemberOnly>
+                  <Inquiries />
+                </MemberOnly>
+              }
+            />
+            <Route
+              path="/inquiries/new"
+              element={
+                <MemberOnly>
+                  <NewInquiry />
+                </MemberOnly>
+              }
+            />
+            <Route
+              path="/inquiries/:ticketId"
+              element={
+                <MemberOnly>
+                  <InquiryDetail />
                 </MemberOnly>
               }
             />

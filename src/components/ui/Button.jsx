@@ -23,7 +23,7 @@ const SIZES = {
 
 export function buttonClasses({ variant = "primary", size = "md", block = false, className } = {}) {
   return cn(
-    "inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn border border-transparent font-semibold leading-none whitespace-nowrap transition-colors disabled:cursor-not-allowed disabled:border-[#dbe7fb] disabled:bg-[#dbe7fb] disabled:text-[#3f74dd] disabled:shadow-none",
+    "inline-flex cursor-pointer items-center justify-center gap-2 rounded-btn border font-semibold leading-none whitespace-nowrap transition-colors disabled:cursor-not-allowed disabled:border-[#dbe7fb] disabled:bg-[#dbe7fb] disabled:text-[#3f74dd] disabled:shadow-none",
     VARIANTS[variant] || VARIANTS.primary,
     SIZES[size] || SIZES.md,
     block && "w-full",
