@@ -10,6 +10,7 @@ import {
   APPLICATION_STATUS,
   APPLICATION_STATUS_LABELS,
   INQUIRY_STATUS,
+  RENEWAL_STATUS,
 } from "../../lib/constants";
 import { getApplicationProgress, getTimelineSteps } from "../../lib/applicationProgress";
 import { formatDate, formatRelative } from "../../lib/format";
@@ -117,13 +118,21 @@ export function Dashboard() {
 
   const expiry = member?.passport?.expiry;
   const renewalState =
-    latestRenewal?.status === "PENDING"
+    latestRenewal?.status === RENEWAL_STATUS.PENDING
       ? "Renewal request under review"
-      : latestRenewal?.status === "APPROVED"
+      : latestRenewal?.status === RENEWAL_STATUS.APPROVED
         ? "Renewal approved"
-        : latestRenewal?.status === "REJECTED"
+        : latestRenewal?.status === RENEWAL_STATUS.REJECTED
           ? "Renewal needs attention"
           : "Renewal queue open";
+  const renewalTitle =
+    latestRenewal?.status === RENEWAL_STATUS.PENDING
+      ? "Renewal in progress"
+      : latestRenewal?.status === RENEWAL_STATUS.APPROVED
+        ? "Renewal approved"
+        : latestRenewal?.status === RENEWAL_STATUS.REJECTED
+          ? "Renewal needs attention"
+          : "Current Passport Expiring";
 
   return (
     <MemberLayout
@@ -275,7 +284,7 @@ export function Dashboard() {
           <Card>
             <Eyebrow>Passport Renewal</Eyebrow>
             <strong className="mt-2 text-2xl font-bold leading-tight text-ink">
-              {latestRenewal ? "Renewal in progress" : "Current Passport Expiring"}
+              {renewalTitle}
             </strong>
             <p className="mt-1 text-sm leading-relaxed text-slate-body">
               {expiry

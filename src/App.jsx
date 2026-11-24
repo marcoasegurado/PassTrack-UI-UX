@@ -15,6 +15,12 @@ import { RegisterSuccess } from "./pages/auth/RegisterSuccess";
 import { Dashboard } from "./pages/member/Dashboard";
 import { ApplicationStatus } from "./pages/member/ApplicationStatus";
 import { Profile } from "./pages/member/Profile";
+import { RenewalEligibility } from "./pages/renewal/Eligibility";
+import { RenewalPersonalDetails } from "./pages/renewal/PersonalDetails";
+import { RenewalDocumentsAppointment } from "./pages/renewal/DocumentsAppointment";
+import { RenewalReview } from "./pages/renewal/Review";
+import { RenewalSubmitted } from "./pages/renewal/Submitted";
+import { RenewalStatus } from "./pages/renewal/Status";
 
 function MemberOnly({ children }) {
   const { isMemberLoggedIn } = useStore();
@@ -69,6 +75,59 @@ export default function App() {
               element={
                 <MemberOnly>
                   <Profile />
+                </MemberOnly>
+              }
+            />
+
+            <Route
+              path="/renewal"
+              element={<Navigate to="/renewal/eligibility" replace />}
+            />
+            <Route
+              path="/renewal/eligibility"
+              element={
+                <MemberOnly>
+                  <RenewalEligibility />
+                </MemberOnly>
+              }
+            />
+            <Route
+              path="/renewal/personal-details"
+              element={
+                <MemberOnly>
+                  <RenewalPersonalDetails />
+                </MemberOnly>
+              }
+            />
+            <Route
+              path="/renewal/documents-appointment"
+              element={
+                <MemberOnly>
+                  <RenewalDocumentsAppointment />
+                </MemberOnly>
+              }
+            />
+            <Route
+              path="/renewal/review"
+              element={
+                <MemberOnly>
+                  <RenewalReview />
+                </MemberOnly>
+              }
+            />
+            <Route
+              path="/renewal/submitted"
+              element={
+                <MemberOnly>
+                  <RenewalSubmitted />
+                </MemberOnly>
+              }
+            />
+            <Route
+              path="/renewal/status"
+              element={
+                <MemberOnly>
+                  <RenewalStatus />
                 </MemberOnly>
               }
             />

@@ -39,13 +39,13 @@
 | 4 | Mock store + seed data + helpers | `[x]` | 1 | `/store-check` verifies sessions, shared status updates, renewal decisions, inquiries, reset |
 | 5 | Auth, Terms, registration | `[x]` | 2 | Login, 3-step registration, Terms, success credentials, saved sign-in recovery; interim member dashboard closes the loop |
 | 6 | Member dashboard, tracking, profile | `[x]` | 1.5 | Four dashboard cards, six-stage tracker with Processing / For Delivery / Rejected variants, compact profile; one shared progress selector |
-| 7 | Renewal flow | `[ ]` | 2 | — |
+| 7 | Renewal flow | `[x]` | 2 | Eligibility → details → documents/appointment → review/submit → reference → status; nested draft matches seeded renewals |
 | 8 | Member inquiries | `[ ]` | 2 | — |
 | 9 | Admin portal | `[ ]` | 3 | Highest risk — no prototype screens |
 | 10 | Integration, responsive, parity | `[ ]` | 2 | — |
 | 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
 
-**Current position:** Step 7 — renewal flow.
+**Current position:** Step 8 — member inquiries.
 
 ---
 
@@ -348,15 +348,15 @@ Persistence rules:
 
 ### Step 7 — Renewal flow
 
-- [ ] `/renewal/eligibility` — passport number, expiry, reason, processing cards (₱950 / ₱1,200), six-month and lost/damaged callout.
-- [ ] `/renewal/personal-details` — prefilled, editable, draft preserved on Back/Next.
-- [ ] `/renewal/documents-appointment` — required + optional uploads, branch/date/time, 15-minute reminder.
-- [ ] `/renewal/review` — summaries, confirmation checkbox, Back/Submit.
-- [ ] `/renewal/submitted` — `RN-YYYY-####`, pending message, links.
-- [ ] `/renewal/status` — Pending / Approved / Rejected from shared record with notes and appointment guidance.
+- [x] `/renewal/eligibility` — passport number, expiry, reason, processing cards (₱950 / ₱1,200), six-month and lost/damaged callout.
+- [x] `/renewal/personal-details` — prefilled, editable, draft preserved on Back/Next.
+- [x] `/renewal/documents-appointment` — required + optional uploads, branch/date/time, 15-minute reminder.
+- [x] `/renewal/review` — summaries, confirmation checkbox, Back/Submit.
+- [x] `/renewal/submitted` — `RN-YYYY-####`, pending message, links.
+- [x] `/renewal/status` — Pending / Approved / Rejected from shared record with notes and appointment guidance.
 
 **Files:** `src/pages/renewal/**`, `src/components/renewal/**`
-**Done when:** renewal survives Back/Next, submits once, and reflects an admin decision without extra state.
+**Done when:** renewal survives Back/Next, submits once, and reflects an admin decision without extra state. *(seeded Approved / Rejected renewals exercise the decision states; the admin decision write lands in Step 9)*
 
 ---
 
@@ -428,12 +428,12 @@ Update the **Status** column as each route is migrated.
 | `/inquiries` | Inquiry overview | `inquiries.html` | Not migrated |
 | `/inquiries/new` | New inquiry | `inquiries.html?new=1` | Not migrated |
 | `/inquiries/:ticketId` | Inquiry detail | `inquiry.html` | Not migrated |
-| `/renewal/eligibility` | Renewal step 1 | `renewal-1.html` | Not migrated |
-| `/renewal/personal-details` | Renewal step 2 | `renewal-2.html` | Not migrated |
-| `/renewal/documents-appointment` | Renewal step 3 | `renewal-3.html` | Not migrated |
-| `/renewal/review` | Renewal step 4 | `renewal-4.html` | Not migrated |
-| `/renewal/submitted` | Renewal confirmation | `renewal-submitted.html` | Not migrated |
-| `/renewal/status` | Renewal status | `renewal-status.html` | Not migrated |
+| `/renewal/eligibility` | Renewal step 1 | `renewal-1.html` | Migrated |
+| `/renewal/personal-details` | Renewal step 2 | `renewal-2.html` | Migrated |
+| `/renewal/documents-appointment` | Renewal step 3 | `renewal-3.html` | Migrated |
+| `/renewal/review` | Renewal step 4 | `renewal-4.html` | Migrated |
+| `/renewal/submitted` | Renewal confirmation | `renewal-submitted.html` | Migrated |
+| `/renewal/status` | Renewal status | `renewal-status.html` | Migrated |
 | `/profile` | Member profile | Header drawer only | Migrated |
 | `/admin/login` | Admin login | None | Not started |
 | `/admin/dashboard` | Admin dashboard | None | Not started |
@@ -458,6 +458,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-23 | Derive progress from status, not hardcoded percentages | Avoids contradictory Figma sample values |
 | 2026-11-23 | Compute admin metrics from seed records | Keeps demo internally consistent |
 | 2026-11-23 | Preserve `public/prototype/` until parity | Safe reference; no destructive migration |
+| 2026-11-24 | Renewal draft uses the seeded nested shape (`personal`, `documents`, `appointment`) | Keeps member status and the Step 9 admin queue reading one record shape |
 
 ---
 
@@ -471,7 +472,7 @@ Update the **Status** column as each route is migrated.
 | 4 | No member profile design | Could be over-built | Compact view from registration data only |
 | 5 | `BrowserRouter` needs static fallback | Broken deep links on plain static hosting | Document rewrite or switch to `HashRouter` if needed |
 | 6 | Prototype uses one seeded app for all states | Demo cannot show all statuses at once | Seed separate applications for Processing / For Delivery / Rejected |
-| 7 | Step 6 CTAs target routes delivered later | `/inquiries`, `/renewal/*` show `NotFound` until Steps 7–8 land | Expected; do not ship before those steps are complete |
+| 7 | Steps 6–7 CTAs target routes delivered later | `/inquiries` and `/inquiries/new` show `NotFound` until Step 8 lands | Expected; do not ship before Step 8 is complete |
 
 ---
 
@@ -487,6 +488,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-24 | 5 | Added login with error/help states, 3-step registration, Terms, success credentials with saved recovery, route integration, and an interim dashboard target; build passes | `src/pages/auth/**`, `src/pages/member/Dashboard.jsx`, `src/components/layout/AuthShell.jsx`, `src/components/layout/MemberLayout.jsx`, `src/components/ui/Field.jsx`, `src/components/ui/Icon.jsx`, `src/components/layout/Footer.jsx`, `src/lib/usePageTitle.js`, `src/App.jsx` |
 | 2026-11-24 | Handoff | Added `docs/DEEPSEEK-HANDOFF.md` to preserve the stopped-session state, implementation inventory, known gaps, and next verification actions | `docs/DEEPSEEK-HANDOFF.md` |
 | 2026-11-24 | 6 | Rebuilt the member dashboard as four prototype cards; added the six-stage application tracker, compact profile, shared progress selector, native progress bar, and guarded routes; build passes | `src/pages/member/Dashboard.jsx`, `src/pages/member/ApplicationStatus.jsx`, `src/pages/member/Profile.jsx`, `src/components/application/**`, `src/lib/applicationProgress.js`, `src/components/application/StageProgress.jsx`, `src/components/layout/MemberLayout.jsx`, `src/styles/index.css`, `src/App.jsx` |
+| 2026-11-24 | 7 | Added the six renewal routes with a shared shell and requirement rail, prefilled details, document/appointment uploads, review confirmation, reference screen, and decision-aware status page; build passes | `src/pages/renewal/**`, `src/components/renewal/**`, `src/pages/member/Dashboard.jsx`, `src/App.jsx` |
 
 ---
 
