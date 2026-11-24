@@ -25,7 +25,7 @@ export function AdminApplications() {
   }), [search, state.applications, status]);
 
   const columns = [
-    { key: "id", header: "Application", render: (row) => <Link to={`/admin/applications/${row.id}`} className="font-mono font-bold text-brand hover:underline">{row.id}</Link> },
+    { key: "id", header: "Application", render: (row) => <Link to={`/admin/applications/${row.id}`} className="inline-flex min-h-6 items-center font-mono font-bold text-brand hover:underline">{row.id}</Link> },
     { key: "applicant", header: "Applicant", render: (row) => <span><strong className="block">{row.applicantName}</strong><span className="text-xs text-muted">{row.email}</span></span> },
     { key: "type", header: "Application type", render: (row) => <span>{row.applicationType}<br /><span className="text-xs text-muted">{row.processingType}</span></span> },
     { key: "submitted", header: "Submitted", render: (row) => formatDate(row.submittedAt) },

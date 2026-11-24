@@ -17,6 +17,8 @@ export function FileUploadField({
 }) {
   const autoId = useId();
   const fieldId = id || autoId;
+  const hintId = `${fieldId}-hint`;
+  const errorId = `${fieldId}-error`;
   const inputRef = useRef(null);
   const [dragging, setDragging] = useState(false);
 
@@ -75,6 +77,9 @@ export function FileUploadField({
           type="file"
           accept={accept}
           required={required && !value}
+          aria-label={label}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : hint ? hintId : undefined}
           className="sr-only"
           onChange={(event) => handleFile(event.target.files?.[0])}
         />
@@ -113,9 +118,9 @@ export function FileUploadField({
         )}
       </div>
 
-      {hint && !error && <p className="text-xs leading-snug text-muted">{hint}</p>}
+      {hint && !error && <p id={hintId} className="text-xs leading-snug text-muted">{hint}</p>}
       {error && (
-        <p role="alert" className="text-xs leading-snug text-danger">
+        <p id={errorId} role="alert" className="text-xs leading-snug text-danger">
           {error}
         </p>
       )}

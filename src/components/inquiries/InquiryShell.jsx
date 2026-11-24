@@ -26,7 +26,7 @@ export function InquiryShell({ title, description, actions, crumbs = DEFAULT_CRU
             <span key={`${crumb.label}-${index}`} className="flex items-center gap-1.5">
               {index > 0 && <Icon name="chevron-right" size={12} className="text-muted" />}
               {crumb.to ? (
-                <Link to={crumb.to} className="text-brand hover:underline">
+                <Link to={crumb.to} className="inline-flex min-h-6 items-center text-brand hover:underline">
                   {crumb.label}
                 </Link>
               ) : (

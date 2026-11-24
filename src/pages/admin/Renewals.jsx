@@ -21,7 +21,7 @@ export function AdminRenewals() {
     return !term || [renewal.ref, renewal.applicantName, renewal.applicationId].join(" ").toLowerCase().includes(term);
   }), [filter, search, state.renewals]);
   const columns = [
-    { key: "ref", header: "Reference", render: (row) => <Link to={`/admin/renewals/${row.ref}`} className="font-mono font-bold text-brand hover:underline">{row.ref}</Link> },
+    { key: "ref", header: "Reference", render: (row) => <Link to={`/admin/renewals/${row.ref}`} className="inline-flex min-h-6 items-center font-mono font-bold text-brand hover:underline">{row.ref}</Link> },
     { key: "applicant", header: "Applicant", render: (row) => <span><strong className="block">{row.applicantName}</strong><span className="text-xs text-muted">{row.applicationId}</span></span> },
     { key: "submitted", header: "Submitted", render: (row) => formatDate(row.submittedAt) },
     { key: "type", header: "Processing", render: (row) => row.draft?.processing || "—" },

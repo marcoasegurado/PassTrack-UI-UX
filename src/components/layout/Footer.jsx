@@ -10,7 +10,7 @@ export function Footer({ portal = false, bare = false, className }) {
     >
       <span>&copy; 2026 PASSTRACK Travel Agency. All rights reserved.</span>
       {!bare && (
-        <span className="ml-auto text-[11px] text-[#8b9ab5]">
+        <span className="ml-auto text-[11px] text-muted">
           {portal ? "Frontend demo · local mock data" : "Frontend demo · no real submissions"}
         </span>
       )}

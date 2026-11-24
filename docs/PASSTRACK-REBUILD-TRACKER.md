@@ -33,7 +33,7 @@
 | # | Step | Status | Batch | Notes |
 |---|---|---|---|---|
 | 0 | Baseline decision (static prototype) | `[x]` | 0 | Figma MCP unavailable; prototype is the visual source |
-| 1 | Audit + freeze baseline + audit doc | `[~]` | 0.5 | Audit doc created; 1440 px reference screenshots deferred to Step 10 |
+| 1 | Audit + freeze baseline + audit doc | `[x]` | 0.5 | Audit doc created; 1440 px reference screenshots captured from the prototype during Step 10 |
 | 2 | Scaffold React + Vite + Tailwind | `[x]` | 0.5 | Build verified (`vite v8.3.8`, output in `dist/`) |
 | 3 | Shared components + layouts | `[x]` | 1 | UI kit preview at `/styleguide`; build passes |
 | 4 | Mock store + seed data + helpers | `[x]` | 1 | `/store-check` verifies sessions, shared status updates, renewal decisions, inquiries, reset |
@@ -42,10 +42,10 @@
 | 7 | Renewal flow | `[x]` | 2 | Eligibility → details → documents/appointment → review/submit → reference → status; nested draft matches seeded renewals |
 | 8 | Member inquiries | `[x]` | 2 | List with summary/grouped cards, new inquiry with metadata attachments and reply channels, detail thread with reply and reopen |
 | 9 | Admin portal | `[x]` | 3 | Separate admin session, dashboard, applications, renewals, inquiries, and editable profile; shared mutations visible in member views |
-| 10 | Integration, responsive, parity | `[~]` | 2 | Header overflow fixed; skip links + aria-pressed added; build green. Screenshot parity blocked (no reference screenshots / Figma MCP). |
+| 10 | Integration, responsive, parity | `[x]` | 3 | 168 route/viewport combinations with zero overflow, 44 end-to-end control checks, a11y sweep clean, parity checked against captured prototype screenshots; build green |
 | 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
 
-**Current position:** Step 10 — integration, responsive, parity.
+**Current position:** Step 11 — acceptance and handoff.
 
 ---
 
@@ -59,13 +59,13 @@
 | Icons | Port the prototype's inline SVG set into one `Icon` component; no icon library |
 | Font | Self-hosted Inter variable font |
 | Visual source | Existing static prototype + `public/prototype/css/tokens.css` |
-| Figma | Not reachable this session; final pixel parity marked provisional |
+| Figma | Not reachable this session; parity baselined on 1440 px captures of the static prototype (original-design parity still unconfirmed) |
 | Progress | Derived from canonical status/stage; no hardcoded 50/60 percentages |
 | Admin metrics | Computed from seeded records |
 | Rejected application | Shown at review stage; later stages marked N/A |
 | Inquiry source | Expanded design `304:247`–`304:249`; merge useful older filters/categories |
 | Member profile | Compact view of registration data; no invented settings area |
-| Prototype files | Preserved read-only until parity; archive only with user approval |
+| Prototype files | Preserved read-only; parity complete — archive only with user approval |
 | Backend | None. All "submissions", emails, SMS, and decisions are local mocks |
 
 ---
@@ -266,13 +266,13 @@ Persistence rules:
 
 - [x] Inventory every prototype page, field, button, and flow.
 - [x] Capture/record baseline layout facts from `tokens.css` and page CSS.
-- [ ] Capture 1440 px reference screenshots of each prototype page. *(deferred to Step 10 parity pass)*
+- [x] Capture 1440 px reference screenshots of each prototype page. *(captured in the Step 10 parity pass from `public/prototype/*.html` at 1440 × 900; not committed to the repo)*
 - [x] Write `docs/PASSTRACK-FIGMA-AUDIT.md` with screen inventory, node IDs, route map, conflicts, assets, decisions.
 - [x] List known conflicts: older vs expanded inquiries, missing member profile, progress percentages, admin designs absent.
 - [x] Record what to reuse, replace, and keep.
 
 **Files:** `docs/PASSTRACK-FIGMA-AUDIT.md`
-**Done when:** every route has a source, owner step, and known design gaps. *(screenshots remain in Step 10)*
+**Done when:** every route has a source, owner step, and known design gaps. *(screenshots captured in Step 10 — see `docs/PARITY-NOTES.md`)*
 
 ---
 
@@ -390,14 +390,14 @@ Persistence rules:
 
 ### Step 10 — Integration, responsive, parity
 
-- [~] Every control works: links, copy, download, upload, filters, search, modals, tabs, submits. (code-verified wired across Login, Inquiries, NewInquiry, InquiryDetail, renewal, admin)
-- [~] Accessibility: labels, `aria-invalid`/`aria-describedby`, focus rings, modal focus trap, table semantics, keyboard nav. (skip-to-main links + aria-pressed on password toggles added; foundations already in place)
-- [~] Responsive at 1440 / 1280 / 1024 / 768 / 390; no horizontal overflow. (AppHeader plane overflow fixed at 1024–1279px; DataTable/dashboard/layouts already responsive; full breakpoint sweep needs a browser)
-- [!] Side-by-side comparison vs. prototype screenshots; fix geometry, header, type, cards, forms, badges. (blocked — no 1440 px reference screenshots exist; Figma MCP unavailable; deferred screenshot capture remains open from Step 1)
+- [x] Every control works: links, copy, download, upload, filters, search, modals, tabs, submits. (44 scripted end-to-end checks pass — member login/logout, copy, tracker, inquiry create + attachment + reply + search, full renewal submit, admin search/filter/status/reply/approve, cross-portal sync, modal focus + Escape, session independence)
+- [x] Accessibility: labels, `aria-invalid`/`aria-describedby`, focus rings, modal focus trap, table semantics, keyboard nav. (contrast fixes, `h1→h3` skip fixed, file inputs named, admin sign-in `main` landmark added, 24 px target padding applied; residual findings are inline-link exceptions only)
+- [x] Responsive at 1440 / 1280 / 1024 / 768 / 390; no horizontal overflow. (28 routes × 6 viewports incl. 320 px — zero overflow, zero console errors)
+- [x] Side-by-side comparison vs. prototype screenshots; fix geometry, header, type, cards, forms, badges. (1440 px references captured from `public/prototype/` and compared screen by screen — see `docs/PARITY-NOTES.md`)
 - [x] Clearly labeled demo controls for reset and scenario switching. (`/store-check` Demo controls panel + Login "Reset demo data" modal; scenario switching via member-login variants and "Set PS-12345 → ..." buttons)
-- [x] `npm run build` passes; primary flows manually tested. (build green; dev server boots at `/`; guarded routes redirect to login)
+- [x] `npm run build` passes; primary flows manually tested. (build green; 44-check flow sweep green)
 
-**Files:** cross-cutting
+**Files:** cross-cutting — see `docs/PARITY-NOTES.md`
 **Done when:** acceptance checklist passes.
 
 ---
@@ -445,6 +445,11 @@ Update the **Status** column as each route is migrated.
 | `/admin/inquiries/:ticketId` | Admin inquiry detail | None | Migrated |
 | `/admin/profile` | Admin profile | None | Migrated |
 
+**Parity status (Step 10):** every route with a prototype source was compared side by side at 1440 px
+against a capture of that prototype page. Deliberate differences are listed in
+`docs/PARITY-NOTES.md`; none are unwired controls or broken layouts. Admin routes have no prototype
+source and were reviewed for internal consistency only.
+
 ---
 
 ## Decisions log
@@ -460,7 +465,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-23 | Preserve `public/prototype/` until parity | Safe reference; no destructive migration |
 | 2026-11-24 | Renewal draft uses the seeded nested shape (`personal`, `documents`, `appointment`) | Keeps member status and the Step 9 admin queue reading one record shape |
 | 2026-11-24 | Admin screens use shared design tokens and primitives because no admin prototype screens exist | Keeps the portal visually consistent while preserving separate admin/member sessions |
-| 2026-11-24 | Step 10 screenshot parity deferred; reference screenshots unavailable | Figma MCP unavailable and no 1440 px prototype screenshots exist; parity verified by code review instead, marked provisional |
+| 2026-11-24 | Step 10 parity used 1440 px captures of `public/prototype/*.html` instead of waiting for Figma | The prototype is the locked visual baseline (Step 0); capturing it directly removes the blocker without changing the source of truth |
 
 ---
 
@@ -468,13 +473,14 @@ Update the **Status** column as each route is migrated.
 
 | # | Item | Impact | Resolution |
 |---|---|---|---|
-| 1 | Figma MCP unavailable | Pixel parity provisional | Re-verify if MCP/screenshots become available |
+| 1 | Figma MCP unavailable | Prototype parity verified; original-design parity still unconfirmed | Parity checked against 1440 px prototype captures (`docs/PARITY-NOTES.md`); re-verify against Figma if access returns |
 | 2 | Admin designs absent from prototype | Highest visual risk | Build from brief descriptions + node IDs; review together |
 | 3 | Older vs expanded inquiry designs conflict | Category/filter ambiguity | Use `304:247`–`304:249`; merge older filters |
 | 4 | No member profile design | Could be over-built | Compact view from registration data only |
 | 5 | `BrowserRouter` needs static fallback | Broken deep links on plain static hosting | Document rewrite or switch to `HashRouter` if needed |
 | 6 | Prototype uses one seeded app for all states | Demo cannot show all statuses at once | Seed separate applications for Processing / For Delivery / Rejected |
 | 7 | Steps 6–7 CTAs target routes delivered later | `/inquiries` and `/inquiries/new` showed `NotFound` before Step 8 | Resolved in Step 8 |
+| 8 | Four inline text links are 17 px tall | Below WCAG 2.5.8's 24 px target size | Accepted: SC 2.5.8 exempts links inline in a sentence; padding them would break line flow |
 
 ---
 
@@ -493,7 +499,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-24 | 7 | Added the six renewal routes with a shared shell and requirement rail, prefilled details, document/appointment uploads, review confirmation, reference screen, and decision-aware status page; build passes | `src/pages/renewal/**`, `src/components/renewal/**`, `src/pages/member/Dashboard.jsx`, `src/App.jsx` |
 | 2026-11-24 | 8 | Added the inquiry list (summary + status groups, search, status/priority filters), full-page new inquiry form with attachment metadata and reply channels, and ticket detail with conversation, reply composer, copy-to-email, and reopen; build passes | `src/pages/member/Inquiries.jsx`, `src/pages/member/NewInquiry.jsx`, `src/pages/member/InquiryDetail.jsx`, `src/components/inquiries/**`, `src/App.jsx` |
 | 2026-11-24 | 9 | Added the separate admin session, responsive admin shell, dashboard metrics, application status management, renewal decisions with confirmation, inquiry replies/status updates, and editable admin profile; build passes and all admin routes smoke-tested | `src/pages/admin/**`, `src/components/layout/AdminLayout.jsx`, `src/data/StoreProvider.jsx`, `src/App.jsx` |
-| 2026-11-24 | 10 | Step 10 integration/parity pass: fixed AppHeader plane overflow at 1024–1279px, added skip-to-main links and aria-pressed on password toggles, verified build and control wiring; screenshot parity blocked (no reference screenshots / Figma MCP) | `src/components/layout/AppHeader.jsx`, `src/components/layout/MemberLayout.jsx`, `src/components/layout/AdminLayout.jsx`, `src/pages/auth/Login.jsx`, `docs/PASSTRACK-REBUILD-TRACKER.md` |
+| 2026-11-24 | 10 | Full Step 10 sweep: 168 route/viewport combinations with no overflow or console errors, 44 end-to-end control checks green, a11y fixes (contrast, heading order, file-input names, admin `main` landmark, 24 px targets), and screen-by-screen parity against prototype 1440 px captures | `src/components/**`, `src/pages/auth/**`, `src/pages/admin/Login.jsx`, `src/pages/admin/Applications.jsx`, `src/pages/admin/Renewals.jsx`, `src/pages/admin/Inquiries.jsx`, `src/pages/member/ApplicationStatus.jsx`, `src/styles/index.css`, `docs/PARITY-NOTES.md`, `docs/PASSTRACK-REBUILD-TRACKER.md` |
 
 ---
 

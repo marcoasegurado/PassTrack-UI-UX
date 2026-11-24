@@ -140,7 +140,7 @@ export function ApplicationStatus() {
           </div>
 
           <p className="text-center text-xs text-muted">
-            <Link to="/dashboard">Back to dashboard</Link>
+            <Link to="/dashboard" className="inline-flex min-h-6 items-center">Back to dashboard</Link>
           </p>
         </div>
       ) : (

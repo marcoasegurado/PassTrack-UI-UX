@@ -175,7 +175,7 @@ export function Login() {
                 <button
                   type="button"
                   onClick={() => setHelpOpen(true)}
-                  className="inline-flex cursor-pointer items-center gap-1 text-xs font-semibold text-muted hover:text-brand"
+                  className="inline-flex min-h-6 cursor-pointer items-center gap-1 text-xs font-semibold text-muted hover:text-brand"
                 >
                   <Icon name="help-circle" size={14} />
                   If Login Error?
@@ -247,7 +247,7 @@ export function Login() {
             <button
               type="button"
               onClick={() => setHelpOpen(true)}
-              className="cursor-pointer text-[11px] font-semibold text-brand hover:underline"
+              className="inline-flex min-h-6 cursor-pointer items-center text-[11px] font-semibold text-brand hover:underline"
             >
               How the demo works
             </button>

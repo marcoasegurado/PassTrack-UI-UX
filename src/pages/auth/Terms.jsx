@@ -134,7 +134,7 @@ const SECTIONS = [
       <p>
         For any questions or issues regarding these terms or your passport application,
         please contact our support team at{" "}
-        <a href="mailto:support@passtrack.com" className="font-semibold">
+        <a href="mailto:support@passtrack.com" className="inline-flex min-h-6 items-center font-semibold">
           support@passtrack.com
         </a>
         .
@@ -192,7 +192,7 @@ export function Terms() {
                   <a
                     key={section.id}
                     href={`#${section.id}`}
-                    className="text-xs font-medium leading-snug text-brand hover:underline"
+                    className="inline-flex min-h-6 items-center text-xs font-medium leading-snug text-brand hover:underline"
                   >
                     {index + 1}. {section.title}
                   </a>

@@ -28,7 +28,7 @@ export function AdminLogin() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f4f7fc] px-4 py-8">
+    <main className="flex min-h-screen items-center justify-center bg-[#f4f7fc] px-4 py-8">
       <div className="w-full max-w-md">
         <div className="mb-6 text-center">
           <img src="/assets/logo-mark.png" alt="" className="mx-auto h-20 w-24 object-contain" />
@@ -55,6 +55,6 @@ export function AdminLogin() {
         </section>
         <p className="mt-5 text-center text-xs text-muted">Frontend demo · no real administrator authentication</p>
       </div>
-    </div>
+    </main>
   );
 }

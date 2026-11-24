@@ -13,7 +13,7 @@ export function EmptyState({
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-tint text-brand">
         <Icon name={icon} size={22} />
       </span>
-      {title && <h3 className="mt-4 text-lg font-bold text-navy">{title}</h3>}
+      {title && <h2 className="mt-4 text-lg font-bold text-navy">{title}</h2>}
       {description && <p className="mt-1 max-w-md text-sm leading-relaxed text-muted">{description}</p>}
       {action && <div className="mt-5">{action}</div>}
     </div>
