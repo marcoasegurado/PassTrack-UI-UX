@@ -121,3 +121,40 @@
   border-color: var(--color-danger);
 }
 
+/* Native progress bar, fully custom-styled per the platform progress guide. */
+.pt-progress {
+  appearance: none;
+  display: block;
+  border: 0 solid;
+  overflow: clip;
+  border-radius: 9999px;
+  background: #dbe7fb;
+}
+
+.pt-progress::-webkit-progress-bar {
+  background: transparent;
+}
+
+.pt-progress::-webkit-progress-value {
+  border-radius: 9999px;
+  background: var(--progress-fill, #2563eb);
+  transition: inline-size 0.3s ease;
+}
+
+.pt-progress::-moz-progress-bar {
+  border-radius: 9999px;
+  background: var(--progress-fill, #2563eb);
+  transition: inline-size 0.3s ease;
+}
+
+.pt-progress--danger {
+  --progress-fill: #dc2626;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-progress::-webkit-progress-value,
+  .pt-progress::-moz-progress-bar {
+    transition: none;
+  }
+}
+

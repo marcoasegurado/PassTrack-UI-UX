@@ -13,6 +13,8 @@ import { RegisterApplication } from "./pages/auth/RegisterApplication";
 import { Terms } from "./pages/auth/Terms";
 import { RegisterSuccess } from "./pages/auth/RegisterSuccess";
 import { Dashboard } from "./pages/member/Dashboard";
+import { ApplicationStatus } from "./pages/member/ApplicationStatus";
+import { Profile } from "./pages/member/Profile";
 
 function MemberOnly({ children }) {
   const { isMemberLoggedIn } = useStore();
@@ -49,6 +51,24 @@ export default function App() {
               element={
                 <MemberOnly>
                   <Dashboard />
+                </MemberOnly>
+              }
+            />
+
+            <Route
+              path="/application/status"
+              element={
+                <MemberOnly>
+                  <ApplicationStatus />
+                </MemberOnly>
+              }
+            />
+
+            <Route
+              path="/profile"
+              element={
+                <MemberOnly>
+                  <Profile />
                 </MemberOnly>
               }
             />

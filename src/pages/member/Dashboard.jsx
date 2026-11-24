@@ -1,23 +1,129 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MemberLayout } from "../../components/layout/MemberLayout";
-import { Button } from "../../components/ui/Button";
+import { StageProgress } from "../../components/application/StageProgress";
+import { Button, ButtonLink } from "../../components/ui/Button";
 import { CopyButton } from "../../components/ui/CopyButton";
 import { Icon } from "../../components/ui/Icon";
 import { StatusBadge } from "../../components/ui/StatusBadge";
-import { SummaryCard } from "../../components/ui/SummaryCard";
 import { useStore } from "../../data/StoreProvider";
-import { APPLICATION_STATUS, APPLICATION_STATUS_LABELS } from "../../lib/constants";
-import { formatDate, formatDateTime } from "../../lib/format";
+import {
+  APPLICATION_STATUS,
+  APPLICATION_STATUS_LABELS,
+  INQUIRY_STATUS,
+} from "../../lib/constants";
+import { getApplicationProgress, getTimelineSteps } from "../../lib/applicationProgress";
+import { formatDate, formatRelative } from "../../lib/format";
 import { usePageTitle } from "../../lib/usePageTitle";
+
+const DOT_TONES = {
+  green: "bg-green-ink",
+  blue: "bg-brand",
+  amber: "bg-amber-ink",
+  rose: "bg-danger",
+};
+
+function statusDotTone(status) {
+  if (status === APPLICATION_STATUS.REJECTED) return "rose";
+  if (status === APPLICATION_STATUS.DELIVERED) return "green";
+  const stage = getApplicationProgress(status).stage;
+  if (stage >= 4) return "green";
+  if (stage >= 2) return "blue";
+  return "amber";
+}
+
+function Eyebrow({ children }) {
+  return (
+    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted">
+      {children}
+    </p>
+  );
+}
+
+function Card({ children, className = "" }) {
+  return (
+    <article
+      className={`flex flex-col rounded-card border border-line bg-surface p-6 shadow-card ${className}`}
+    >
+      {children}
+    </article>
+  );
+}
+
+function TicketLine({ inquiry }) {
+  if (!inquiry) return null;
+
+  const tone =
+    inquiry.status === INQUIRY_STATUS.RESOLVED
+      ? { icon: "check-circle", className: "text-green-ink" }
+      : inquiry.status === INQUIRY_STATUS.AWAITING
+        ? { icon: "clock", className: "text-amber-ink" }
+        : { icon: "message", className: "text-brand" };
+
+  const label =
+    inquiry.status === INQUIRY_STATUS.RESOLVED
+      ? "Completed"
+      : inquiry.status === INQUIRY_STATUS.AWAITING
+        ? "awaiting your reply"
+        : "open";
+
+  return (
+    <div className="flex items-start gap-2 text-sm text-slate-body">
+      <Icon name={tone.icon} size={16} className={`mt-0.5 shrink-0 ${tone.className}`} />
+      <span>
+        Ticket <strong className="font-semibold text-ink">#{inquiry.id}</strong>: {label}
+      </span>
+    </div>
+  );
+}
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const { member, application, logoutMember } = useStore();
+  const {
+    member,
+    application,
+    memberInquiries,
+    latestRenewal,
+    logoutMember,
+  } = useStore();
 
   usePageTitle("Dashboard");
 
   const firstName = member?.firstName || "Member";
-  const history = [...(application?.history || [])].reverse().slice(0, 4);
+  const status = application?.status;
+  const progress = getApplicationProgress(status);
+  const steps = getTimelineSteps(status, application?.history || [], application?.submittedAt);
+  const currentStep = steps[progress.stage - 1] || steps[0];
+
+  const activeInquiries = memberInquiries.filter(
+    (inquiry) => inquiry.status !== INQUIRY_STATUS.RESOLVED,
+  );
+  const awaitingInquiry = memberInquiries.find(
+    (inquiry) => inquiry.status === INQUIRY_STATUS.AWAITING,
+  );
+  const resolvedInquiry = memberInquiries.find(
+    (inquiry) => inquiry.status === INQUIRY_STATUS.RESOLVED,
+  );
+
+  const isRejected = status === APPLICATION_STATUS.REJECTED;
+  const dotTone = statusDotTone(status);
+
+  const documentState = isRejected
+    ? "Document review paused"
+    : progress.stage >= 3
+      ? "Document security validated"
+      : progress.stage === 2
+        ? "Documents under review"
+        : "Awaiting initial document check";
+
+  const expiry = member?.passport?.expiry;
+  const renewalState =
+    latestRenewal?.status === "PENDING"
+      ? "Renewal request under review"
+      : latestRenewal?.status === "APPROVED"
+        ? "Renewal approved"
+        : latestRenewal?.status === "REJECTED"
+          ? "Renewal needs attention"
+          : "Renewal queue open";
 
   return (
     <MemberLayout
@@ -27,34 +133,28 @@ export function Dashboard() {
       email={member?.email}
       onLogout={logoutMember}
     >
-      <div className="space-y-6">
-        <header className="flex flex-wrap items-start justify-between gap-4">
+      <div className="flex flex-col gap-5">
+        <section className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
-              Member Dashboard
-            </p>
-            <h1 className="mt-1 text-2xl font-bold text-navy sm:text-3xl">
-              Welcome back, {firstName}
+            <h1 className="text-2xl font-bold tracking-tight text-navy sm:text-3xl">
+              Welcome, {firstName}!
             </h1>
-            <p className="mt-1 text-sm text-muted">
-              Here is the latest state of your passport application.
-            </p>
+            <p className="mt-1 text-sm text-muted">PASSTRACK Travel Agency</p>
           </div>
+
           <div className="rounded-card border border-line bg-white px-4 py-3 shadow-card">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted">
-              Application ID
-            </p>
+            <Eyebrow>Application ID</Eyebrow>
             <div className="mt-1 flex items-center gap-2">
-              <span className="font-mono text-base font-bold text-ink">
-                {member?.appId}
-              </span>
+              <strong className="font-mono text-base font-bold text-ink">
+                {member?.appId || "—"}
+              </strong>
               <CopyButton value={member?.appId || ""} compact label="Copy" />
             </div>
           </div>
-        </header>
+        </section>
 
-        {application?.status === APPLICATION_STATUS.REJECTED && (
-          <div className="flex items-start gap-3 rounded-card border border-[#f5c2c7] bg-rose-bg px-5 py-4 text-sm leading-relaxed text-rose-ink">
+        {isRejected && (
+          <div className="flex items-start gap-3 rounded-card border border-[#fecdd3] bg-rose-bg px-5 py-4 text-sm leading-relaxed text-rose-ink">
             <Icon name="alert-circle" size={18} className="mt-0.5 shrink-0" />
             <div>
               <p className="font-bold">This application needs attention.</p>
@@ -62,167 +162,157 @@ export function Dashboard() {
                 {application.rejectionReason ||
                   "The review team needs corrected information before the application can continue."}
               </p>
-              <p className="mt-1 text-xs">
-                Reply to your inquiry or prepare the requested documents. Admin decisions in
-                this demo update this card immediately.
-              </p>
+              <Link to="/inquiries" className="mt-1 inline-block text-xs font-bold underline">
+                Follow up through the inquiry desk
+              </Link>
             </div>
           </div>
         )}
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <SummaryCard title="Application Status" bodyClassName="p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <StatusBadge status={application?.status} dot />
-                <p className="mt-2 text-xs leading-relaxed text-muted">
-                  {application?.nextStep || "No next step recorded."}
-                </p>
-              </div>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-tint text-brand">
-                <Icon name="file-text" size={20} />
-              </span>
+        <div className="grid gap-5 lg:grid-cols-2">
+          <Card>
+            <Eyebrow>Application Status</Eyebrow>
+            <div className="mt-2 flex items-center gap-2">
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${DOT_TONES[dotTone]}`}
+                aria-hidden="true"
+              />
+              <strong className="text-xl font-bold leading-tight text-ink">
+                {APPLICATION_STATUS_LABELS[status] || "No application"}
+              </strong>
+              <StatusBadge status={status} dot className="ml-auto" />
             </div>
-          </SummaryCard>
-
-          <SummaryCard title="Application ID" bodyClassName="p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <p className="truncate font-mono text-lg font-bold text-ink">
-                  {member?.appId}
-                </p>
-                <p className="mt-1 text-xs text-muted">
-                  {application
-                    ? APPLICATION_STATUS_LABELS[application.status]
-                    : "No application on file"}
-                </p>
-              </div>
-              <CopyButton value={member?.appId || ""} compact label="Copy" />
-            </div>
-          </SummaryCard>
-
-          <SummaryCard title="Processing Type" bodyClassName="p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-lg font-bold text-ink">
-                  {application?.processingType || "—"}
-                </p>
-                <p className="mt-1 text-xs text-muted">
-                  {application?.applicationType || "New Passport"}
-                </p>
-              </div>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-tint text-brand">
-                <Icon name="clock" size={20} />
-              </span>
-            </div>
-          </SummaryCard>
-
-          <SummaryCard title="Estimated Completion" bodyClassName="p-5">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-lg font-bold text-ink">
-                  {application?.estimatedCompletion
-                    ? formatDate(application.estimatedCompletion)
-                    : "To be scheduled"}
-                </p>
-                <p className="mt-1 text-xs text-muted">
-                  {application?.rejectionReason
-                    ? "Paused until documents are corrected"
-                    : "Subject to review and courier schedules"}
-                </p>
-              </div>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-tint text-brand">
-                <Icon name="calendar" size={20} />
-              </span>
-            </div>
-          </SummaryCard>
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-          <SummaryCard
-            title="What happens next"
-            subtitle="Updates here come from the same mock record used by the admin portal."
-          >
-            <p className="text-sm leading-relaxed text-slate-body">
-              {application?.note ||
-                "Your application is being prepared. Check back after the next review update."}
-            </p>
-
-            <div className="mt-4 rounded-control border border-line bg-surface-muted p-4">
-              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted">
-                Next step
-              </p>
-              <p className="mt-1 text-sm font-semibold text-ink">
-                {application?.nextStep || "Initial document check"}
-              </p>
-              <p className="mt-2 text-xs text-muted">
-                Last updated {formatDateTime(application?.updatedAt)}
-              </p>
-            </div>
+            <p className="mt-2 text-sm leading-relaxed text-slate-body">{progress.copy}</p>
 
             <div className="mt-5">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted">
-                Recent activity
-              </p>
-              {history.length ? (
-                <ol className="mt-3 space-y-3">
-                  {history.map((entry, index) => (
-                    <li key={`${entry.status}-${entry.at}-${index}`} className="flex gap-3">
-                      <span
-                        className="mt-1 h-2 w-2 shrink-0 rounded-full bg-brand"
-                        aria-hidden="true"
-                      />
-                      <div>
-                        <p className="text-sm font-semibold text-ink">
-                          {APPLICATION_STATUS_LABELS[entry.status] || entry.status}
-                        </p>
-                        <p className="text-xs text-muted">{formatDateTime(entry.at)}</p>
-                        {entry.note && (
-                          <p className="mt-0.5 text-xs leading-relaxed text-slate-body">
-                            {entry.note}
-                          </p>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              ) : (
-                <p className="mt-2 text-sm text-muted">No activity recorded yet.</p>
-              )}
+              <StageProgress status={status} />
             </div>
-          </SummaryCard>
 
-          <SummaryCard title="Demo account" subtitle="Member session and local data">
-            <dl className="space-y-3 text-sm">
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
-                  Member
-                </dt>
-                <dd className="mt-0.5 font-semibold text-ink">{member?.name}</dd>
-              </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
-                  Email
-                </dt>
-                <dd className="mt-0.5 break-all text-ink">{member?.email || "—"}</dd>
-              </div>
-              <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
-                  Submitted
-                </dt>
-                <dd className="mt-0.5 text-ink">{formatDate(application?.submittedAt)}</dd>
-              </div>
-            </dl>
+            <div className="mt-auto flex items-end justify-between gap-3 pt-5">
+              <span className="text-xs text-muted">
+                Updated {formatRelative(application?.updatedAt || application?.submittedAt)}
+              </span>
+              <ButtonLink to="/application/status" size="pill">
+                View status
+              </ButtonLink>
+            </div>
+          </Card>
 
-            <p className="mt-4 rounded-control bg-tint p-3 text-xs leading-relaxed text-slate-body">
-              Tracking, inquiry, and renewal screens are being added next. The header Profile
-              panel and Logout already use the shared member session.
+          <Card>
+            <Eyebrow>Inquiry</Eyebrow>
+            <div className="mt-2 flex items-center gap-2">
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${
+                  activeInquiries.length ? DOT_TONES.blue : DOT_TONES.green
+                }`}
+                aria-hidden="true"
+              />
+              <strong className="text-xl font-bold leading-tight text-ink">
+                {activeInquiries.length} Active{" "}
+                {activeInquiries.length === 1 ? "Inquiry" : "Inquiries"}
+              </strong>
+            </div>
+            <p className="mt-2 text-sm leading-relaxed text-slate-body">
+              {awaitingInquiry
+                ? "An officer has replied to one of your tickets. Review the latest response and reply if you need to."
+                : activeInquiries.length
+                  ? "Your open inquiries are with the review team. No action is pending from your side."
+                  : "You have no open inquiries. Start a new ticket if you need help with this application."}
             </p>
 
+            <div className="mt-4 flex flex-col gap-3">
+              {memberInquiries.length ? (
+                <>
+                  <TicketLine inquiry={awaitingInquiry || activeInquiries[0]} />
+                  <TicketLine inquiry={resolvedInquiry} />
+                </>
+              ) : (
+                <p className="text-sm text-muted">No inquiry tickets yet.</p>
+              )}
+            </div>
+
+            <div className="mt-auto flex items-end justify-between gap-3 pt-5">
+              <span className="text-xs text-muted">
+                {memberInquiries.length
+                  ? `${memberInquiries.length} ticket${memberInquiries.length === 1 ? "" : "s"} on record`
+                  : "Inquiry desk ready"}
+              </span>
+              <ButtonLink to="/inquiries" size="pill">
+                View inquiry
+              </ButtonLink>
+            </div>
+          </Card>
+
+          <Card>
+            <Eyebrow>Application Information</Eyebrow>
+            <strong className="mt-2 text-2xl font-bold leading-tight text-ink">
+              {member?.name || "Member"}
+            </strong>
+            <p className="mt-1 text-sm leading-relaxed text-slate-body">
+              Passport Type: {application?.passportType || "—"} · Processing Type:{" "}
+              {application?.processingType || "—"}
+            </p>
+
+            <div className="mt-3 flex flex-col gap-2 text-sm text-slate-body">
+              <div className="flex flex-wrap gap-1.5">
+                <strong className="font-semibold text-ink">Primary Email:</strong>
+                <span className="break-all">{member?.email || "—"}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <strong className="font-semibold text-ink">Submission Date:</strong>
+                <span>{formatDate(application?.submittedAt)}</span>
+              </div>
+            </div>
+
+            <div className="mt-auto flex items-end justify-between gap-3 pt-5">
+              <span className="text-xs font-semibold text-muted">{documentState}</span>
+              <ButtonLink to="/application/status" size="pill">
+                View details
+              </ButtonLink>
+            </div>
+          </Card>
+
+          <Card>
+            <Eyebrow>Passport Renewal</Eyebrow>
+            <strong className="mt-2 text-2xl font-bold leading-tight text-ink">
+              {latestRenewal ? "Renewal in progress" : "Current Passport Expiring"}
+            </strong>
+            <p className="mt-1 text-sm leading-relaxed text-slate-body">
+              {expiry
+                ? `Your current physical book expires on ${formatDate(expiry)}. Keep in mind that many airlines require 6 months validity.`
+                : "No current passport is recorded yet. Renewal becomes available after your first passport is delivered."}
+            </p>
+
+            <div className="mt-auto flex items-end justify-between gap-3 pt-5">
+              <span className="text-xs text-muted">{renewalState}</span>
+              {latestRenewal ? (
+                <ButtonLink to="/renewal/status" size="pill">
+                  View renewal
+                </ButtonLink>
+              ) : (
+                <ButtonLink to="/renewal/eligibility" size="pill">
+                  Renew passport
+                </ButtonLink>
+              )}
+            </div>
+          </Card>
+        </div>
+
+        <section className="rounded-card border border-line bg-surface-muted px-5 py-4 text-sm text-slate-body">
+          <p className="font-semibold text-ink">
+            Current phase: {currentStep?.label || "Awaiting application"}
+          </p>
+          <p className="mt-1 text-xs text-muted">
+            {currentStep?.meta || "Updates appear as the shared application record changes."} ·
+            Last updated {formatRelative(application?.updatedAt || application?.submittedAt)}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            <ButtonLink to="/application/status" variant="outline" size="sm">
+              Open full tracker
+            </ButtonLink>
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
-              className="mt-4"
               onClick={() => {
                 logoutMember();
                 navigate("/login");
@@ -230,8 +320,8 @@ export function Dashboard() {
             >
               Switch account
             </Button>
-          </SummaryCard>
-        </div>
+          </div>
+        </section>
       </div>
     </MemberLayout>
   );

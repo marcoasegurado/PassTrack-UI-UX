@@ -4,6 +4,8 @@
 
 This document records the state of the PASSTRACK React rebuild when the previous AI assistant stopped. It is for the next agent, not as an implementation proposal.
 
+> **Status update (2026-11-24):** Step 5 was committed as `01920ed`. The browser checks in "Known Issues and Next Actions" items 1–4 were reported complete by the repository owner. Step 6 (member dashboard, application tracking, profile) is implemented and `npm run build` passes; see the tracker for the current position.
+
 ## Current Repository State
 
 - Baseline commit: `a1a2ff2 Replace app with static HTML prototype`

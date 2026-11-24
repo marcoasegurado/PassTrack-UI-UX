@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { AppHeader } from "./AppHeader";
 import { Footer } from "./Footer";
 import { Modal } from "../ui/Modal";
+import { ButtonLink } from "../ui/Button";
 import { CopyButton } from "../ui/CopyButton";
 import { useToast } from "../ui/Toast";
 import { useStore } from "../../data/StoreProvider";
@@ -60,13 +61,18 @@ export function MemberLayout({
         title="Profile"
         description="Your active demo member session."
         footer={
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="inline-flex h-10 items-center gap-2 rounded-control border border-line bg-white px-4 text-sm font-semibold text-ink hover:bg-surface-muted"
-          >
-            Logout
-          </button>
+          <>
+            <ButtonLink to="/profile" variant="outline" onClick={() => setProfileOpen(false)}>
+              View full profile
+            </ButtonLink>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex h-10 items-center gap-2 rounded-control border border-line bg-white px-4 text-sm font-semibold text-ink hover:bg-surface-muted"
+            >
+              Logout
+            </button>
+          </>
         }
       >
         <div className="flex flex-col gap-4">

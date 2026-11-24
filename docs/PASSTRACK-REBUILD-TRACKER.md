@@ -38,14 +38,14 @@
 | 3 | Shared components + layouts | `[x]` | 1 | UI kit preview at `/styleguide`; build passes |
 | 4 | Mock store + seed data + helpers | `[x]` | 1 | `/store-check` verifies sessions, shared status updates, renewal decisions, inquiries, reset |
 | 5 | Auth, Terms, registration | `[x]` | 2 | Login, 3-step registration, Terms, success credentials, saved sign-in recovery; interim member dashboard closes the loop |
-| 6 | Member dashboard, tracking, profile | `[ ]` | 1.5 | Interim dashboard exists at `/dashboard`; full cards, tracker, and profile pending |
+| 6 | Member dashboard, tracking, profile | `[x]` | 1.5 | Four dashboard cards, six-stage tracker with Processing / For Delivery / Rejected variants, compact profile; one shared progress selector |
 | 7 | Renewal flow | `[ ]` | 2 | — |
 | 8 | Member inquiries | `[ ]` | 2 | — |
 | 9 | Admin portal | `[ ]` | 3 | Highest risk — no prototype screens |
 | 10 | Integration, responsive, parity | `[ ]` | 2 | — |
 | 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
 
-**Current position:** Step 6 — member dashboard, tracking, and profile.
+**Current position:** Step 7 — renewal flow.
 
 ---
 
@@ -336,13 +336,13 @@ Persistence rules:
 
 ### Step 6 — Member dashboard, tracking, profile
 
-- [ ] `/dashboard` — four Figma cards, header Application ID + copy, Profile/Logout.
-- [ ] `/application/status` — two-phase six-stage tracker, Processing / For Delivery / Rejected variants, explanation, next step, estimate, last-updated, View Inquiry.
-- [ ] `/profile` — compact view from registration data.
-- [ ] Progress/status derived from one selector.
+- [x] `/dashboard` — four Figma cards, header Application ID + copy, Profile/Logout.
+- [x] `/application/status` — two-phase six-stage tracker, Processing / For Delivery / Rejected variants, explanation, next step, estimate, last-updated, View Inquiry.
+- [x] `/profile` — compact view from registration data.
+- [x] Progress/status derived from one selector.
 
-**Files:** `src/pages/member/**`, `src/components/application/**`
-**Done when:** a status change updates dashboard and timeline consistently.
+**Files:** `src/pages/member/**`, `src/components/application/**`, `src/lib/applicationProgress.js`
+**Done when:** a status change updates dashboard and timeline consistently. *(both read `getApplicationProgress` + the shared store record)*
 
 ---
 
@@ -423,8 +423,8 @@ Update the **Status** column as each route is migrated.
 | `/register/application` | Registration step 3 | `register.html` | Migrated |
 | `/terms` | Terms and Conditions | `terms.html` | Migrated |
 | `/register/success` | Application received | `success.html` | Migrated |
-| `/dashboard` | Member dashboard | `dashboard.html` | Interim |
-| `/application/status` | Application tracking | `status.html` | Not migrated |
+| `/dashboard` | Member dashboard | `dashboard.html` | Migrated |
+| `/application/status` | Application tracking | `status.html` | Migrated |
 | `/inquiries` | Inquiry overview | `inquiries.html` | Not migrated |
 | `/inquiries/new` | New inquiry | `inquiries.html?new=1` | Not migrated |
 | `/inquiries/:ticketId` | Inquiry detail | `inquiry.html` | Not migrated |
@@ -434,7 +434,7 @@ Update the **Status** column as each route is migrated.
 | `/renewal/review` | Renewal step 4 | `renewal-4.html` | Not migrated |
 | `/renewal/submitted` | Renewal confirmation | `renewal-submitted.html` | Not migrated |
 | `/renewal/status` | Renewal status | `renewal-status.html` | Not migrated |
-| `/profile` | Member profile | Header drawer only | Not migrated |
+| `/profile` | Member profile | Header drawer only | Migrated |
 | `/admin/login` | Admin login | None | Not started |
 | `/admin/dashboard` | Admin dashboard | None | Not started |
 | `/admin/applications` | Applications list | None | Not started |
@@ -471,6 +471,7 @@ Update the **Status** column as each route is migrated.
 | 4 | No member profile design | Could be over-built | Compact view from registration data only |
 | 5 | `BrowserRouter` needs static fallback | Broken deep links on plain static hosting | Document rewrite or switch to `HashRouter` if needed |
 | 6 | Prototype uses one seeded app for all states | Demo cannot show all statuses at once | Seed separate applications for Processing / For Delivery / Rejected |
+| 7 | Step 6 CTAs target routes delivered later | `/inquiries`, `/renewal/*` show `NotFound` until Steps 7–8 land | Expected; do not ship before those steps are complete |
 
 ---
 
@@ -485,6 +486,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-24 | 4 | Added seeded mock store, selectors, ID/date/validation/download helpers, store actions, and `/store-check` verification page; build passes | `src/data/**`, `src/lib/ids.js`, `src/lib/format.js`, `src/lib/validation.js`, `src/lib/download.js`, `src/pages/dev/StoreCheck.jsx`, `src/App.jsx` |
 | 2026-11-24 | 5 | Added login with error/help states, 3-step registration, Terms, success credentials with saved recovery, route integration, and an interim dashboard target; build passes | `src/pages/auth/**`, `src/pages/member/Dashboard.jsx`, `src/components/layout/AuthShell.jsx`, `src/components/layout/MemberLayout.jsx`, `src/components/ui/Field.jsx`, `src/components/ui/Icon.jsx`, `src/components/layout/Footer.jsx`, `src/lib/usePageTitle.js`, `src/App.jsx` |
 | 2026-11-24 | Handoff | Added `docs/DEEPSEEK-HANDOFF.md` to preserve the stopped-session state, implementation inventory, known gaps, and next verification actions | `docs/DEEPSEEK-HANDOFF.md` |
+| 2026-11-24 | 6 | Rebuilt the member dashboard as four prototype cards; added the six-stage application tracker, compact profile, shared progress selector, native progress bar, and guarded routes; build passes | `src/pages/member/Dashboard.jsx`, `src/pages/member/ApplicationStatus.jsx`, `src/pages/member/Profile.jsx`, `src/components/application/**`, `src/lib/applicationProgress.js`, `src/components/application/StageProgress.jsx`, `src/components/layout/MemberLayout.jsx`, `src/styles/index.css`, `src/App.jsx` |
 
 ---
 
