@@ -41,11 +41,11 @@
 | 6 | Member dashboard, tracking, profile | `[x]` | 1.5 | Four dashboard cards, six-stage tracker with Processing / For Delivery / Rejected variants, compact profile; one shared progress selector |
 | 7 | Renewal flow | `[x]` | 2 | Eligibility → details → documents/appointment → review/submit → reference → status; nested draft matches seeded renewals |
 | 8 | Member inquiries | `[x]` | 2 | List with summary/grouped cards, new inquiry with metadata attachments and reply channels, detail thread with reply and reopen |
-| 9 | Admin portal | `[ ]` | 3 | Highest risk — no prototype screens |
+| 9 | Admin portal | `[x]` | 3 | Separate admin session, dashboard, applications, renewals, inquiries, and editable profile; shared mutations visible in member views |
 | 10 | Integration, responsive, parity | `[ ]` | 2 | — |
 | 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
 
-**Current position:** Step 9 — admin portal.
+**Current position:** Step 10 — integration, responsive, parity.
 
 ---
 
@@ -374,17 +374,17 @@ Persistence rules:
 
 ### Step 9 — Admin portal
 
-- [ ] `/admin/login` — separate session, documented demo rule.
-- [ ] `/admin/dashboard` — sidebar shell, computed metrics, applications overview + search.
-- [ ] `/admin/applications` — search, status filter, table.
-- [ ] `/admin/applications/:applicationId` — applicant details, status update, shared write.
-- [ ] `/admin/renewals` — tabs/counts, search, table.
-- [ ] `/admin/renewals/:reference` — details, notes, approve/reject with confirmation; rejection requires note.
-- [ ] `/admin/inquiries` + detail — search/filter, conversation, reply.
-- [ ] `/admin/profile` — editable local profile, save, back, logout.
+- [x] `/admin/login` — separate session, documented demo rule.
+- [x] `/admin/dashboard` — sidebar shell, computed metrics, applications overview + search.
+- [x] `/admin/applications` — search, status filter, table.
+- [x] `/admin/applications/:applicationId` — applicant details, status update, shared write.
+- [x] `/admin/renewals` — tabs/counts, search, table.
+- [x] `/admin/renewals/:reference` — details, notes, approve/reject with confirmation; rejection requires note.
+- [x] `/admin/inquiries` + detail — search/filter, conversation, reply.
+- [x] `/admin/profile` — editable local profile, save, back, logout.
 
-**Files:** `src/pages/admin/**`, `src/components/layout/Admin*`
-**Done when:** every admin mutation is visible in the member portal after navigation/refresh.
+**Files:** `src/pages/admin/**`, `src/components/layout/AdminLayout.jsx`
+**Done when:** every admin mutation is visible in the member portal after navigation/refresh. *(verified by shared store wiring; browser route smoke test passes)*
 
 ---
 
@@ -435,15 +435,15 @@ Update the **Status** column as each route is migrated.
 | `/renewal/submitted` | Renewal confirmation | `renewal-submitted.html` | Migrated |
 | `/renewal/status` | Renewal status | `renewal-status.html` | Migrated |
 | `/profile` | Member profile | Header drawer only | Migrated |
-| `/admin/login` | Admin login | None | Not started |
-| `/admin/dashboard` | Admin dashboard | None | Not started |
-| `/admin/applications` | Applications list | None | Not started |
-| `/admin/applications/:applicationId` | Application detail | None | Not started |
-| `/admin/renewals` | Renewal queue | None | Not started |
-| `/admin/renewals/:reference` | Renewal detail | None | Not started |
-| `/admin/inquiries` | Admin inquiries | None | Not started |
-| `/admin/inquiries/:ticketId` | Admin inquiry detail | None | Not started |
-| `/admin/profile` | Admin profile | None | Not started |
+| `/admin/login` | Admin login | None | Migrated |
+| `/admin/dashboard` | Admin dashboard | None | Migrated |
+| `/admin/applications` | Applications list | None | Migrated |
+| `/admin/applications/:applicationId` | Application detail | None | Migrated |
+| `/admin/renewals` | Renewal queue | None | Migrated |
+| `/admin/renewals/:reference` | Renewal detail | None | Migrated |
+| `/admin/inquiries` | Admin inquiries | None | Migrated |
+| `/admin/inquiries/:ticketId` | Admin inquiry detail | None | Migrated |
+| `/admin/profile` | Admin profile | None | Migrated |
 
 ---
 
@@ -459,6 +459,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-23 | Compute admin metrics from seed records | Keeps demo internally consistent |
 | 2026-11-23 | Preserve `public/prototype/` until parity | Safe reference; no destructive migration |
 | 2026-11-24 | Renewal draft uses the seeded nested shape (`personal`, `documents`, `appointment`) | Keeps member status and the Step 9 admin queue reading one record shape |
+| 2026-11-24 | Admin screens use shared design tokens and primitives because no admin prototype screens exist | Keeps the portal visually consistent while preserving separate admin/member sessions |
 
 ---
 
@@ -490,6 +491,7 @@ Update the **Status** column as each route is migrated.
 | 2026-11-24 | 6 | Rebuilt the member dashboard as four prototype cards; added the six-stage application tracker, compact profile, shared progress selector, native progress bar, and guarded routes; build passes | `src/pages/member/Dashboard.jsx`, `src/pages/member/ApplicationStatus.jsx`, `src/pages/member/Profile.jsx`, `src/components/application/**`, `src/lib/applicationProgress.js`, `src/components/application/StageProgress.jsx`, `src/components/layout/MemberLayout.jsx`, `src/styles/index.css`, `src/App.jsx` |
 | 2026-11-24 | 7 | Added the six renewal routes with a shared shell and requirement rail, prefilled details, document/appointment uploads, review confirmation, reference screen, and decision-aware status page; build passes | `src/pages/renewal/**`, `src/components/renewal/**`, `src/pages/member/Dashboard.jsx`, `src/App.jsx` |
 | 2026-11-24 | 8 | Added the inquiry list (summary + status groups, search, status/priority filters), full-page new inquiry form with attachment metadata and reply channels, and ticket detail with conversation, reply composer, copy-to-email, and reopen; build passes | `src/pages/member/Inquiries.jsx`, `src/pages/member/NewInquiry.jsx`, `src/pages/member/InquiryDetail.jsx`, `src/components/inquiries/**`, `src/App.jsx` |
+| 2026-11-24 | 9 | Added the separate admin session, responsive admin shell, dashboard metrics, application status management, renewal decisions with confirmation, inquiry replies/status updates, and editable admin profile; build passes and all admin routes smoke-tested | `src/pages/admin/**`, `src/components/layout/AdminLayout.jsx`, `src/data/StoreProvider.jsx`, `src/App.jsx` |
 
 ---
 

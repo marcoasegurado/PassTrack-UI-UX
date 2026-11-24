@@ -24,12 +24,31 @@ import { RenewalDocumentsAppointment } from "./pages/renewal/DocumentsAppointmen
 import { RenewalReview } from "./pages/renewal/Review";
 import { RenewalSubmitted } from "./pages/renewal/Submitted";
 import { RenewalStatus } from "./pages/renewal/Status";
+import { AdminLogin } from "./pages/admin/Login";
+import { AdminDashboard } from "./pages/admin/Dashboard";
+import { AdminApplications } from "./pages/admin/Applications";
+import { AdminApplicationDetail } from "./pages/admin/ApplicationDetail";
+import { AdminRenewals } from "./pages/admin/Renewals";
+import { AdminRenewalDetail } from "./pages/admin/RenewalDetail";
+import { AdminInquiries } from "./pages/admin/Inquiries";
+import { AdminInquiryDetail } from "./pages/admin/InquiryDetail";
+import { AdminProfile } from "./pages/admin/Profile";
 
 function MemberOnly({ children }) {
   const { isMemberLoggedIn } = useStore();
 
   return (
     <ProtectedRoute allowed={isMemberLoggedIn} redirectTo="/login">
+      {children}
+    </ProtectedRoute>
+  );
+}
+
+function AdminOnly({ children }) {
+  const { isAdminLoggedIn } = useStore();
+
+  return (
+    <ProtectedRoute allowed={isAdminLoggedIn} redirectTo="/admin/login">
       {children}
     </ProtectedRoute>
   );
@@ -159,6 +178,17 @@ export default function App() {
                 </MemberOnly>
               }
             />
+
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/admin/dashboard" element={<AdminOnly><AdminDashboard /></AdminOnly>} />
+            <Route path="/admin/applications" element={<AdminOnly><AdminApplications /></AdminOnly>} />
+            <Route path="/admin/applications/:applicationId" element={<AdminOnly><AdminApplicationDetail /></AdminOnly>} />
+            <Route path="/admin/renewals" element={<AdminOnly><AdminRenewals /></AdminOnly>} />
+            <Route path="/admin/renewals/:reference" element={<AdminOnly><AdminRenewalDetail /></AdminOnly>} />
+            <Route path="/admin/inquiries" element={<AdminOnly><AdminInquiries /></AdminOnly>} />
+            <Route path="/admin/inquiries/:ticketId" element={<AdminOnly><AdminInquiryDetail /></AdminOnly>} />
+            <Route path="/admin/profile" element={<AdminOnly><AdminProfile /></AdminOnly>} />
 
             <Route path="/styleguide" element={<StyleGuide />} />
             <Route path="/store-check" element={<StoreCheck />} />

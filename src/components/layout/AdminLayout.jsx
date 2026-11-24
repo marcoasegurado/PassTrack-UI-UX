@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppHeader } from "./AppHeader";
 import { AdminSidebar } from "./AdminSidebar";
 import { Footer } from "./Footer";
+import { ButtonLink } from "../ui/Button";
 import { useToast } from "../ui/Toast";
+import { useStore } from "../../data/StoreProvider";
 
-export function AdminLayout({ context = "Admin Dashboard", onLogout, children }) {
+export function AdminLayout({ title = "Admin Dashboard", description, actions, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
+  const { logoutAdmin } = useStore();
 
   function handleLogout() {
-    onLogout?.();
+    logoutAdmin();
     toast("Logged out of the admin demo session.");
     navigate("/admin/login");
   }
@@ -19,7 +22,7 @@ export function AdminLayout({ context = "Admin Dashboard", onLogout, children })
   return (
     <div className="flex min-h-screen flex-col">
       <AppHeader
-        context={context}
+        context="Admin Portal"
         homeTo="/admin/dashboard"
         onMenu={() => setSidebarOpen(true)}
         actions={[
@@ -35,7 +38,17 @@ export function AdminLayout({ context = "Admin Dashboard", onLogout, children })
           onLogout={handleLogout}
         />
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-          {children ?? <Outlet />}
+          <div className="mx-auto w-full max-w-[1400px]">
+            <header className="mb-6 flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">Admin Portal</p>
+                <h1 className="mt-1 text-2xl font-bold tracking-tight text-navy sm:text-3xl">{title}</h1>
+                {description && <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted">{description}</p>}
+              </div>
+              {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+            </header>
+            {children}
+          </div>
         </main>
       </div>
 

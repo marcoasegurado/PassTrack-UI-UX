@@ -716,6 +716,7 @@ export function StoreProvider({ children }) {
       memberRenewals,
       latestRenewal: memberRenewals[0] || null,
       memberInquiries,
+      adminProfile: state.adminProfile,
       adminMetrics: getAdminMetrics(state),
       isMemberLoggedIn: Boolean(state.memberSession),
       isAdminLoggedIn: Boolean(state.adminSession),
