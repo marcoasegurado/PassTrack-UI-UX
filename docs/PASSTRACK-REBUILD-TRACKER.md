@@ -1,7 +1,7 @@
 # PASSTRACK UI Rebuild — Implementation Tracker
 
-> **Companion brief:** [`public/prototype/passport-ui-rebuild.md`](../public/prototype/passport-ui-rebuild.md)
-> **Visual baseline:** the existing static prototype in `public/prototype/` (Figma MCP is not available in this session).
+> **Companion brief:** [`docs/archive/prototype/passport-ui-rebuild.md`](./archive/prototype/passport-ui-rebuild.md)
+> **Visual baseline:** the archived static prototype in `docs/archive/prototype/` (Figma MCP was not available during the rebuild).
 > **Scope:** frontend-only React + Vite + Tailwind rebuild. No backend, database, API, auth server, email/SMS, payment, or file storage.
 > **Started:** 2026-11-23
 > **Last updated:** 2026-11-25
@@ -43,10 +43,10 @@
 | 8 | Member inquiries | `[x]` | 2 | List with summary/grouped cards, new inquiry with metadata attachments and reply channels, detail thread with reply and reopen |
 | 9 | Admin portal | `[x]` | 3 | Separate admin session, dashboard, applications, renewals, inquiries, and editable profile; shared mutations visible in member views |
 | 10 | Integration, responsive, parity | `[x]` | 3 | 168 route/viewport combinations with zero overflow, 44 end-to-end control checks, a11y sweep clean, parity checked against captured prototype screenshots; build green |
-| 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
+| 11 | Acceptance + handoff | `[x]` | 0.5 | 96-check acceptance walk green; build green; `docs/HANDOFF.md` written; prototype archived to `docs/archive/prototype/` with user approval |
 | P1 | Portal improvement batch (post-Step 10) | `[x]` | 2 | Logo, cross-tab store sync, Application Information page, sticky-header polish, Admin Login entry, hover motion, renewal eligibility guards; `docs/PORTAL-IMPROVEMENTS.md` complete |
 
-**Current position:** Step 11 — acceptance and handoff. The P1 portal improvement batch requested after Step 10 is complete and verified.
+**Current position:** Step 11 complete. The 12-point brief checklist passes (96 scripted checks), the audit doc carries a completion status, and `docs/HANDOFF.md` records the mock-versus-backend boundary. `public/prototype/` was archived to `docs/archive/prototype/` with user approval, so it no longer ships in `dist/`.
 
 ---
 
@@ -59,14 +59,14 @@
 | Router | `react-router-dom` with `BrowserRouter` (SPA fallback documented) |
 | Icons | Port the prototype's inline SVG set into one `Icon` component; no icon library |
 | Font | Self-hosted Inter variable font |
-| Visual source | Existing static prototype + `public/prototype/css/tokens.css` |
+| Visual source | Archived static prototype + `docs/archive/prototype/css/tokens.css` |
 | Figma | Not reachable this session; parity baselined on 1440 px captures of the static prototype (original-design parity still unconfirmed) |
 | Progress | Derived from canonical status/stage; no hardcoded 50/60 percentages |
 | Admin metrics | Computed from seeded records |
 | Rejected application | Shown at review stage; later stages marked N/A |
 | Inquiry source | Expanded design `304:247`–`304:249`; merge useful older filters/categories |
 | Member profile | Compact view of registration data; no invented settings area |
-| Prototype files | Preserved read-only; parity complete — archive only with user approval |
+| Prototype files | Archived to `docs/archive/prototype/` after Step 11 acceptance (user approved); no longer shipped in `dist/` |
 | Backend | None. All "submissions", emails, SMS, and decisions are local mocks |
 
 ---
@@ -119,7 +119,7 @@
 |---|---|
 | **Reuse** | `tokens.css` values, formatting helpers, validation patterns, seed inquiry messages, Terms copy, status copy, icon SVG paths, demo credentials |
 | **Replace** | Multi-page HTML navigation, `chrome.js` DOM injection, query-param demo bar |
-| **Keep** | `public/prototype/` as read-only visual reference until parity |
+| **Keep** | Static prototype archived under `docs/archive/prototype/` after parity (user approved) |
 
 ### Prototype demo credentials
 
@@ -267,7 +267,7 @@ Persistence rules:
 
 - [x] Inventory every prototype page, field, button, and flow.
 - [x] Capture/record baseline layout facts from `tokens.css` and page CSS.
-- [x] Capture 1440 px reference screenshots of each prototype page. *(captured in the Step 10 parity pass from `public/prototype/*.html` at 1440 × 900; not committed to the repo)*
+- [x] Capture 1440 px reference screenshots of each prototype page. *(captured in the Step 10 parity pass from the prototype HTML at 1440 × 900; not committed to the repo. The prototype now lives in `docs/archive/prototype/`)*
 - [x] Write `docs/PASSTRACK-FIGMA-AUDIT.md` with screen inventory, node IDs, route map, conflicts, assets, decisions.
 - [x] List known conflicts: older vs expanded inquiries, missing member profile, progress percentages, admin designs absent.
 - [x] Record what to reuse, replace, and keep.
@@ -405,10 +405,13 @@ Persistence rules:
 
 ### Step 11 — Acceptance and handoff
 
-- [ ] Walk the 13-point acceptance checklist in the brief.
-- [ ] Update `docs/PASSTRACK-FIGMA-AUDIT.md` completion status.
-- [ ] Summarize mock frontend behavior vs. absent backend.
-- [ ] Archive `public/prototype/` only with user approval.
+- [x] Walk the 12-point acceptance checklist in the brief. (Headless Chrome acceptance walk: 96/96 checks green across auth, registration, dashboard states, inquiries, renewal, admin, cross-portal sync, responsive, assets, and console; evidence in the acceptance checklist below.)
+- [x] Update `docs/PASSTRACK-FIGMA-AUDIT.md` completion status. (Section 10 added: per-area status, provisional Figma note, preserved prototype.)
+- [x] Summarize mock frontend behavior vs. absent backend. (`docs/HANDOFF.md` records routes, demo credentials, persistence, mock-only behavior, absent services, and verification evidence.)
+- [x] Archive `public/prototype/` only with user approval. (User approved; moved to `docs/archive/prototype/` with `git mv`, so it remains in the repo as a reference but is no longer served from `public/` or included in `dist/`.)
+
+**Files:** `docs/HANDOFF.md`, `docs/PASSTRACK-FIGMA-AUDIT.md`, `docs/PASSTRACK-REBUILD-TRACKER.md`
+**Done when:** acceptance checklist passes and the handoff notes are current.
 
 ---
 
@@ -472,6 +475,8 @@ source and were reviewed for internal consistency only.
 | 2026-11-25 | Ineligible renewal steps render an explanatory notice instead of redirecting | The reason and the next action stay visible, including when the URL is typed directly |
 | 2026-11-25 | Cross-tab sync listens for the `storage` event and dispatches `HYDRATE` with a value comparison | Keeps the open admin/member tabs consistent without introducing a second source of truth or a write loop |
 | 2026-11-25 | The footer’s Admin Login link is hidden on `/admin/*` routes | The admin area does not need a link to its own sign-in page; member-facing footers keep the secondary entry point |
+| 2026-11-25 | Acceptance is verified with a scripted headless-Chrome walk against the production preview | Exercises real controls and shared state instead of relying on static inspection; the script lives outside the repo, results are recorded in the tracker |
+| 2026-11-25 | `public/prototype/` is archived to `docs/archive/prototype/` after user approval | Keeps the visual baseline and rollback reference in the repo while stopping the prototype from being copied into production builds |
 
 ---
 
@@ -487,6 +492,7 @@ source and were reviewed for internal consistency only.
 | 6 | Prototype uses one seeded app for all states | Demo cannot show all statuses at once | Seed separate applications for Processing / For Delivery / Rejected |
 | 7 | Steps 6–7 CTAs target routes delivered later | `/inquiries` and `/inquiries/new` showed `NotFound` before Step 8 | Resolved in Step 8 |
 | 8 | Four inline text links are 17 px tall | Below WCAG 2.5.8's 24 px target size | Accepted: SC 2.5.8 exempts links inline in a sentence; padding them would break line flow |
+| 9 | Production JS bundle is 517 kB (140 kB gzip) and triggers Vite's 500 kB chunk warning | No runtime impact; only a build log warning | Accepted for the demo. If it matters later, add route-level `React.lazy` splitting; do not raise the warning limit silently |
 
 ---
 
@@ -507,20 +513,23 @@ source and were reviewed for internal consistency only.
 | 2026-11-24 | 9 | Added the separate admin session, responsive admin shell, dashboard metrics, application status management, renewal decisions with confirmation, inquiry replies/status updates, and editable admin profile; build passes and all admin routes smoke-tested | `src/pages/admin/**`, `src/components/layout/AdminLayout.jsx`, `src/data/StoreProvider.jsx`, `src/App.jsx` |
 | 2026-11-24 | 10 | Full Step 10 sweep: 168 route/viewport combinations with no overflow or console errors, 44 end-to-end control checks green, a11y fixes (contrast, heading order, file-input names, admin `main` landmark, 24 px targets), and screen-by-screen parity against prototype 1440 px captures | `src/components/**`, `src/pages/auth/**`, `src/pages/admin/Login.jsx`, `src/pages/admin/Applications.jsx`, `src/pages/admin/Renewals.jsx`, `src/pages/admin/Inquiries.jsx`, `src/pages/member/ApplicationStatus.jsx`, `src/styles/index.css`, `docs/PARITY-NOTES.md`, `docs/PASSTRACK-REBUILD-TRACKER.md` |
 | 2026-11-25 | P1 | Portal improvement batch from `docs/PORTAL-IMPROVEMENTS.md`: new scalable logo + favicon, cross-tab store sync, dedicated Application Information page, sticky-header scroll padding, Admin Login entry points, hover-underline removal with colour/elevation motion, and passport-record-driven renewal eligibility with route guards. Build green; 29/29 portal checks and 11/11 renewal-flow checks pass | `src/lib/renewalEligibility.js`, `src/components/renewal/RenewalEligibilityNotice.jsx`, `src/components/renewal/RenewalStepGuard.jsx`, `src/pages/member/ApplicationInformation.jsx`, `src/pages/renewal/Eligibility.jsx`, `src/data/StoreProvider.jsx`, `src/pages/member/Dashboard.jsx`, `src/components/layout/*`, `src/pages/auth/Login.jsx`, `src/pages/admin/Login.jsx`, `src/styles/index.css`, `public/assets/logo-mark.svg`, `public/assets/favicon.svg`, `docs/PORTAL-IMPROVEMENTS.md` |
+| 2026-11-25 | 11 | Acceptance + handoff: 96-check headless Chrome walk (auth, registration, dashboard variants, inquiries, renewal, admin, cross-portal sync, responsive, assets, console), 12/12 brief checklist items marked, audit completion status added, mock-vs-backend handoff written, and the prototype archived to `docs/archive/prototype/` with user approval | `docs/HANDOFF.md`, `docs/PASSTRACK-FIGMA-AUDIT.md`, `docs/PASSTRACK-REBUILD-TRACKER.md`, `docs/archive/prototype/**` |
 
 ---
 
 ## Acceptance checklist (from brief §10)
 
-- [ ] App uses React + Vite + Tailwind with JavaScript/JSX.
-- [ ] Previous plain HTML/CSS/JS experience migrated without losing behavior.
-- [ ] Member login, all 3 registration steps, Terms, and success credentials work.
-- [ ] Dashboard and tracking match Processing, For Delivery, and Rejected states.
-- [ ] Renewal all 4 steps, confirmation, and Pending/Approved/Rejected work.
-- [ ] Member inquiries list, filters, new inquiry, attachments, timeline, reply, reopen work.
-- [ ] Admin login, dashboard, applications, renewals, inquiries, and profile work.
-- [ ] Admin changes appear in member status pages via shared mock state.
-- [ ] Logo/airplane assets are local; no temporary Figma URLs.
-- [ ] Desktop screens closely match prototype/Figma; smaller viewports responsive.
-- [ ] No inert visible controls, no console-breaking errors, production build succeeds.
-- [ ] Final summary distinguishes mock frontend from absent backend.
+Verified on 2026-11-25 with `npm run build` and a headless Chrome walk against the production preview: **96/96 checks passed**, zero console errors, and zero horizontal overflow at 1440 / 1024 / 768 / 390 px.
+
+- [x] App uses React + Vite + Tailwind with JavaScript/JSX. (`react ^19.3.1`, `vite ^8.3.8`, `tailwindcss ^4.3.5`; no TypeScript config.)
+- [x] Previous plain HTML/CSS/JS experience migrated without losing behavior. (All 29 member/admin routes are wired; every prototype screen has a migrated route in the matrix above.)
+- [x] Member login, all 3 registration steps, Terms, and success credentials work. (Invalid-credential error, demo login, personal → ID → application gating, terms checkbox gate, generated `PS-#####` / `Pw-…` credentials, download action, and new-credential login verified.)
+- [x] Dashboard and tracking match Processing, For Delivery, and Rejected states. (Demo/Maria/Juan logins each render the expected dashboard and six-stage tracker, including the rejection reason and courier state.)
+- [x] Renewal all 4 steps, confirmation, and Pending/Approved/Rejected work. (Eligibility → details → documents/appointment → review → submit produced `RN-2026-0005`; pending duplicate blocked; admin approval appeared on the member status page; seeded approved/rejected records render.)
+- [x] Member inquiries list, filters, new inquiry, attachments, timeline, reply, and reopen work. (Summary counts, search, status/priority filters, attachment metadata, new ticket `INQ-923`, member reply, admin reply, and reopen of `INQ-882` verified.)
+- [x] Admin login, dashboard, applications, renewals, inquiries, and profile work. (Metrics, application search/filter and status update, renewal filter and approval modal with focus trap, inquiry reply/status, and profile save verified.)
+- [x] Admin changes appear in member status pages via shared mock state. (Admin status update, renewal approval, and officer reply were all visible after member login; `passtrack.v2` holds the shared records.)
+- [x] Logo/airplane assets are local; no temporary Figma URLs. (`/assets/plane.jpeg`, `/assets/logo-mark.svg`, and `/assets/favicon.svg` loaded; no external runtime hosts.)
+- [x] Desktop screens closely match prototype/Figma; smaller viewports are responsive. (Prototype parity recorded in `docs/PARITY-NOTES.md`; Figma access remains unavailable. 24 route/viewport checks showed no horizontal overflow and the header stayed sticky.)
+- [x] No inert visible controls, no console-breaking errors, production build succeeds. (Build green; acceptance walk exercised real controls with zero console errors; residual 17 px inline-link exceptions remain documented.)
+- [x] Final summary distinguishes mock frontend from absent backend. (See `docs/HANDOFF.md` — mock behavior, persistence, sessions, and the explicit list of absent backend services.)

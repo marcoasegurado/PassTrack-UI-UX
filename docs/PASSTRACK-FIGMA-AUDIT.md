@@ -2,10 +2,11 @@
 
 > Compact project reference for the rebuild. Update this file as screens are completed.
 > **Tracking:** [`PASSTRACK-REBUILD-TRACKER.md`](./PASSTRACK-REBUILD-TRACKER.md)
-> **Brief:** [`public/prototype/passport-ui-rebuild.md`](../public/prototype/passport-ui-rebuild.md)
+> **Brief:** [`docs/archive/prototype/passport-ui-rebuild.md`](./archive/prototype/passport-ui-rebuild.md)
 
 **Audit date:** 2026-11-23
-**Visual baseline:** existing static prototype in `public/prototype/`
+**Completion status:** Step 11 accepted 2026-11-25 — see §10 for per-area status.
+**Visual baseline:** archived static prototype in `docs/archive/prototype/`
 **Figma access:** `get_design_context`, `get_metadata`, and `get_screenshot` were **not available** in this session. Figma node IDs below come from the brief. Visual decisions are based on the prototype and its Figma-derived tokens; pixel parity vs. Figma remains provisional.
 
 ---
@@ -204,7 +205,7 @@ Guards are frontend-only. Member and admin sessions are separate. Logout clears 
 |---|---|
 | Reuse | Token values, formatting helpers, validation patterns, seed inquiry messages, Terms copy, status copy, icon paths, demo credentials |
 | Replace | Multi-page HTML navigation, `chrome.js` DOM injection, query-param demo controls |
-| Keep | `public/prototype/` as read-only visual reference until parity, then archive with approval |
+| Keep | Static prototype archived under `docs/archive/prototype/` as a read-only reference after Step 11 |
 
 ---
 
@@ -232,3 +233,27 @@ Not implemented: backend, database, real auth, real email/SMS, payments, file st
 | Static hosting with `BrowserRouter` | Document SPA fallback or switch to `HashRouter` |
 | Seeded app shows one status at a time | Seed separate Processing/For Delivery/Rejected applications |
 | Profile design undefined | Keep compact and derived from existing data |
+
+---
+
+## 10. Completion status (2026-11-25)
+
+**Status: complete for the frontend-only rebuild scope.** Step 11 acceptance passed with `npm run build` green and a 96-check headless-Chrome walk against the production preview.
+
+| Area | Status | Evidence |
+|---|---|---|
+| Member login | Complete | Valid/invalid credentials, saved-registration recovery, demo variants, help modal, reset |
+| Registration (3 steps) + Terms | Complete | Step gating, inline validation, ID upload metadata, terms gate, generated credentials, success download |
+| Dashboard + tracking | Complete | Four cards, six-stage tracker, Processing / For Delivery / Rejected variants |
+| Application information | Complete | Dedicated `/application/information` page from stored application data |
+| Renewal (4 steps) | Complete | Eligibility → details → documents/appointment → review → submitted → status; pending/approved/rejected; duplicate and ineligible guards |
+| Member inquiries | Complete | Summary groups, search, status/priority filters, new inquiry, attachments, thread, reply, reopen |
+| Admin portal | Complete | Separate session, dashboard metrics, applications list/detail/status, renewals list/detail/decision, inquiries list/detail/reply, profile |
+| Shared mock state | Complete | `passtrack.v2`; admin changes visible in member views; cross-tab `storage` sync |
+| Responsive + accessibility | Complete | 1440 / 1024 / 768 / 390 px no horizontal overflow; keyboard, focus, labels, contrast, sticky header |
+| Local assets | Complete | `logo-mark.svg`, `plane.jpeg`, `favicon.svg`; no external runtime hosts |
+| Backend | Not in scope | No server, database, real auth, email/SMS, payment, or file storage |
+
+**Figma caveat:** Figma MCP was unavailable for the entire rebuild. Visual parity is verified against 1440 px captures of the archived static prototype (`docs/PARITY-NOTES.md`); original-Figma parity remains unconfirmed and should be re-checked if Figma access returns.
+
+**Prototype status:** `public/prototype/` was archived to `docs/archive/prototype/` with user approval on 2026-11-25. It remains in the repository as a read-only reference and is no longer included in production builds.

@@ -1,5 +1,9 @@
 # DeepSeek Handoff — PASSTRACK Step 5
 
+> **Historical snapshot.** This document records the Step 5 state and is kept for context only.
+> For the current accepted state, see [`HANDOFF.md`](./HANDOFF.md) and
+> [`PASSTRACK-REBUILD-TRACKER.md`](./PASSTRACK-REBUILD-TRACKER.md).
+
 ## Purpose
 
 This document records the state of the PASSTRACK React rebuild when the previous AI assistant stopped. It is for the next agent, not as an implementation proposal.

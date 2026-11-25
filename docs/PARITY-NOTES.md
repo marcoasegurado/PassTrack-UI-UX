@@ -31,11 +31,13 @@
 ## 2. Visual parity vs. the prototype
 
 Step 1 deferred 1440 px reference screenshots because none existed. They were captured during this
-pass by loading `public/prototype/*.html` at 1440 × 900 with the prototype's own demo session
-(`PS-12345`), then compared side by side with the equivalent React route.
+pass by loading the prototype HTML files at 1440 × 900 with the prototype's own demo session
+(`PS-12345`), then compared side by side with the equivalent React route. The prototype now lives in
+`docs/archive/prototype/` and is no longer served by the app.
 
-Reference captures were **not committed** (16 PNGs, several MB). To regenerate, log in through
-`/prototype/login.html` so the prototype store is written, then screenshot each page at 1440 px.
+Reference captures were **not committed** (16 PNGs, several MB). To regenerate, serve
+`docs/archive/prototype/` as a static folder, log in through its `login.html` so the prototype store
+is written, then screenshot each page at 1440 px.
 
 ### Screen-by-screen result
 
