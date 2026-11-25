@@ -24,7 +24,7 @@ export function RenewalShell({ title, description, children, rail }) {
     >
       <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-4">
         <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs font-semibold">
-          <Link to="/dashboard" className="inline-flex min-h-6 items-center text-brand hover:underline">
+          <Link to="/dashboard" className="inline-flex min-h-6 items-center text-brand hover:text-brand-strong">
             Dashboard
           </Link>
           <Icon name="chevron-right" size={12} className="text-muted" />

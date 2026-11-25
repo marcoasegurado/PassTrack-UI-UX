@@ -19,7 +19,7 @@ export function AdminInquiries() {
   const rows = useMemo(() => state.inquiries.filter((item) => { if (filter !== "all" && item.status !== filter) return false; if (priority !== "all" && item.priority !== priority) return false; const term = search.trim().toLowerCase(); return !term || [item.id, item.subject, item.applicantName, item.category].join(" ").toLowerCase().includes(term); }), [filter, priority, search, state.inquiries]);
   const count = (value) => state.inquiries.filter((item) => item.status === value).length;
   const columns = [
-    { key: "id", header: "Ticket", render: (row) => <Link to={`/admin/inquiries/${row.id}`} className="inline-flex min-h-6 items-center font-mono font-bold text-brand hover:underline">{row.id}</Link> },
+    { key: "id", header: "Ticket", render: (row) => <Link to={`/admin/inquiries/${row.id}`} className="inline-flex min-h-6 items-center font-mono font-bold text-brand hover:text-brand-strong">{row.id}</Link> },
     { key: "subject", header: "Subject", render: (row) => <span><strong className="block">{row.subject}</strong><span className="text-xs text-muted">{row.applicantName} · {row.category}</span></span> },
     { key: "updated", header: "Updated", render: (row) => formatRelative(row.updatedAt) },
     { key: "priority", header: "Priority", render: (row) => <StatusBadge tone={PRIORITY_TONE[row.priority] || "outline"}>{row.priority}</StatusBadge> },

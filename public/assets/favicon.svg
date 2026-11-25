@@ -1,4 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#2563eb"/>
-  <path d="M13 35.5 51 22 41 41.5 32.5 37 26 49l-3-9.5-10-4Z" fill="#fff"/>
+  <defs>
+    <linearGradient id="fav-bg" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563eb" />
+      <stop offset="1" stop-color="#1e3a8a" />
+    </linearGradient>
+    <clipPath id="fav-clip">
+      <rect width="64" height="64" rx="14" />
+    </clipPath>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#fav-bg)" />
+  <g clip-path="url(#fav-clip)" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.22">
+    <ellipse cx="32" cy="32" rx="9" ry="24" />
+    <path d="M8 32h48M11 20h42M11 44h42" />
+  </g>
+  <path d="M50 17 15 36l13.5 3.1Z" fill="#ffffff" />
+  <path d="M50 17 28.5 39.1 32.5 51 37 40Z" fill="#e8f1ff" />
+  <path d="m28.5 39.1 4 11.9 4.5-11Z" fill="#bfdbfe" />
 </svg>

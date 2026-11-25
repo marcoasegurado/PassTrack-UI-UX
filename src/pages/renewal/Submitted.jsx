@@ -88,7 +88,7 @@ export function RenewalSubmitted() {
 
             <p className="mt-4 text-xs text-muted">
               Please keep your renewal reference number for future inquiries. See{" "}
-              <Link to="/renewal/status" className="font-semibold text-brand hover:underline">
+              <Link to="/renewal/status" className="font-semibold text-brand hover:text-brand-strong">
                 renewal status
               </Link>{" "}
               for the latest decision.

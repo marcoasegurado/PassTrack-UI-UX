@@ -236,6 +236,16 @@ export function Login() {
           </div>
         </form>
 
+        <div className="mt-4 flex justify-center">
+          <Link
+            to="/admin/login"
+            className="inline-flex min-h-6 items-center gap-1.5 text-xs font-semibold text-muted transition-colors hover:text-brand"
+          >
+            <Icon name="shield" size={13} />
+            Administrator Login
+          </Link>
+        </div>
+
         <section
           aria-label="Demo accounts"
           className="mt-5 rounded-card border border-dashed border-line bg-white/85 p-4"
@@ -247,7 +257,7 @@ export function Login() {
             <button
               type="button"
               onClick={() => setHelpOpen(true)}
-              className="inline-flex min-h-6 cursor-pointer items-center text-[11px] font-semibold text-brand hover:underline"
+              className="inline-flex min-h-6 cursor-pointer items-center text-[11px] font-semibold text-brand transition-colors hover:text-brand-strong"
             >
               How the demo works
             </button>
@@ -388,7 +398,7 @@ export function Login() {
                     closeHelp();
                     document.getElementById("login-app-id")?.focus();
                   }}
-                  className="cursor-pointer font-semibold text-brand hover:underline"
+                  className="cursor-pointer font-semibold text-brand transition-colors hover:text-brand-strong"
                 >
                   the saved sign-in details
                 </button>{" "}

@@ -31,7 +31,13 @@ export function AdminLogin() {
     <main className="flex min-h-screen items-center justify-center bg-[#f4f7fc] px-4 py-8">
       <div className="w-full max-w-md">
         <div className="mb-6 text-center">
-          <img src="/assets/logo-mark.png" alt="" className="mx-auto h-20 w-24 object-contain" />
+          <img
+            src="/assets/logo-mark.svg"
+            alt=""
+            width="80"
+            height="80"
+            className="mx-auto h-20 w-20 object-contain"
+          />
           <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-brand">PASSTRACK</p>
           <h1 className="mt-1 text-2xl font-bold text-navy">Administrator Sign In</h1>
           <p className="mt-1 text-sm text-muted">Manage applications, renewals, and member inquiries.</p>

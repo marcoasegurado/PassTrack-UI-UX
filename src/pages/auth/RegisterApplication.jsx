@@ -123,7 +123,7 @@ export function RegisterApplication() {
               </div>
               <Link
                 to="/register/personal-details"
-                className="inline-flex min-h-6 items-center text-xs font-semibold text-brand hover:underline"
+                className="inline-flex min-h-6 items-center text-xs font-semibold text-brand hover:text-brand-strong"
               >
                 Edit details
               </Link>
@@ -234,7 +234,7 @@ export function RegisterApplication() {
                         agreed,
                       })
                     }
-                    className="font-semibold text-brand hover:underline"
+                    className="font-semibold text-brand hover:text-brand-strong"
                   >
                     Terms and Conditions
                   </Link>

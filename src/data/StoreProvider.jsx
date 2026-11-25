@@ -7,7 +7,7 @@ import {
   useRef,
 } from "react";
 import { createSeedState } from "./seed";
-import { loadState, saveState } from "./storage";
+import { loadState, saveState, STORE_KEY } from "./storage";
 import {
   getAdminMetrics,
   getInquiry,
@@ -29,6 +29,7 @@ import {
   generatePassword,
   generateRenewalRef,
 } from "../lib/ids";
+import { getRenewalEligibility } from "../lib/renewalEligibility";
 
 const StoreContext = createContext(null);
 
@@ -193,6 +194,9 @@ function reducer(state, action) {
       return { ...state, inquiries };
     }
 
+    case "HYDRATE":
+      return action.state;
+
     case "RESET":
       return createSeedState();
 
@@ -212,6 +216,31 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     saveState(state);
   }, [state]);
+
+  /*
+   * Keep other open tabs in sync. The admin portal is often opened in a second
+   * tab during the demo, so a status change there must reach the member tab
+   * without a manual refresh. Writes are immutable and still go through the
+   * same reducer; this only pulls the newest persisted snapshot in.
+   */
+  useEffect(() => {
+    function handleStorage(event) {
+      if (event.key !== STORE_KEY) return;
+
+      if (event.newValue === null) {
+        dispatch({ type: "RESET" });
+        return;
+      }
+
+      // Ignore the echo of this tab's own write (and avoid a write ping-pong).
+      if (event.newValue === JSON.stringify(stateRef.current)) return;
+
+      dispatch({ type: "HYDRATE", state: loadState() });
+    }
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   const actions = useMemo(() => {
     const now = () => new Date().toISOString();
@@ -481,6 +510,19 @@ export function StoreProvider({ children }) {
       const member = getMember(current, session.memberId);
       if (!member) {
         return { ok: false, error: "Member record not found." };
+      }
+
+      const eligibility = getRenewalEligibility(
+        member,
+        getMemberRenewals(current, member.id)[0] || null,
+      );
+
+      if (!eligibility.allowed) {
+        return {
+          ok: false,
+          error:
+            "This member is not eligible to start a passport renewal. Check the eligibility page for details.",
+        };
       }
 
       const draftData = draft || current.renewalDraft;

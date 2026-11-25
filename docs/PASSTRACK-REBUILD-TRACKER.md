@@ -4,7 +4,7 @@
 > **Visual baseline:** the existing static prototype in `public/prototype/` (Figma MCP is not available in this session).
 > **Scope:** frontend-only React + Vite + Tailwind rebuild. No backend, database, API, auth server, email/SMS, payment, or file storage.
 > **Started:** 2026-11-23
-> **Last updated:** 2026-11-24
+> **Last updated:** 2026-11-25
 
 ---
 
@@ -44,8 +44,9 @@
 | 9 | Admin portal | `[x]` | 3 | Separate admin session, dashboard, applications, renewals, inquiries, and editable profile; shared mutations visible in member views |
 | 10 | Integration, responsive, parity | `[x]` | 3 | 168 route/viewport combinations with zero overflow, 44 end-to-end control checks, a11y sweep clean, parity checked against captured prototype screenshots; build green |
 | 11 | Acceptance + handoff | `[ ]` | 0.5 | — |
+| P1 | Portal improvement batch (post-Step 10) | `[x]` | 2 | Logo, cross-tab store sync, Application Information page, sticky-header polish, Admin Login entry, hover motion, renewal eligibility guards; `docs/PORTAL-IMPROVEMENTS.md` complete |
 
-**Current position:** Step 11 — acceptance and handoff.
+**Current position:** Step 11 — acceptance and handoff. The P1 portal improvement batch requested after Step 10 is complete and verified.
 
 ---
 
@@ -425,6 +426,7 @@ Update the **Status** column as each route is migrated.
 | `/register/success` | Application received | `success.html` | Migrated |
 | `/dashboard` | Member dashboard | `dashboard.html` | Migrated |
 | `/application/status` | Application tracking | `status.html` | Migrated |
+| `/application/information` | Application information | `dashboard.html` (card) | Migrated (post-Step 10 improvement) |
 | `/inquiries` | Inquiry overview | `inquiries.html` | Migrated |
 | `/inquiries/new` | New inquiry | `inquiries.html?new=1` | Migrated (full page instead of drawer) |
 | `/inquiries/:ticketId` | Inquiry detail | `inquiry.html` | Migrated |
@@ -466,6 +468,10 @@ source and were reviewed for internal consistency only.
 | 2026-11-24 | Renewal draft uses the seeded nested shape (`personal`, `documents`, `appointment`) | Keeps member status and the Step 9 admin queue reading one record shape |
 | 2026-11-24 | Admin screens use shared design tokens and primitives because no admin prototype screens exist | Keeps the portal visually consistent while preserving separate admin/member sessions |
 | 2026-11-24 | Step 10 parity used 1440 px captures of `public/prototype/*.html` instead of waiting for Figma | The prototype is the locked visual baseline (Step 0); capturing it directly removes the blocker without changing the source of truth |
+| 2026-11-25 | Renewal eligibility is derived from the member's stored passport and checked by the store action and route guard | Prevents a new applicant from fabricating eligibility by typing an expiry date, and keeps pending/approved requests from being duplicated |
+| 2026-11-25 | Ineligible renewal steps render an explanatory notice instead of redirecting | The reason and the next action stay visible, including when the URL is typed directly |
+| 2026-11-25 | Cross-tab sync listens for the `storage` event and dispatches `HYDRATE` with a value comparison | Keeps the open admin/member tabs consistent without introducing a second source of truth or a write loop |
+| 2026-11-25 | The footer’s Admin Login link is hidden on `/admin/*` routes | The admin area does not need a link to its own sign-in page; member-facing footers keep the secondary entry point |
 
 ---
 
@@ -500,6 +506,7 @@ source and were reviewed for internal consistency only.
 | 2026-11-24 | 8 | Added the inquiry list (summary + status groups, search, status/priority filters), full-page new inquiry form with attachment metadata and reply channels, and ticket detail with conversation, reply composer, copy-to-email, and reopen; build passes | `src/pages/member/Inquiries.jsx`, `src/pages/member/NewInquiry.jsx`, `src/pages/member/InquiryDetail.jsx`, `src/components/inquiries/**`, `src/App.jsx` |
 | 2026-11-24 | 9 | Added the separate admin session, responsive admin shell, dashboard metrics, application status management, renewal decisions with confirmation, inquiry replies/status updates, and editable admin profile; build passes and all admin routes smoke-tested | `src/pages/admin/**`, `src/components/layout/AdminLayout.jsx`, `src/data/StoreProvider.jsx`, `src/App.jsx` |
 | 2026-11-24 | 10 | Full Step 10 sweep: 168 route/viewport combinations with no overflow or console errors, 44 end-to-end control checks green, a11y fixes (contrast, heading order, file-input names, admin `main` landmark, 24 px targets), and screen-by-screen parity against prototype 1440 px captures | `src/components/**`, `src/pages/auth/**`, `src/pages/admin/Login.jsx`, `src/pages/admin/Applications.jsx`, `src/pages/admin/Renewals.jsx`, `src/pages/admin/Inquiries.jsx`, `src/pages/member/ApplicationStatus.jsx`, `src/styles/index.css`, `docs/PARITY-NOTES.md`, `docs/PASSTRACK-REBUILD-TRACKER.md` |
+| 2026-11-25 | P1 | Portal improvement batch from `docs/PORTAL-IMPROVEMENTS.md`: new scalable logo + favicon, cross-tab store sync, dedicated Application Information page, sticky-header scroll padding, Admin Login entry points, hover-underline removal with colour/elevation motion, and passport-record-driven renewal eligibility with route guards. Build green; 29/29 portal checks and 11/11 renewal-flow checks pass | `src/lib/renewalEligibility.js`, `src/components/renewal/RenewalEligibilityNotice.jsx`, `src/components/renewal/RenewalStepGuard.jsx`, `src/pages/member/ApplicationInformation.jsx`, `src/pages/renewal/Eligibility.jsx`, `src/data/StoreProvider.jsx`, `src/pages/member/Dashboard.jsx`, `src/components/layout/*`, `src/pages/auth/Login.jsx`, `src/pages/admin/Login.jsx`, `src/styles/index.css`, `public/assets/logo-mark.svg`, `public/assets/favicon.svg`, `docs/PORTAL-IMPROVEMENTS.md` |
 
 ---
 

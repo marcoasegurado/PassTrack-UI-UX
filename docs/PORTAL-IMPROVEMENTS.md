@@ -318,15 +318,44 @@ The exact date and eligibility window must be derived from the shared applicatio
 
 ## Verification Checklist
 
-- [ ] Improved logo is readable at desktop and mobile sizes.
-- [ ] Admin and member changes persist through `passtrack.v2`.
-- [ ] Application Information card opens the detail page.
-- [ ] Header remains visible during scroll.
-- [ ] Admin Login link works without merging sessions.
-- [ ] Hover underlines are removed and replaced with simple transitions.
-- [ ] New applicants are blocked from passport renewal.
-- [ ] Ineligible expiry dates display the correct explanation and date.
-- [ ] Eligible existing passport holders can complete renewal.
-- [ ] `npm run build` passes.
-- [ ] Member/admin route smoke tests pass.
-- [ ] Keyboard and reduced-motion checks pass.
+- [x] Improved logo is readable at desktop and mobile sizes.
+- [x] Admin and member changes persist through `passtrack.v2`.
+- [x] Application Information card opens the detail page.
+- [x] Header remains visible during scroll.
+- [x] Admin Login link works without merging sessions.
+- [x] Hover underlines are removed and replaced with simple transitions.
+- [x] New applicants are blocked from passport renewal.
+- [x] Ineligible expiry dates display the correct explanation and date.
+- [x] Eligible existing passport holders can complete renewal.
+- [x] `npm run build` passes.
+- [x] Member/admin route smoke tests pass.
+- [x] Keyboard and reduced-motion checks pass.
+
+---
+
+## Implementation record (2026-11-25)
+
+| # | Improvement | What changed |
+|---|---|---|
+| 1 | Logo | New scalable `public/assets/logo-mark.svg` (white badge, navy gradient globe, paper plane) used by the member header, admin sidebar, and admin sign-in. Matching `favicon.svg`. The previous PNG stays in `public/assets/` unused for reference. |
+| 2 | Store sync | `StoreProvider` now listens for the browser `storage` event and hydrates from `passtrack.v2` when another tab writes. Writes stay immutable through the reducer. A value comparison prevents write ping-pong. |
+| 3 | Application Information | New member-only `/application/information` route. The dashboard card is now a full-card link with hover elevation and a visible focus ring. The page reuses stored application + member data and shows an empty state when no application exists. |
+| 4 | Sticky header | Header was already `sticky top-0 z-30`; added `scroll-padding-top` (6.75 rem desktop / 5.5 rem mobile) so focused controls and anchor targets are never hidden behind it. Modal (50), sidebar (50), mobile menu (40), and toast (60) layering is unchanged. |
+| 5 | Admin Login | Secondary “Administrator Login” action under the member sign-in form plus an “Admin Login” link in every member-facing footer, both linking to `/admin/login`. The admin portal footer omits the link because it is already the admin area. Sessions remain separate; visiting the admin login does not clear the member session. |
+| 6 | Hover motion | Removed the global `a:hover { text-decoration: underline }` and every `hover:underline`. Links now transition colour; buttons transition colour/background; the info card lifts slightly and its arrow shifts. `prefers-reduced-motion` collapses all nonessential transitions. |
+| 7 | Renewal eligibility | New `src/lib/renewalEligibility.js` derives state from the member’s stored passport. The eligibility form shows read-only passport details, and `/renewal/personal-details`, `/renewal/documents-appointment`, and `/renewal/review` are wrapped in `RenewalStepGuard`. `submitRenewal` re-checks eligibility. |
+
+### Decisions made in this batch
+
+- **Eligibility source:** the passport number and expiry come from the member record, not typed input. The eligibility form shows them read-only so a new applicant cannot manufacture eligibility.
+- **State precedence:** pending or approved renewal → no passport record → expired (allowed with a note) → outside the six-month window (blocked) → eligible. An approved renewal is reported before the window so a member with an older request always sees its status.
+- **Blocked routes render an explanation, not a redirect.** Typing a later renewal URL shows the same accessible notice with a clear next action, which keeps the reason visible.
+- **`/renewal/submitted` stays reachable** — it is the receipt for a request that already exists, not a step a blocked applicant can use to submit.
+- **Logo mark only:** the mark no longer bakes the wordmark into the image; the header already renders “PASSTRACK” as text, so the mark stays sharp from 16 px to 92 px.
+
+### Verification evidence
+
+- `npm run build` succeeds (single-bundle size warning only).
+- 29/29 browser checks: logo load, sticky header, no hover underline rules, card → info page, info-page privacy, footer/header admin entry, session independence, all five eligibility states, direct-URL blocking, cross-tab admin → member sync, reduced motion, mobile overflow/logo collision, zero console errors.
+- 11/11 renewal-flow checks: eligibility → personal details → documents (two real uploads) → review → submit → `RN-YYYY-####` → status → duplicate-request block → draft cleared.
+- Captures reviewed at 1440 px and 390 px for login, admin login, dashboard, application information, and each eligibility state.

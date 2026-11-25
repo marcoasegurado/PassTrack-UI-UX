@@ -31,9 +31,11 @@ export function AdminSidebar({ open = false, onClose, onLogout }) {
       >
         <div className="flex items-center gap-3 border-b border-line-soft px-5 py-4">
           <img
-            src="/assets/logo-mark.png"
+            src="/assets/logo-mark.svg"
             alt=""
-            className="h-11 w-11 rounded-full bg-tint object-contain p-0.5"
+            width="44"
+            height="44"
+            className="h-11 w-11 flex-none rounded-full object-contain"
           />
           <div>
             <p className="text-sm font-bold tracking-wide text-navy">PASSTRACK</p>
@@ -57,7 +59,7 @@ export function AdminSidebar({ open = false, onClose, onLogout }) {
               onClick={onClose}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-3 rounded-control px-3 py-2.5 text-sm font-medium text-muted transition hover:bg-surface-muted hover:text-ink hover:no-underline",
+                  "flex items-center gap-3 rounded-control px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-surface-muted hover:text-ink",
                   isActive && "bg-tint font-semibold text-brand",
                 )
               }

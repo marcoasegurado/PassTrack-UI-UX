@@ -5,8 +5,8 @@ import { Icon } from "../ui/Icon";
 
 function ActionItem({ action, mobile = false, onNavigate }) {
   const className = mobile
-    ? "flex w-full items-center gap-2 rounded-control px-3 py-2.5 text-sm font-medium text-white hover:bg-white/10"
-    : "inline-flex h-[38px] cursor-pointer items-center justify-center gap-1.5 rounded-control border border-white/25 bg-white/5 px-3.5 text-xs font-medium text-white transition hover:bg-white/15 hover:no-underline";
+    ? "flex w-full items-center gap-2 rounded-control px-3 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
+    : "inline-flex h-[38px] cursor-pointer items-center justify-center gap-1.5 rounded-control border border-white/25 bg-white/5 px-3.5 text-xs font-medium text-white transition-colors hover:bg-white/15";
 
   const content = (
     <>
@@ -78,14 +78,17 @@ export function AppHeader({
       <div className="shell relative z-10 flex h-full items-center gap-4 px-4 sm:px-6 lg:px-10">
         <Link
           to={homeTo}
-          className="flex flex-none items-center gap-3 text-white hover:no-underline sm:gap-4"
+          className="group flex flex-none items-center gap-3 text-white sm:gap-4"
         >
           <img
-            src="/assets/logo-mark.png"
+            src="/assets/logo-mark.svg"
             alt=""
-            className="h-[62px] w-[70px] object-contain sm:h-[82px] sm:w-[92px]"
+            width="68"
+            height="68"
+            draggable={false}
+            className="h-[54px] w-[54px] flex-none object-contain drop-shadow-[0_4px_10px_rgba(4,15,45,0.28)] transition-transform duration-200 motion-safe:group-hover:scale-[1.03] sm:h-[68px] sm:w-[68px]"
           />
-          <span>
+          <span className="min-w-0">
             <span className="block text-xl font-bold leading-tight tracking-[0.2px] sm:text-[27px]">
               PASSTRACK
             </span>

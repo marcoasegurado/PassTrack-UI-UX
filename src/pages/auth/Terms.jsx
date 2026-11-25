@@ -192,7 +192,7 @@ export function Terms() {
                   <a
                     key={section.id}
                     href={`#${section.id}`}
-                    className="inline-flex min-h-6 items-center text-xs font-medium leading-snug text-brand hover:underline"
+                    className="inline-flex min-h-6 items-center text-xs font-medium leading-snug text-brand hover:text-brand-strong"
                   >
                     {index + 1}. {section.title}
                   </a>

@@ -13,6 +13,7 @@ import {
   RENEWAL_STATUS,
 } from "../../lib/constants";
 import { getApplicationProgress, getTimelineSteps } from "../../lib/applicationProgress";
+import { getRenewalEligibility, RENEWAL_ELIGIBILITY } from "../../lib/renewalEligibility";
 import { formatDate, formatRelative } from "../../lib/format";
 import { usePageTitle } from "../../lib/usePageTitle";
 
@@ -43,7 +44,7 @@ function Eyebrow({ children }) {
 function Card({ children, className = "" }) {
   return (
     <article
-      className={`flex flex-col rounded-card border border-line bg-surface p-6 shadow-card ${className}`}
+      className={`flex flex-col rounded-card border border-line bg-surface p-6 shadow-card transition-shadow duration-200 ${className}`}
     >
       {children}
     </article>
@@ -107,6 +108,14 @@ export function Dashboard() {
 
   const isRejected = status === APPLICATION_STATUS.REJECTED;
   const dotTone = statusDotTone(status);
+  const eligibility = getRenewalEligibility(member, latestRenewal);
+  const renewalCta = latestRenewal
+    ? { to: "/renewal/status", label: "View renewal" }
+    : eligibility.allowed
+      ? { to: "/renewal/eligibility", label: "Renew passport" }
+      : eligibility.state === RENEWAL_ELIGIBILITY.NO_PASSPORT
+        ? { to: "/application/status", label: "View application" }
+        : { to: "/renewal/eligibility", label: "Check eligibility" };
 
   const documentState = isRejected
     ? "Document review paused"
@@ -252,7 +261,10 @@ export function Dashboard() {
             </div>
           </Card>
 
-          <Card>
+          <Link
+            to="/application/information"
+            className="group flex flex-col rounded-card border border-line bg-surface p-6 shadow-card transition duration-200 motion-safe:hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-[0_16px_32px_rgba(37,99,235,0.16)]"
+          >
             <Eyebrow>Application Information</Eyebrow>
             <strong className="mt-2 text-2xl font-bold leading-tight text-ink">
               {member?.name || "Member"}
@@ -275,11 +287,16 @@ export function Dashboard() {
 
             <div className="mt-auto flex items-end justify-between gap-3 pt-5">
               <span className="text-xs font-semibold text-muted">{documentState}</span>
-              <ButtonLink to="/application/status" size="pill">
+              <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.12px] text-brand">
                 View details
-              </ButtonLink>
+                <Icon
+                  name="chevron-right"
+                  size={14}
+                  className="transition-transform duration-200 motion-safe:group-hover:translate-x-0.5"
+                />
+              </span>
             </div>
-          </Card>
+          </Link>
 
           <Card>
             <Eyebrow>Passport Renewal</Eyebrow>
@@ -294,15 +311,9 @@ export function Dashboard() {
 
             <div className="mt-auto flex items-end justify-between gap-3 pt-5">
               <span className="text-xs text-muted">{renewalState}</span>
-              {latestRenewal ? (
-                <ButtonLink to="/renewal/status" size="pill">
-                  View renewal
-                </ButtonLink>
-              ) : (
-                <ButtonLink to="/renewal/eligibility" size="pill">
-                  Renew passport
-                </ButtonLink>
-              )}
+              <ButtonLink to={renewalCta.to} size="pill">
+                {renewalCta.label}
+              </ButtonLink>
             </div>
           </Card>
         </div>

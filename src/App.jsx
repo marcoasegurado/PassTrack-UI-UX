@@ -14,6 +14,7 @@ import { Terms } from "./pages/auth/Terms";
 import { RegisterSuccess } from "./pages/auth/RegisterSuccess";
 import { Dashboard } from "./pages/member/Dashboard";
 import { ApplicationStatus } from "./pages/member/ApplicationStatus";
+import { ApplicationInformation } from "./pages/member/ApplicationInformation";
 import { Profile } from "./pages/member/Profile";
 import { Inquiries } from "./pages/member/Inquiries";
 import { NewInquiry } from "./pages/member/NewInquiry";
@@ -24,6 +25,7 @@ import { RenewalDocumentsAppointment } from "./pages/renewal/DocumentsAppointmen
 import { RenewalReview } from "./pages/renewal/Review";
 import { RenewalSubmitted } from "./pages/renewal/Submitted";
 import { RenewalStatus } from "./pages/renewal/Status";
+import { RenewalStepGuard } from "./components/renewal/RenewalStepGuard";
 import { AdminLogin } from "./pages/admin/Login";
 import { AdminDashboard } from "./pages/admin/Dashboard";
 import { AdminApplications } from "./pages/admin/Applications";
@@ -93,6 +95,15 @@ export default function App() {
             />
 
             <Route
+              path="/application/information"
+              element={
+                <MemberOnly>
+                  <ApplicationInformation />
+                </MemberOnly>
+              }
+            />
+
+            <Route
               path="/profile"
               element={
                 <MemberOnly>
@@ -142,7 +153,9 @@ export default function App() {
               path="/renewal/personal-details"
               element={
                 <MemberOnly>
-                  <RenewalPersonalDetails />
+                  <RenewalStepGuard>
+                    <RenewalPersonalDetails />
+                  </RenewalStepGuard>
                 </MemberOnly>
               }
             />
@@ -150,7 +163,9 @@ export default function App() {
               path="/renewal/documents-appointment"
               element={
                 <MemberOnly>
-                  <RenewalDocumentsAppointment />
+                  <RenewalStepGuard>
+                    <RenewalDocumentsAppointment />
+                  </RenewalStepGuard>
                 </MemberOnly>
               }
             />
@@ -158,7 +173,9 @@ export default function App() {
               path="/renewal/review"
               element={
                 <MemberOnly>
-                  <RenewalReview />
+                  <RenewalStepGuard>
+                    <RenewalReview />
+                  </RenewalStepGuard>
                 </MemberOnly>
               }
             />

@@ -3,7 +3,7 @@ import { cn } from "../../lib/cn";
 import { Icon } from "./Icon";
 
 const inputBase =
-  "w-full rounded-control border border-line bg-surface text-base text-ink outline-none transition placeholder:text-muted focus:border-brand focus:ring-4 focus:ring-brand/10 aria-[invalid=true]:border-danger aria-[invalid=true]:focus:ring-danger/10";
+  "w-full rounded-control border border-line bg-surface text-base text-ink outline-none transition placeholder:text-muted focus:border-brand focus:ring-4 focus:ring-brand/10 aria-[invalid=true]:border-danger aria-[invalid=true]:focus:ring-danger/10 read-only:cursor-default read-only:border-line-soft read-only:bg-surface-muted read-only:text-slate-body read-only:focus:border-line-soft read-only:focus:ring-0";
 
 function FieldShell({ id, label, required, hint, error, className, children }) {
   const hintId = hint ? `${id}-hint` : undefined;

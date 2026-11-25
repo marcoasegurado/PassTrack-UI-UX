@@ -46,6 +46,14 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /* Keep focused controls and anchor targets clear of the sticky header. */
+    scroll-padding-top: 6.75rem;
+  }
+
+  @media (max-width: 639px) {
+    html {
+      scroll-padding-top: 5.5rem;
+    }
   }
 
   body {
@@ -66,13 +74,18 @@
     margin: 0;
   }
 
+  /*
+   * Links change colour and background softly instead of gaining an underline.
+   * Components set their own hover tint so header links keep their contrast.
+   */
   a {
     color: var(--color-brand);
     text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      opacity 0.15s ease;
   }
 
   :focus-visible {
@@ -155,6 +168,15 @@
   .pt-progress::-webkit-progress-value,
   .pt-progress::-moz-progress-bar {
     transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
