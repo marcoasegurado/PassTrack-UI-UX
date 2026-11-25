@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MemberLayout } from "../../components/layout/MemberLayout";
 import { StageProgress } from "../../components/application/StageProgress";
-import { Button, ButtonLink } from "../../components/ui/Button";
+import { ButtonLink } from "../../components/ui/Button";
 import { CopyButton } from "../../components/ui/CopyButton";
 import { Icon } from "../../components/ui/Icon";
 import { StatusBadge } from "../../components/ui/StatusBadge";
@@ -12,7 +12,7 @@ import {
   INQUIRY_STATUS,
   RENEWAL_STATUS,
 } from "../../lib/constants";
-import { getApplicationProgress, getTimelineSteps } from "../../lib/applicationProgress";
+import { getApplicationProgress } from "../../lib/applicationProgress";
 import { getRenewalEligibility, RENEWAL_ELIGIBILITY } from "../../lib/renewalEligibility";
 import { formatDate, formatRelative } from "../../lib/format";
 import { usePageTitle } from "../../lib/usePageTitle";
@@ -44,7 +44,7 @@ function Eyebrow({ children }) {
 function Card({ children, className = "" }) {
   return (
     <article
-      className={`flex flex-col rounded-card border border-line bg-surface p-6 shadow-card transition-shadow duration-200 ${className}`}
+      className={`flex flex-col rounded-card border border-line bg-surface p-6 shadow-card transition duration-200 motion-safe:hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-[0_16px_32px_rgba(37,99,235,0.16)] ${className}`}
     >
       {children}
     </article>
@@ -79,7 +79,6 @@ function TicketLine({ inquiry }) {
 }
 
 export function Dashboard() {
-  const navigate = useNavigate();
   const {
     member,
     application,
@@ -93,8 +92,6 @@ export function Dashboard() {
   const firstName = member?.firstName || "Member";
   const status = application?.status;
   const progress = getApplicationProgress(status);
-  const steps = getTimelineSteps(status, application?.history || [], application?.submittedAt);
-  const currentStep = steps[progress.stage - 1] || steps[0];
 
   const activeInquiries = memberInquiries.filter(
     (inquiry) => inquiry.status !== INQUIRY_STATUS.RESOLVED,
@@ -160,7 +157,7 @@ export function Dashboard() {
             <p className="mt-1 text-sm text-muted">PASSTRACK Travel Agency</p>
           </div>
 
-          <div className="rounded-card border border-line bg-white px-4 py-3 shadow-card">
+          <div className="rounded-card border border-line bg-white px-4 py-3 shadow-card transition duration-200 motion-safe:hover:-translate-y-0.5 hover:border-brand/45 hover:shadow-[0_16px_32px_rgba(37,99,235,0.16)]">
             <Eyebrow>Application ID</Eyebrow>
             <div className="mt-1 flex items-center gap-2">
               <strong className="font-mono text-base font-bold text-ink">
@@ -317,31 +314,6 @@ export function Dashboard() {
             </div>
           </Card>
         </div>
-
-        <section className="rounded-card border border-line bg-surface-muted px-5 py-4 text-sm text-slate-body">
-          <p className="font-semibold text-ink">
-            Current phase: {currentStep?.label || "Awaiting application"}
-          </p>
-          <p className="mt-1 text-xs text-muted">
-            {currentStep?.meta || "Updates appear as the shared application record changes."} ·
-            Last updated {formatRelative(application?.updatedAt || application?.submittedAt)}
-          </p>
-          <div className="mt-3 flex flex-wrap gap-3">
-            <ButtonLink to="/application/status" variant="outline" size="sm">
-              Open full tracker
-            </ButtonLink>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                logoutMember();
-                navigate("/login");
-              }}
-            >
-              Switch account
-            </Button>
-          </div>
-        </section>
       </div>
     </MemberLayout>
   );

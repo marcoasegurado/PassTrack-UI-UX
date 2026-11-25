@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { InquiryShell } from "../../components/inquiries/InquiryShell";
-import { Button, ButtonLink } from "../../components/ui/Button";
+import { SidePanel } from "../../components/ui/SidePanel";
+import { Button } from "../../components/ui/Button";
 import { Checkbox, SelectField, TextField, TextareaField } from "../../components/ui/Field";
 import { FileUploadField } from "../../components/ui/FileUploadField";
 import { Icon } from "../../components/ui/Icon";
@@ -14,54 +14,11 @@ import {
 } from "../../lib/constants";
 import { formatFileSize } from "../../lib/files";
 import { formatDate } from "../../lib/format";
-import { usePageTitle } from "../../lib/usePageTitle";
 
 const CATEGORIES = [...new Set(INQUIRY_CATEGORIES)];
 const REPLY_CHANNELS = ["Email", "SMS", "In-app"];
 
-function GuidanceRail() {
-  return (
-    <>
-      <section className="rounded-panel border border-line bg-surface p-5 shadow-card">
-        <h2 className="text-base font-bold text-navy">Before you submit</h2>
-        <ul className="mt-3 flex flex-col gap-2.5 text-[13px] leading-relaxed text-slate-body">
-          <li className="flex items-start gap-2.5">
-            <Icon name="clock" size={15} className="mt-0.5 shrink-0 text-brand" />
-            <span>Officers typically respond within one business day.</span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <Icon name="file-text" size={15} className="mt-0.5 shrink-0 text-brand" />
-            <span>Include your ticket or application ID so we can trace your record.</span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <Icon name="shield" size={15} className="mt-0.5 shrink-0 text-brand" />
-            <span>Never include your password or full identification numbers.</span>
-          </li>
-        </ul>
-      </section>
-
-      <section className="rounded-panel border border-line bg-surface p-5 shadow-card">
-        <h2 className="text-base font-bold text-navy">What happens next</h2>
-        <ol className="mt-3 flex list-inside list-decimal flex-col gap-2.5 text-[13px] leading-relaxed text-slate-body">
-          <li>Your inquiry is added to your application record.</li>
-          <li>An officer reviews it and replies on the secure channel.</li>
-          <li>You are notified through the reply channels you choose.</li>
-          <li>Reply again or reopen the ticket if you need more help.</li>
-        </ol>
-      </section>
-
-      <section className="rounded-panel border border-line bg-surface p-5 shadow-card">
-        <h2 className="text-base font-bold text-navy">Need urgent help?</h2>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
-          For travel within 48 hours, mark your inquiry as High priority and include your travel
-          date in the message.
-        </p>
-      </section>
-    </>
-  );
-}
-
-export function NewInquiry() {
+export function NewInquiry({ open, onClose }) {
   const navigate = useNavigate();
   const toast = useToast();
   const { member, application, addInquiry } = useStore();
@@ -77,7 +34,20 @@ export function NewInquiry() {
   const [formError, setFormError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  usePageTitle("New Inquiry");
+  useEffect(() => {
+    if (open) return;
+
+    setCategory(CATEGORIES[0]);
+    setPriority("Medium");
+    setSubject("");
+    setMessage("");
+    setAttachments([]);
+    setChannels(["Email"]);
+    setErrors({});
+    setFileError("");
+    setFormError("");
+    setSubmitting(false);
+  }, [open]);
 
   function updateChannel(channel, checked) {
     setChannels((current) =>
@@ -120,208 +90,196 @@ export function NewInquiry() {
     }
 
     toast(`Inquiry ${result.inquiry.id} created.`);
+    onClose?.();
     navigate(`/inquiries/${result.inquiry.id}`, { replace: true });
   }
 
   return (
-    <InquiryShell
+    <SidePanel
+      open={open}
+      onClose={onClose}
       title="New Inquiry"
       description="Tell us what you need help with. An officer will reply on the secure member channel."
-      crumbs={[
-        { label: "Dashboard", to: "/dashboard" },
-        { label: "My Inquiries", to: "/inquiries" },
-        { label: "New Inquiry" },
-      ]}
-      actions={
-        <ButtonLink to="/inquiries" variant="ghost">
-          <Icon name="arrow-left" size={15} />
-          Back to inquiries
-        </ButtonLink>
+      footer={
+        <>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" form="new-inquiry-form" disabled={submitting}>
+            {submitting ? "Submitting…" : "Submit Inquiry"}
+          </Button>
+        </>
       }
     >
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
-        <section className="overflow-hidden rounded-panel border border-line bg-surface shadow-card">
-          <header className="border-b border-line-soft px-5 py-5 sm:px-7">
-            <h2 className="text-xl font-bold leading-tight text-navy sm:text-2xl">
-              Submit New Inquiry
-            </h2>
-            <p className="mt-1 text-sm leading-relaxed text-muted">
-              Provide details below. An officer typically responds within one business day.
-            </p>
-          </header>
-
-          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5 px-5 py-6 sm:px-7">
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-control border border-[#dce6f3] bg-tint px-4 py-3">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-body">
-                <span className="font-bold uppercase tracking-[0.16em] text-muted">
-                  Linked application
-                </span>
-                <strong className="font-mono text-sm text-ink">{application?.id || member?.appId}</strong>
-                {application?.status && (
-                  <span className="font-semibold">
-                    · {APPLICATION_STATUS_LABELS[application.status] || application.status}
-                  </span>
-                )}
-              </div>
-              {application?.submittedAt && (
-                <span className="text-xs text-muted">
-                  Submitted {formatDate(application.submittedAt)}
-                </span>
-              )}
-            </div>
-
-            {formError && (
-              <div
-                role="alert"
-                className="flex items-start gap-2 rounded-control border border-[#f9c2c2] bg-[#fff6f6] px-4 py-3 text-sm font-medium text-[#b42318]"
-              >
-                <Icon name="alert-circle" size={18} className="mt-0.5 shrink-0" />
-                <span>{formError}</span>
-              </div>
+      <form
+        id="new-inquiry-form"
+        onSubmit={handleSubmit}
+        noValidate
+        className="flex flex-col gap-5"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-control border border-[#dce6f3] bg-tint px-4 py-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-body">
+            <span className="font-bold uppercase tracking-[0.16em] text-muted">
+              Linked application
+            </span>
+            <strong className="font-mono text-sm text-ink">
+              {application?.id || member?.appId}
+            </strong>
+            {application?.status && (
+              <span className="font-semibold">
+                · {APPLICATION_STATUS_LABELS[application.status] || application.status}
+              </span>
             )}
+          </div>
+          {application?.submittedAt && (
+            <span className="text-xs text-muted">
+              Submitted {formatDate(application.submittedAt)}
+            </span>
+          )}
+        </div>
 
-            <div className="grid gap-5 sm:grid-cols-2">
-              <SelectField
-                id="inquiry-category"
-                label="Category"
-                required
-                options={CATEGORIES}
-                value={category}
-                onChange={(event) => setCategory(event.target.value)}
+        {formError && (
+          <div
+            role="alert"
+            className="flex items-start gap-2 rounded-control border border-[#f9c2c2] bg-[#fff6f6] px-4 py-3 text-sm font-medium text-[#b42318]"
+          >
+            <Icon name="alert-circle" size={18} className="mt-0.5 shrink-0" />
+            <span>{formError}</span>
+          </div>
+        )}
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <SelectField
+            id="inquiry-category"
+            label="Category"
+            required
+            options={CATEGORIES}
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+          />
+          <SelectField
+            id="inquiry-priority"
+            label="Priority"
+            hint="Choose High only if travel is within 48 hours."
+            options={INQUIRY_PRIORITIES}
+            value={priority}
+            onChange={(event) => setPriority(event.target.value)}
+          />
+        </div>
+
+        <TextField
+          id="inquiry-subject"
+          label="Subject"
+          required
+          maxLength={120}
+          autoComplete="off"
+          placeholder="Enter a concise subject"
+          value={subject}
+          error={errors.subject}
+          onChange={(event) => {
+            setSubject(event.target.value);
+            setErrors((current) => {
+              if (!current.subject) return current;
+              const next = { ...current };
+              delete next.subject;
+              return next;
+            });
+          }}
+        />
+
+        <TextareaField
+          id="inquiry-message"
+          label="Message"
+          required
+          maxLength={2000}
+          placeholder="Describe your question or concern"
+          hint="Do not include sensitive identification numbers."
+          textareaClassName="min-h-36"
+          value={message}
+          error={errors.message}
+          onChange={(event) => {
+            setMessage(event.target.value);
+            setErrors((current) => {
+              if (!current.message) return current;
+              const next = { ...current };
+              delete next.message;
+              return next;
+            });
+          }}
+        />
+
+        <div className="flex flex-col gap-3">
+          <FileUploadField
+            id="inquiry-attachment"
+            label="Attach File"
+            value={null}
+            error={fileError}
+            onError={setFileError}
+            onChange={(file) => {
+              if (!file) return;
+              setAttachments((current) => [...current, file]);
+            }}
+            hint="Optional. JPG, PNG, or PDF up to 10 MB each."
+          />
+
+          {attachments.length > 0 && (
+            <ul className="flex flex-col gap-2">
+              {attachments.map((file, index) => (
+                <li
+                  key={`${file.name}-${index}`}
+                  className="flex items-center gap-3 rounded-control border border-line bg-surface-muted px-4 py-3"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-tint text-brand">
+                    <Icon name="file-text" size={18} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-ink">{file.name}</p>
+                    <p className="text-xs text-muted">{formatFileSize(file.size)}</p>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={`Remove ${file.name}`}
+                    onClick={() =>
+                      setAttachments((current) =>
+                        current.filter((_, itemIndex) => itemIndex !== index),
+                      )
+                    }
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-control border border-line bg-white text-muted hover:bg-rose-bg hover:text-danger"
+                  >
+                    <Icon name="trash" size={14} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <fieldset>
+          <legend className="text-sm font-semibold text-ink">Reply channels</legend>
+          <p className="mt-0.5 text-xs text-muted">
+            Choose how you would like to be notified about officer replies.
+          </p>
+          <div className="mt-2.5 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-5">
+            {REPLY_CHANNELS.map((channel) => (
+              <Checkbox
+                key={channel}
+                id={`inquiry-channel-${channel.toLowerCase()}`}
+                label={channel}
+                checked={channels.includes(channel)}
+                onChange={(event) => updateChannel(channel, event.target.checked)}
               />
-              <SelectField
-                id="inquiry-priority"
-                label="Priority"
-                hint="Choose High only if travel is within 48 hours."
-                options={INQUIRY_PRIORITIES}
-                value={priority}
-                onChange={(event) => setPriority(event.target.value)}
-              />
-            </div>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-muted">
+            This demo stores your preference only — no real email or SMS is sent.
+          </p>
+        </fieldset>
 
-            <TextField
-              id="inquiry-subject"
-              label="Subject"
-              required
-              maxLength={120}
-              autoComplete="off"
-              placeholder="Enter a concise subject"
-              value={subject}
-              error={errors.subject}
-              onChange={(event) => {
-                setSubject(event.target.value);
-                setErrors((current) => {
-                  if (!current.subject) return current;
-                  const next = { ...current };
-                  delete next.subject;
-                  return next;
-                });
-              }}
-            />
-
-            <TextareaField
-              id="inquiry-message"
-              label="Message"
-              required
-              maxLength={2000}
-              placeholder="Describe your question or concern"
-              hint="Do not include sensitive identification numbers."
-              textareaClassName="min-h-36"
-              value={message}
-              error={errors.message}
-              onChange={(event) => {
-                setMessage(event.target.value);
-                setErrors((current) => {
-                  if (!current.message) return current;
-                  const next = { ...current };
-                  delete next.message;
-                  return next;
-                });
-              }}
-            />
-
-            <div className="flex flex-col gap-3">
-              <FileUploadField
-                id="inquiry-attachment"
-                label="Attach File"
-                value={null}
-                error={fileError}
-                onError={setFileError}
-                onChange={(file) => {
-                  if (!file) return;
-                  setAttachments((current) => [...current, file]);
-                }}
-                hint="Optional. JPG, PNG, or PDF up to 10 MB each."
-              />
-
-              {attachments.length > 0 && (
-                <ul className="flex flex-col gap-2">
-                  {attachments.map((file, index) => (
-                    <li
-                      key={`${file.name}-${index}`}
-                      className="flex items-center gap-3 rounded-control border border-line bg-surface-muted px-4 py-3"
-                    >
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-tint text-brand">
-                        <Icon name="file-text" size={18} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold text-ink">{file.name}</p>
-                        <p className="text-xs text-muted">{formatFileSize(file.size)}</p>
-                      </div>
-                      <button
-                        type="button"
-                        aria-label={`Remove ${file.name}`}
-                        onClick={() =>
-                          setAttachments((current) =>
-                            current.filter((_, itemIndex) => itemIndex !== index),
-                          )
-                        }
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-control border border-line bg-white text-muted hover:bg-rose-bg hover:text-danger"
-                      >
-                        <Icon name="trash" size={14} />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <fieldset>
-              <legend className="text-sm font-semibold text-ink">Reply channels</legend>
-              <p className="mt-0.5 text-xs text-muted">
-                Choose how you would like to be notified about officer replies.
-              </p>
-              <div className="mt-2.5 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-5">
-                {REPLY_CHANNELS.map((channel) => (
-                  <Checkbox
-                    key={channel}
-                    id={`inquiry-channel-${channel.toLowerCase()}`}
-                    label={channel}
-                    checked={channels.includes(channel)}
-                    onChange={(event) => updateChannel(channel, event.target.checked)}
-                  />
-                ))}
-              </div>
-              <p className="mt-2 text-xs text-muted">
-                This demo stores your preference only — no real email or SMS is sent.
-              </p>
-            </fieldset>
-
-            <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
-              <ButtonLink to="/inquiries" variant="outline">
-                Cancel
-              </ButtonLink>
-              <Button type="submit" disabled={submitting}>
-                {submitting ? "Submitting…" : "Submit Inquiry"}
-              </Button>
-            </div>
-          </form>
-        </section>
-
-        <aside aria-label="Inquiry guidance" className="flex flex-col gap-4">
-          <GuidanceRail />
-        </aside>
-      </div>
-    </InquiryShell>
+        <div className="flex items-start gap-2.5 rounded-control border border-[#dce6f3] bg-tint px-4 py-3 text-xs leading-relaxed text-slate-body">
+          <Icon name="clock" size={15} className="mt-0.5 shrink-0 text-brand" />
+          <span>Officers typically respond within one business day.</span>
+        </div>
+      </form>
+    </SidePanel>
   );
 }

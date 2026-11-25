@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { AppHeader } from "../../components/layout/AppHeader";
-import { Footer } from "../../components/layout/Footer";
 import { Button, ButtonLink } from "../../components/ui/Button";
 import { Checkbox, Radio, SelectField, TextField, TextareaField } from "../../components/ui/Field";
 import { FileUploadField } from "../../components/ui/FileUploadField";
@@ -269,8 +268,6 @@ export function StyleGuide() {
           </p>
         </Modal>
       </main>
-
-      <Footer />
     </div>
   );
 }

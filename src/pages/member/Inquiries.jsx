@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { InquiryShell } from "../../components/inquiries/InquiryShell";
-import { Button, ButtonLink } from "../../components/ui/Button";
+import { NewInquiry } from "./NewInquiry";
+import { Button } from "../../components/ui/Button";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { FilterBar, FilterChip } from "../../components/ui/FilterBar";
 import { Icon } from "../../components/ui/Icon";
@@ -101,8 +102,22 @@ export function Inquiries() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const newOpen = searchParams.get("new") === "1";
 
   usePageTitle("My Inquiries");
+
+  function openNewInquiry() {
+    const next = new URLSearchParams(searchParams);
+    next.set("new", "1");
+    setSearchParams(next);
+  }
+
+  function closeNewInquiry() {
+    const next = new URLSearchParams(searchParams);
+    next.delete("new");
+    setSearchParams(next, { replace: true });
+  }
 
   const counts = useMemo(
     () => ({
@@ -156,10 +171,10 @@ export function Inquiries() {
       title="My Inquiries"
       description="Ask questions about your passport application and follow every officer response."
       actions={
-        <ButtonLink to="/inquiries/new">
+        <Button onClick={openNewInquiry}>
           <Icon name="plus" size={15} />
           New inquiry
-        </ButtonLink>
+        </Button>
       }
     >
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -236,10 +251,10 @@ export function Inquiries() {
             title="No inquiries yet"
             description="Need help with your application, documents, or delivery? Start an inquiry and an officer will respond within one business day."
             action={
-              <ButtonLink to="/inquiries/new">
+              <Button onClick={openNewInquiry}>
                 <Icon name="plus" size={15} />
                 Start new inquiry
-              </ButtonLink>
+              </Button>
             }
           />
         </section>
@@ -287,6 +302,8 @@ export function Inquiries() {
         Showing {filtered.length} of {memberInquiries.length} inquiries
         {filtersActive ? " · filters applied" : ""}
       </p>
+
+      <NewInquiry open={newOpen} onClose={closeNewInquiry} />
     </InquiryShell>
   );
 }

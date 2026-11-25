@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppHeader } from "./AppHeader";
 import { AdminSidebar } from "./AdminSidebar";
-import { Footer } from "./Footer";
 import { ButtonLink } from "../ui/Button";
 import { useToast } from "../ui/Toast";
 import { useStore } from "../../data/StoreProvider";
@@ -57,8 +56,6 @@ export function AdminLayout({ title = "Admin Dashboard", description, actions, c
           </div>
         </main>
       </div>
-
-      <Footer portal />
     </div>
   );
 }

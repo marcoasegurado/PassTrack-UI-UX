@@ -1,10 +1,9 @@
 import { AppHeader } from "./AppHeader";
-import { Footer } from "./Footer";
 import { cn } from "../../lib/cn";
 
 export function AuthShell({ context, actions = [], children, className }) {
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-page">
+    <div className="relative flex min-h-screen flex-col overflow-x-clip bg-page">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-32 -top-24 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(180,208,255,.55),rgba(244,248,255,0)_70%)] blur-[40px]"
@@ -24,8 +23,6 @@ export function AuthShell({ context, actions = [], children, className }) {
       >
         {children}
       </main>
-
-      <Footer bare />
     </div>
   );
 }

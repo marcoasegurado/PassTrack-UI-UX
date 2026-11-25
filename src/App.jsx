@@ -17,7 +17,6 @@ import { ApplicationStatus } from "./pages/member/ApplicationStatus";
 import { ApplicationInformation } from "./pages/member/ApplicationInformation";
 import { Profile } from "./pages/member/Profile";
 import { Inquiries } from "./pages/member/Inquiries";
-import { NewInquiry } from "./pages/member/NewInquiry";
 import { InquiryDetail } from "./pages/member/InquiryDetail";
 import { RenewalEligibility } from "./pages/renewal/Eligibility";
 import { RenewalPersonalDetails } from "./pages/renewal/PersonalDetails";
@@ -122,11 +121,7 @@ export default function App() {
             />
             <Route
               path="/inquiries/new"
-              element={
-                <MemberOnly>
-                  <NewInquiry />
-                </MemberOnly>
-              }
+              element={<Navigate to="/inquiries?new=1" replace />}
             />
             <Route
               path="/inquiries/:ticketId"

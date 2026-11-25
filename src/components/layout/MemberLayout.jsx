@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AppHeader } from "./AppHeader";
-import { Footer } from "./Footer";
 import { Modal } from "../ui/Modal";
 import { ButtonLink } from "../ui/Button";
 import { CopyButton } from "../ui/CopyButton";
@@ -16,7 +15,6 @@ export function MemberLayout({
   onLogout,
   actions: actionsProp,
   children,
-  footer = true,
 }) {
   const navigate = useNavigate();
   const toast = useToast();
@@ -58,8 +56,6 @@ export function MemberLayout({
       <main id="main-content" className="shell flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
         {children ?? <Outlet />}
       </main>
-
-      {footer && <Footer portal />}
 
       <Modal
         open={profileOpen}

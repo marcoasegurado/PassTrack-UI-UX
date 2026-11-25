@@ -1,5 +1,4 @@
 import { AppHeader } from "../../components/layout/AppHeader";
-import { Footer } from "../../components/layout/Footer";
 import { Button } from "../../components/ui/Button";
 import { StatusBadge } from "../../components/ui/StatusBadge";
 import { SummaryCard } from "../../components/ui/SummaryCard";
@@ -378,8 +377,6 @@ export function StoreCheck() {
           </p>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 }
