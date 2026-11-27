@@ -32,7 +32,7 @@ export function ToastProvider({ children }) {
       <div
         aria-live="polite"
         aria-atomic="true"
-        className="pointer-events-none fixed right-4 top-4 z-[60] flex max-w-[calc(100vw-2rem)] flex-col items-end gap-2 sm:right-6 sm:top-6"
+        className="pointer-events-none fixed right-4 bottom-4 z-[60] flex max-w-[calc(100vw-2rem)] flex-col items-end gap-2 sm:right-6 sm:bottom-6"
       >
         {toasts.map((item) => (
           <div
