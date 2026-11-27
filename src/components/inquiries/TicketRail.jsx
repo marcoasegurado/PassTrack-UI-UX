@@ -13,7 +13,9 @@ function InfoRow({ label, children }) {
   );
 }
 
-export function TicketInfoRail({ inquiry }) {
+export function TicketInfoRail({ inquiry, variant = "member" }) {
+  const admin = variant === "admin";
+
   return (
     <>
       <section className="rounded-panel border border-line bg-surface p-5 shadow-card">
@@ -51,18 +53,21 @@ export function TicketInfoRail({ inquiry }) {
         <div className="mt-4 flex gap-2 rounded-control bg-tint p-3 text-xs leading-relaxed text-slate-body">
           <Icon name="info" size={14} className="mt-0.5 shrink-0 text-brand" />
           <span>
-            Officers usually respond within one business day. Replies remain attached to your
-            application record.
+            {admin
+              ? "Status changes made here are shared with the member portal immediately."
+              : "Officers usually respond within one business day. Replies remain attached to your application record."}
           </span>
         </div>
       </section>
 
-      {inquiry.applicationId && <RelatedApplicationCard applicationId={inquiry.applicationId} />}
+      {inquiry.applicationId && (
+        <RelatedApplicationCard applicationId={inquiry.applicationId} admin={admin} />
+      )}
     </>
   );
 }
 
-function RelatedApplicationCard({ applicationId }) {
+function RelatedApplicationCard({ applicationId, admin = false }) {
   return (
     <section className="rounded-panel border border-line bg-surface p-5 shadow-card">
       <div className="flex items-center justify-between gap-2">
@@ -70,11 +75,16 @@ function RelatedApplicationCard({ applicationId }) {
         <span className="font-mono text-xs font-bold text-muted">{applicationId}</span>
       </div>
       <p className="mt-2 text-[13px] leading-relaxed text-slate-body">
-        This ticket is linked to your passport application record. Track the latest status on the
-        application page.
+        {admin
+          ? "Open the linked application record to review or update its processing status."
+          : "This ticket is linked to your passport application record. Track the latest status on the application page."}
       </p>
-      <ButtonLink to="/application/status" block className="mt-3.5">
-        View application
+      <ButtonLink
+        to={admin ? `/admin/applications/${applicationId}` : "/application/status"}
+        block
+        className="mt-3.5"
+      >
+        {admin ? "Open application" : "View application"}
       </ButtonLink>
     </section>
   );

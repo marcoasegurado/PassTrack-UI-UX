@@ -22,7 +22,7 @@ export function AttachmentList({ attachments = [], className }) {
   );
 }
 
-export function TicketThread({ messages = [], memberName }) {
+export function TicketThread({ messages = [], memberName, perspective = "member" }) {
   if (!messages.length) {
     return (
       <p className="rounded-control bg-surface-muted px-4 py-5 text-center text-sm text-muted">
@@ -34,8 +34,11 @@ export function TicketThread({ messages = [], memberName }) {
   return (
     <div className="flex flex-col gap-5">
       {messages.map((message) => {
-        const mine = message.from === "member";
-        const author = mine ? memberName || message.author || "You" : message.author;
+        const fromMember = message.from === "member";
+        const mine = perspective === "support" ? !fromMember : fromMember;
+        const author = fromMember
+          ? memberName || message.author || "Member"
+          : message.author || "Passport Services";
 
         return (
           <article
@@ -56,7 +59,7 @@ export function TicketThread({ messages = [], memberName }) {
               <div className={cn("flex flex-wrap items-baseline gap-2", mine && "justify-end")}>
                 <strong className="text-sm font-bold text-ink">{mine ? "You" : author}</strong>
                 <span className="text-[11px] font-semibold text-muted">
-                  {message.role || (mine ? "Member" : "Passport Services")}
+                  {message.role || (fromMember ? "Member" : "Passport Services")}
                 </span>
               </div>
 
