@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { AdminLayout } from "../../components/layout/AdminLayout";
 import { ButtonLink } from "../../components/ui/Button";
 import { DataTable } from "../../components/ui/DataTable";
-import { FilterBar, FilterChip } from "../../components/ui/FilterBar";
+import { FilterBar } from "../../components/ui/FilterBar";
+import { Icon } from "../../components/ui/Icon";
 import { StatusBadge } from "../../components/ui/StatusBadge";
 import { useStore } from "../../data/StoreProvider";
+import { cn } from "../../lib/cn";
 import { APPLICATION_STATUS, APPLICATION_STATUS_LABELS } from "../../lib/constants";
 import { formatDate } from "../../lib/format";
 import { usePageTitle } from "../../lib/usePageTitle";
@@ -24,6 +26,8 @@ export function AdminApplications() {
     return !term || [application.id, application.applicantName, application.email, application.status].join(" ").toLowerCase().includes(term);
   }), [search, state.applications, status]);
 
+  const count = (value) => state.applications.filter((row) => row.status === value).length;
+
   const columns = [
     { key: "id", header: "Application", render: (row) => <Link to={`/admin/applications/${row.id}`} className="inline-flex min-h-6 items-center font-mono font-bold text-brand hover:text-brand-strong">{row.id}</Link> },
     { key: "applicant", header: "Applicant", render: (row) => <span><strong className="block">{row.applicantName}</strong><span className="text-xs text-muted">{row.email}</span></span> },
@@ -36,9 +40,33 @@ export function AdminApplications() {
   return (
     <AdminLayout title="Applications" description="Search applications and update their canonical processing status.">
       <FilterBar search={search} onSearch={setSearch} searchPlaceholder="Search ID or applicant">
-        <div role="group" aria-label="Filter applications by status" className="flex flex-wrap gap-2">
-          <FilterChip active={status === "all"} onClick={() => setStatus("all")}>All ({state.applications.length})</FilterChip>
-          {STATUS_OPTIONS.map((item) => <FilterChip key={item} active={status === item} onClick={() => setStatus(item)}>{APPLICATION_STATUS_LABELS[item]} ({state.applications.filter((row) => row.status === item).length})</FilterChip>)}
+        <div className="relative w-full sm:w-auto">
+          <Icon
+            name="filter"
+            size={16}
+            className={cn(
+              "pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2",
+              status === "all" ? "text-muted" : "text-brand",
+            )}
+          />
+          <select
+            aria-label="Filter applications by status"
+            value={status}
+            onChange={(event) => setStatus(event.target.value)}
+            className={cn(
+              "h-[42px] w-full cursor-pointer rounded-control border bg-white pl-10 pr-8 text-sm outline-none transition focus:border-brand focus:ring-4 focus:ring-brand/10 sm:w-auto sm:min-w-[220px]",
+              status === "all"
+                ? "border-line text-ink"
+                : "border-brand bg-tint font-semibold text-brand",
+            )}
+          >
+            <option value="all">All statuses ({state.applications.length})</option>
+            {STATUS_OPTIONS.map((item) => (
+              <option key={item} value={item}>
+                {APPLICATION_STATUS_LABELS[item]} ({count(item)})
+              </option>
+            ))}
+          </select>
         </div>
       </FilterBar>
       <section className="overflow-hidden rounded-panel border border-line bg-surface shadow-card">

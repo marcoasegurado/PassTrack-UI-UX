@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthShell } from "../../components/layout/AuthShell";
 import { Button, ButtonLink } from "../../components/ui/Button";
-import { Checkbox, SelectField } from "../../components/ui/Field";
+import { Checkbox, TextField } from "../../components/ui/Field";
 import { Icon } from "../../components/ui/Icon";
 import { Stepper } from "../../components/ui/Stepper";
 import { useToast } from "../../components/ui/Toast";
@@ -26,7 +26,6 @@ export function RegisterApplication() {
   const idDetails = state.registrationDraft.idDetails || {};
   const draft = state.registrationDraft.application || {};
 
-  const [appType, setAppType] = useState(draft.appType || "");
   const [processingType, setProcessingType] = useState(
     draft.processingType || "Regular",
   );
@@ -56,12 +55,11 @@ export function RegisterApplication() {
     setSubmitError("");
 
     const nextErrors = {};
-    if (!appType) nextErrors.appType = "Select an application type.";
     if (!agreed) nextErrors.agreed = "Accept the Terms and Conditions before submitting.";
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
-      document.getElementById(nextErrors.appType ? "application-appType" : "application-terms")?.focus();
+      document.getElementById("application-terms")?.focus();
       return;
     }
 
@@ -70,7 +68,7 @@ export function RegisterApplication() {
       personal,
       idDetails,
       application: {
-        appType,
+        appType: "New Passport",
         processingType,
         termsAccepted: agreed,
       },
@@ -98,7 +96,7 @@ export function RegisterApplication() {
             Create Your Account
           </h1>
           <p className="mt-1 text-sm leading-relaxed text-muted sm:text-[15px]">
-            Choose your application type. Your password is generated for you after you
+            Confirm your application details. Your password is generated for you after you
             submit.
           </p>
         </header>
@@ -144,23 +142,13 @@ export function RegisterApplication() {
           )}
 
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
-            <SelectField
+            <TextField
               id="application-appType"
               label="Application Type"
               required
-              placeholder="Select application type"
-              options={["New Passport", "Renewal"]}
-              value={appType}
-              error={errors.appType}
-              onChange={(event) => {
-                setAppType(event.target.value);
-                setErrors((current) => {
-                  if (!current.appType) return current;
-                  const next = { ...current };
-                  delete next.appType;
-                  return next;
-                });
-              }}
+              value="New Passport"
+              hint="Renewals are started from your member dashboard after signing in."
+              readOnly
             />
 
             <fieldset>
@@ -230,7 +218,7 @@ export function RegisterApplication() {
                     to="/terms?return=register"
                     onClick={() =>
                       saveRegistrationDraft({
-                        application: { appType, processingType },
+                        application: { appType: "New Passport", processingType },
                         agreed,
                       })
                     }

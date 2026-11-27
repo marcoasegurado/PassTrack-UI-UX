@@ -75,9 +75,10 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 | Member — Processing | `PS-12345` | `Pw-8Kq27xM` |
 | Member — For Delivery | `PS-20001` | `Pw-Maria2026` |
 | Member — Rejected | `PS-20002` | `Pw-Juan2026` |
+| Member — New applicant (no passport yet) | `PS-20008` | `Pw-Nina2026` |
 | Admin | any non-empty username | any non-empty password |
 
-The login screen has quick-fill buttons and a "Reset demo data" action. The `/store-check` route exposes the mock store for demos.
+The login screen has quick-fill buttons for the seeded demo accounts. The `/store-check` route exposes the mock store for demos.
 
 ---
 
@@ -132,11 +133,11 @@ Member and admin sessions are independent. Route guards are client-side only.
 
 ## Mock data and persistence
 
-- The entire mock state is stored in one `localStorage` key: `passtrack.v2`.
-- Seed data includes three member accounts, eight applications covering every canonical status, eight inquiries, and three renewal requests.
+- The entire mock state is stored in one `localStorage` key: `passtrack.v3`.
+- Seed data includes four member accounts, nine applications covering every canonical status, eight inquiries, and three renewal requests.
 - Member and admin sessions are stored separately in the same record.
 - Application status changes append history entries.
-- Clearing site data or clicking "Reset demo data" restores the seed state.
+- Clearing site data restores the seed state.
 
 ---
 

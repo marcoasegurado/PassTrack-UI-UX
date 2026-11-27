@@ -30,6 +30,7 @@ const ICONS = {
   "eye-off": '<path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A9.8 9.8 0 0 1 12 5c5 0 9 4.5 9 7a11.8 11.8 0 0 1-2.2 3.3"/><path d="M6.1 6.1C4.2 7.6 3 9.6 3 12c0 2.5 4 7 9 7a10.7 10.7 0 0 0 4.3-.9"/>',
   eye: '<path d="M3 12c0-2.5 4-7 9-7s9 4.5 9 7-4 7-9 7-9-4.5-9-7Z"/><circle cx="12" cy="12" r="2.6"/>',
   "file-text": '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
+  filter: '<path d="M3 5h18l-7 8v5l-4 2v-7L3 5Z"/>',
   home: '<path d="m4 10 8-6 8 6v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M9.5 21v-6h5v6"/>',
   lock: '<rect x="4.5" y="10" width="15" height="10.5" rx="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/>',
   "id-card": '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M5.5 16c.5-1.7 1.6-2.5 3-2.5s2.5.8 3 2.5"/><path d="M14 10h4M14 13.5h4"/>',

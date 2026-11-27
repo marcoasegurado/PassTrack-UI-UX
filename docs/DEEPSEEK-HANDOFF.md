@@ -32,7 +32,7 @@ Step 5 (Authentication, Terms, and Registration) was implemented with the follow
 - `/register/success`
 - `/dashboard` interim member landing page
 
-The member registration flow is frontend-only. It stores file metadata only and persists credentials and mock records in the single `passtrack.v2` localStorage key.
+The member registration flow is frontend-only. It stores file metadata only and persists credentials and mock records in the single `passtrack.v3` localStorage key.
 
 ## Implemented Files
 
@@ -192,6 +192,7 @@ Existing seeded member credentials:
 - `PS-12345` / `Pw-8Kq27xM`
 - `PS-20001` / `Pw-Maria2026`
 - `PS-20002` / `Pw-Juan2026`
+- `PS-20008` / `Pw-Nina2026` (new applicant, no passport record yet)
 
 Admin login accepts any non-empty username and password.
 

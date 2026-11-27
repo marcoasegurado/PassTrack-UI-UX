@@ -4,7 +4,6 @@ import { AuthShell } from "../../components/layout/AuthShell";
 import { Button, ButtonLink } from "../../components/ui/Button";
 import { CopyButton } from "../../components/ui/CopyButton";
 import { Icon } from "../../components/ui/Icon";
-import { Modal } from "../../components/ui/Modal";
 import { useToast } from "../../components/ui/Toast";
 import { useStore } from "../../data/StoreProvider";
 import { DEMO_MEMBER_VARIANTS } from "../../data/seed";
@@ -19,7 +18,6 @@ export function Login() {
     state,
     isMemberLoggedIn,
     loginMember,
-    resetDemo,
   } = useStore();
 
   const lastRegistration = state.lastRegistration;
@@ -35,8 +33,6 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showSavedPassword, setShowSavedPassword] = useState(false);
   const [error, setError] = useState("");
-  const [helpOpen, setHelpOpen] = useState(false);
-  const [confirmReset, setConfirmReset] = useState(false);
   const passwordRef = useRef(null);
   const appIdRef = useRef(null);
 
@@ -79,7 +75,6 @@ export function Login() {
     setAppId(variant.appId);
     setPassword(variant.password);
     setError("");
-    setHelpOpen(false);
     toast(`${variant.label} demo account filled. Select Login to continue.`);
   }
 
@@ -88,21 +83,6 @@ export function Login() {
     setPassword(lastRegistration.password);
     setError("");
     toast("Saved sign-in details filled.");
-  }
-
-  function handleReset() {
-    resetDemo();
-    setAppId("");
-    setPassword("");
-    setError("");
-    setConfirmReset(false);
-    setHelpOpen(false);
-    toast("Demo data reset. Seeded accounts are available again.");
-  }
-
-  function closeHelp() {
-    setHelpOpen(false);
-    setConfirmReset(false);
   }
 
   return (
@@ -165,22 +145,12 @@ export function Login() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <label
-                  htmlFor="login-password"
-                  className="text-xs font-bold uppercase tracking-[0.16em] text-brand"
-                >
-                  Password
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setHelpOpen(true)}
-                  className="inline-flex min-h-6 cursor-pointer items-center gap-1 text-xs font-semibold text-muted hover:text-brand"
-                >
-                  <Icon name="help-circle" size={14} />
-                  If Login Error?
-                </button>
-              </div>
+              <label
+                htmlFor="login-password"
+                className="text-xs font-bold uppercase tracking-[0.16em] text-brand"
+              >
+                Password
+              </label>
               <div className="relative">
                 <Icon
                   name="lock"
@@ -250,18 +220,9 @@ export function Login() {
           aria-label="Demo accounts"
           className="mt-5 rounded-card border border-dashed border-line bg-white/85 p-4"
         >
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted">
-              Demo accounts · stored in this browser only
-            </p>
-            <button
-              type="button"
-              onClick={() => setHelpOpen(true)}
-              className="inline-flex min-h-6 cursor-pointer items-center text-[11px] font-semibold text-brand transition-colors hover:text-brand-strong"
-            >
-              How the demo works
-            </button>
-          </div>
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted">
+            Demo accounts · stored in this browser only
+          </p>
 
           <div className="mt-3 flex flex-wrap gap-2">
             {DEMO_MEMBER_VARIANTS.map((variant) => (
@@ -344,111 +305,6 @@ export function Login() {
           )}
         </section>
       </div>
-
-      <Modal
-        open={helpOpen}
-        onClose={closeHelp}
-        title="If Login Error?"
-        description="Everything below stays in this browser; no account data leaves the demo."
-        footer={
-          <>
-            <Button variant="ghost" onClick={closeHelp}>
-              Close
-            </Button>
-            {confirmReset ? (
-              <>
-                <Button variant="ghost" onClick={() => setConfirmReset(false)}>
-                  Cancel
-                </Button>
-                <Button variant="danger" onClick={handleReset}>
-                  Yes, reset demo data
-                </Button>
-              </>
-            ) : (
-              <Button variant="dangerGhost" onClick={() => setConfirmReset(true)}>
-                Reset demo data
-              </Button>
-            )}
-          </>
-        }
-      >
-        <div className="space-y-4 text-sm leading-relaxed text-slate-body">
-          <ul className="space-y-2">
-            <li className="flex gap-2">
-              <Icon name="check-circle" size={16} className="mt-0.5 text-brand" />
-              <span>
-                Check that your Application ID uses the <strong>PS-#####</strong> format
-                shown on your confirmation screen.
-              </span>
-            </li>
-            <li className="flex gap-2">
-              <Icon name="check-circle" size={16} className="mt-0.5 text-brand" />
-              <span>
-                Passwords are case-sensitive. Turn off Caps Lock, then enter the temporary
-                password exactly as it was generated.
-              </span>
-            </li>
-            <li className="flex gap-2">
-              <Icon name="check-circle" size={16} className="mt-0.5 text-brand" />
-              <span>
-                If you completed registration in this browser, open{" "}
-                <button
-                  type="button"
-                  onClick={() => {
-                    closeHelp();
-                    document.getElementById("login-app-id")?.focus();
-                  }}
-                  className="cursor-pointer font-semibold text-brand transition-colors hover:text-brand-strong"
-                >
-                  the saved sign-in details
-                </button>{" "}
-                panel below the Login button.
-              </span>
-            </li>
-            <li className="flex gap-2">
-              <Icon name="check-circle" size={16} className="mt-0.5 text-brand" />
-              <span>
-                Resetting removes accounts created in this browser and restores the three
-                seeded demo accounts. This cannot be undone.
-              </span>
-            </li>
-          </ul>
-
-          <div className="rounded-control border border-line bg-surface-muted p-3">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted">
-              Seeded demo accounts
-            </p>
-            <div className="mt-2 space-y-1.5">
-              {DEMO_MEMBER_VARIANTS.map((variant) => (
-                <div
-                  key={variant.appId}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-control bg-white px-3 py-2"
-                >
-                  <div>
-                    <p className="text-xs font-semibold text-ink">{variant.label}</p>
-                    <p className="font-mono text-[11px] text-muted">
-                      {variant.appId} · {variant.password}
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => fillDemo(variant)}
-                  >
-                    Use
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <p className="rounded-control bg-tint p-3 text-xs leading-relaxed text-slate-body">
-            <strong>Demo only.</strong> There is no password-reset email, SMS, or support
-            queue. Generated credentials are stored in this browser under the local
-            PASSTRACK demo store.
-          </p>
-        </div>
-      </Modal>
     </AuthShell>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/Button";
 import { TextField } from "../../components/ui/Field";
 import { Icon } from "../../components/ui/Icon";
@@ -55,11 +55,16 @@ export function AdminLogin() {
             <TextField id="admin-password" label="Password" required type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} />
             <Button type="submit" block>Sign in</Button>
           </form>
-          <p className="mt-5 rounded-control bg-tint p-3 text-xs leading-relaxed text-slate-body">
-            Demo rule: any non-empty username and password are accepted. This is a separate local administrator session and does not sign in a member account.
-          </p>
         </section>
-        <p className="mt-5 text-center text-xs text-muted">Frontend demo · no real administrator authentication</p>
+        <div className="mt-4 flex justify-center">
+          <Link
+            to="/login"
+            className="inline-flex min-h-6 items-center gap-1.5 text-xs font-semibold text-muted transition-colors hover:text-brand"
+          >
+            <Icon name="arrow-left" size={13} />
+            Back to member portal
+          </Link>
+        </div>
       </div>
     </main>
   );

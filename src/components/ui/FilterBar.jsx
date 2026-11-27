@@ -16,9 +16,9 @@ export function FilterBar({
         className,
       )}
     >
-      <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
         {onSearch && (
-          <div className="relative w-full sm:max-w-[280px]">
+          <div className="relative w-full shrink-0 sm:max-w-[280px]">
             <Icon
               name="search"
               size={18}
@@ -30,7 +30,10 @@ export function FilterBar({
               onChange={(event) => onSearch(event.target.value)}
               placeholder={searchPlaceholder}
               aria-label={searchPlaceholder}
-              className="h-[42px] w-full rounded-control border border-line bg-white pl-10 pr-4 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand focus:ring-4 focus:ring-brand/10"
+              className={cn(
+                "h-[42px] w-full rounded-control border border-line bg-white pl-10 pr-4 text-sm text-ink outline-none transition placeholder:text-muted focus:border-brand focus:ring-4 focus:ring-brand/10",
+                search && "border-brand bg-tint",
+              )}
             />
           </div>
         )}
@@ -47,8 +50,10 @@ export function FilterChip({ active = false, children, className, ...props }) {
       type="button"
       aria-pressed={active}
       className={cn(
-        "inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border border-line bg-white px-3.5 text-[13px] text-ink transition hover:border-[#b9cbe6]",
-        active && "border-brand bg-tint font-semibold text-brand",
+        "inline-flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-[13px] transition",
+        active
+          ? "border-brand bg-brand font-semibold text-white shadow-sm hover:bg-brand-strong"
+          : "border-line bg-white text-ink hover:border-[#b9cbe6]",
         className,
       )}
       {...props}

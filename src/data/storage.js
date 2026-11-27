@@ -1,7 +1,7 @@
 import { createSeedState } from "./seed";
 
-export const STORE_KEY = "passtrack.v2";
-export const STORE_VERSION = 2;
+export const STORE_KEY = "passtrack.v3";
+export const STORE_VERSION = 3;
 
 function canUseStorage() {
   return typeof window !== "undefined" && Boolean(window.localStorage);

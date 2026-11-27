@@ -85,6 +85,34 @@ const members = [
     createdAt: "2026-08-05T09:30:00.000Z",
     updatedAt: "2026-08-05T10:05:00.000Z",
   },
+  {
+    id: "mem_nina",
+    appId: "PS-20008",
+    password: "Pw-Nina2026",
+    firstName: "Nina",
+    middleName: "Cruz",
+    lastName: "Bautista",
+    name: "Nina Cruz Bautista",
+    email: "nina.bautista@example.test",
+    contact: "+63 925 555 0109",
+    birthday: "2000-04-18",
+    sex: "Female",
+    civilStatus: "Single",
+    birthplace: "Taguig City",
+    citizenship: "Filipino",
+    nationality: "Filipino",
+    address: "31 Sample Terrace, Brgy. Ususan",
+    city: "Taguig City",
+    province: "Metro Manila",
+    postalCode: "1630",
+    motherMaidenName: "Carla Bautista",
+    fatherFullName: "Ramon Bautista",
+    idType: "PhilSys ID",
+    validId: file("philsys-id.png", 301000, "image/png"),
+    passport: { number: "", expiry: "", issuedAt: "" },
+    createdAt: "2026-11-20T09:15:00.000Z",
+    updatedAt: "2026-11-20T09:15:00.000Z",
+  },
 ];
 
 const applications = [
@@ -322,6 +350,35 @@ const applications = [
       { status: "APPROVED", at: "2026-06-28T09:00:00.000Z", note: "Application approved." },
       { status: "FOR_DELIVERY", at: "2026-07-03T10:30:00.000Z", note: "Handed to courier." },
       { status: "DELIVERED", at: "2026-07-05T14:15:00.000Z", note: "Passport delivered." },
+    ],
+  },
+  {
+    id: "PS-20008",
+    memberId: "mem_nina",
+    applicantName: "Nina Cruz Bautista",
+    applicationType: "New Passport",
+    passportType: "Regular (38 Pages)",
+    processingType: "Regular",
+    email: "nina.bautista@example.test",
+    contact: "+63 925 555 0109",
+    address: "31 Sample Terrace, Brgy. Ususan",
+    city: "Taguig City",
+    province: "Metro Manila",
+    postalCode: "1630",
+    status: "SUBMITTED",
+    submittedAt: "2026-11-20T09:15:00.000Z",
+    updatedAt: "2026-11-20T09:15:00.000Z",
+    estimatedCompletion: "2026-12-02",
+    nextStep: "Initial document check",
+    note: "Application received. Initial checks are queued. Payment is not collected in this demo.",
+    rejectionReason: "",
+    courier: "",
+    history: [
+      {
+        status: "SUBMITTED",
+        at: "2026-11-20T09:15:00.000Z",
+        note: "Application received.",
+      },
     ],
   },
 ];
@@ -727,7 +784,7 @@ const adminProfile = {
 };
 
 const SEED = {
-  version: 2,
+  version: 3,
   memberSession: null,
   adminSession: null,
   members,
@@ -749,6 +806,7 @@ export const DEMO_MEMBER_VARIANTS = [
   { label: "Processing", appId: "PS-12345", password: "Pw-8Kq27xM" },
   { label: "For Delivery", appId: "PS-20001", password: "Pw-Maria2026" },
   { label: "Rejected", appId: "PS-20002", password: "Pw-Juan2026" },
+  { label: "New applicant", appId: "PS-20008", password: "Pw-Nina2026" },
 ];
 
 export function createSeedState() {

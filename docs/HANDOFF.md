@@ -37,9 +37,10 @@ Node 24 / npm 11 were used for the verified build (`vite v8.3.8`). The productio
 | Member — Processing | `PS-12345` | `Pw-8Kq27xM` |
 | Member — For Delivery | `PS-20001` | `Pw-Maria2026` |
 | Member — Rejected | `PS-20002` | `Pw-Juan2026` |
+| Member — New applicant (no passport yet) | `PS-20008` | `Pw-Nina2026` |
 | Admin | any non-empty username | any non-empty password |
 
-The login screen also offers quick-fill buttons and a "Reset demo data" action. `/store-check` exposes the store state and scenario controls for demos.
+The login screen also offers quick-fill buttons for the seeded demo accounts. `/store-check` exposes the store state and scenario controls for demos.
 
 ---
 
@@ -63,7 +64,7 @@ Member and admin sessions are separate. Logging out of one does not clear the ot
 
 ### Member
 
-- Login with Application ID + password, inline error, password reveal, help modal, saved-registration recovery, demo quick-fill, reset.
+- Login with Application ID + password, inline error, password reveal, saved-registration recovery, demo quick-fill.
 - Three-step registration with per-step validation, draft persistence, ID upload metadata (JPG/PNG/PDF, 10 MB), Terms gate, generated `PS-#####` ID and `Pw-…` temporary password, copy/download, and mock email confirmation.
 - Dashboard with four cards: application status, inquiry summary, application information, passport renewal.
 - Six-stage application tracker (Submitted → Under Review → Processing → Ready for Release → Approved → For Delivery) with Processing, For Delivery, Rejected, and Delivered variants; progress is derived from canonical status, never hardcoded.
@@ -82,7 +83,7 @@ Member and admin sessions are separate. Logging out of one does not clear the ot
 
 ### Shared state
 
-- One `localStorage` key: `passtrack.v2`.
+- One `localStorage` key: `passtrack.v3`.
 - Member and admin portals read and write the same arrays, so an admin status change, renewal decision, or officer reply appears in the member portal on the next read/navigation.
 - A `storage` event listener keeps other open tabs in sync without a write loop.
 - File uploads store **metadata only** (`name`, `size`, `type`). No blobs, base64, or object URLs are persisted.
@@ -97,7 +98,7 @@ This is the explicit boundary between the mock frontend and a real system:
 | Not implemented | Consequence in this demo |
 |---|---|
 | Backend server / API | Every action is a local reducer call |
-| Database | Data lives in `localStorage` under `passtrack.v2` |
+| Database | Data lives in `localStorage` under `passtrack.v3` |
 | Real authentication | Credentials are seeded/plain strings; admin accepts any non-empty input |
 | Real session security | Guards are client-side checks only |
 | Email / SMS | Confirmation and notification modals are simulated |
