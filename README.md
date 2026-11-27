@@ -170,6 +170,6 @@ Member and admin sessions are independent. Route guards are client-side only.
 
 ## Deployment
 
-The app is deployed on **Vercel**. Vercel builds the Vite app with `npm run build` and serves the `dist/` output. The Vite preset handles SPA deep-link rewrites to `index.html` for the `BrowserRouter` routes.
+The app is deployed on **Vercel**. Vercel builds the Vite app with `npm run build` and serves the `dist/` output. SPA deep-link fallback is configured in `vercel.json`, which rewrites unknown paths to `index.html` so `BrowserRouter` routes work on refresh and direct links.
 
 The production build is a single bundle of roughly 517 kB (140 kB gzip), which triggers Vite's chunk-size warning. This has no runtime impact; add route-level lazy loading if bundle size becomes a requirement.

@@ -24,6 +24,21 @@ export function AdminRenewalDetail() {
   usePageTitle(renewal ? `${renewal.ref} · Admin` : "Renewal Not Found");
   if (!renewal) return <AdminLayout title="Renewal not found"><section className="rounded-panel border border-line bg-surface p-8 text-center shadow-card"><p className="text-muted">This renewal request does not exist.</p><ButtonLink to="/admin/renewals" className="mt-5">Back to renewals</ButtonLink></section></AdminLayout>;
 
+  function closeDecision() {
+    setPendingDecision(null);
+    setError("");
+  }
+
+  function requestDecision(status) {
+    if (status === RENEWAL_STATUS.REJECTED && !notes.trim()) {
+      setError("Add a reason before rejecting a renewal request.");
+      document.getElementById("admin-renewal-notes")?.focus();
+      return;
+    }
+    setError("");
+    setPendingDecision(status);
+  }
+
   function decide(status) {
     const result = decideRenewal(renewal.ref, status, notes);
     if (!result.ok) { setError(result.error); return; }
@@ -39,14 +54,15 @@ export function AdminRenewalDetail() {
     <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(320px,.7fr)]"><div className="flex flex-col gap-6">
       <section className="rounded-panel border border-line bg-surface p-5 shadow-card sm:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-mono text-sm font-bold text-brand">{renewal.ref}</p><h2 className="mt-1 text-xl font-bold text-navy">{renewal.applicantName}</h2><p className="mt-1 text-sm text-muted">Submitted {formatDateTime(renewal.submittedAt)}</p></div><StatusBadge kind="renewal" status={renewal.status} /></div><dl className="mt-5 divide-y divide-line-soft"><Row label="Application" value={renewal.applicationId} /><Row label="Passport number" value={draft.passportNumber} /><Row label="Passport expiry" value={formatDate(draft.expiry)} /><Row label="Reason" value={draft.reason} /><Row label="Processing" value={draft.processing} /><Row label="Appointment" value={[appointment.branch, formatDate(appointment.date), appointment.time].filter(Boolean).join(" · ")} /></dl></section>
       <section className="rounded-panel border border-line bg-surface p-5 shadow-card sm:p-6"><h2 className="text-lg font-bold text-navy">Personal and documents</h2><dl className="mt-3 divide-y divide-line-soft"><Row label="Full name" value={[personal.firstName, personal.middleName, personal.lastName].filter(Boolean).join(" ")} /><Row label="Email" value={personal.email || renewal.email} /><Row label="Contact" value={personal.contact} /><Row label="Address" value={[personal.address, personal.city, personal.province, personal.postalCode].filter(Boolean).join(", ")} /><Row label="Passport copy" value={docs.passportCopy?.name} /><Row label="Government ID" value={docs.governmentId?.name} /><Row label="Supporting files" value={`${docs.supporting?.length || 0} file(s)`} /></dl></section>
-    </div><section className="rounded-panel border border-line bg-surface p-5 shadow-card sm:p-6"><h2 className="text-lg font-bold text-navy">Decision</h2><p className="mt-1 text-sm leading-relaxed text-muted">Approve or reject this request. A rejection note is required.</p><TextareaField id="admin-renewal-notes" className="mt-5" label="Administrator notes" required={renewal.status === RENEWAL_STATUS.PENDING} value={notes} onChange={(event) => { setNotes(event.target.value); setError(""); }} hint="The note is shown on the member's renewal status page." />{error && <p role="alert" className="mt-3 text-sm text-danger">{error}</p>}{renewal.status === RENEWAL_STATUS.PENDING ? <div className="mt-5 grid gap-3"><Button onClick={() => setPendingDecision(RENEWAL_STATUS.APPROVED)}>Approve renewal</Button><Button variant="danger" onClick={() => setPendingDecision(RENEWAL_STATUS.REJECTED)}>Reject renewal</Button></div> : <div className="mt-5 rounded-control bg-tint p-3 text-sm leading-relaxed text-slate-body">Decision recorded {formatDateTime(renewal.decisionAt)}. The member portal reads this shared record immediately.</div>}</section></div>
+    </div><section className="rounded-panel border border-line bg-surface p-5 shadow-card sm:p-6"><h2 className="text-lg font-bold text-navy">Decision</h2><p className="mt-1 text-sm leading-relaxed text-muted">Approve or reject this request. A rejection note is required.</p><TextareaField id="admin-renewal-notes" className="mt-5" label="Administrator notes" required={renewal.status === RENEWAL_STATUS.PENDING} value={notes} onChange={(event) => { setNotes(event.target.value); setError(""); }} error={pendingDecision ? undefined : error} hint="The note is shown on the member's renewal status page." />{renewal.status === RENEWAL_STATUS.PENDING ? <div className="mt-5 grid gap-3"><Button onClick={() => requestDecision(RENEWAL_STATUS.APPROVED)}>Approve renewal</Button><Button variant="danger" onClick={() => requestDecision(RENEWAL_STATUS.REJECTED)}>Reject renewal</Button></div> : <div className="mt-5 rounded-control bg-tint p-3 text-sm leading-relaxed text-slate-body">Decision recorded {formatDateTime(renewal.decisionAt)}. The member portal reads this shared record immediately.</div>}</section></div>
       <Modal
         open={Boolean(pendingDecision)}
-        onClose={() => setPendingDecision(null)}
+        onClose={closeDecision}
         title={`${pendingDecision === RENEWAL_STATUS.REJECTED ? "Reject" : "Approve"} renewal request?`}
         description="This decision is written to the shared local store and will be visible to the member."
-        footer={<><Button variant="outline" onClick={() => setPendingDecision(null)}>Cancel</Button><Button variant={pendingDecision === RENEWAL_STATUS.REJECTED ? "danger" : "primary"} onClick={() => decide(pendingDecision)}>Confirm {pendingDecision === RENEWAL_STATUS.REJECTED ? "rejection" : "approval"}</Button></>}
+        footer={<><Button variant="outline" onClick={closeDecision}>Cancel</Button><Button variant={pendingDecision === RENEWAL_STATUS.REJECTED ? "danger" : "primary"} onClick={() => decide(pendingDecision)}>Confirm {pendingDecision === RENEWAL_STATUS.REJECTED ? "rejection" : "approval"}</Button></>}
       >
+        {error && <p role="alert" className="mb-3 rounded-control bg-[#fff6f6] px-3 py-2 text-sm text-danger">{error}</p>}
         <p className="text-sm leading-relaxed text-slate-body">{pendingDecision === RENEWAL_STATUS.REJECTED ? "The member will see the administrator notes as the rejection reason." : "The renewal status will change to Approved and the member will see the confirmed appointment details."}</p>
       </Modal>
     </AdminLayout>;

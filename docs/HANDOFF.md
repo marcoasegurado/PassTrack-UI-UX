@@ -126,7 +126,7 @@ The acceptance script is intentionally kept outside the repository; results and 
 
 ## 7. Deployment notes
 
-- The app uses `BrowserRouter`. Static hosting must rewrite unknown paths to `index.html` (SPA fallback), otherwise deep links 404.
+- The app uses `BrowserRouter`. Static hosting must rewrite unknown paths to `index.html` (SPA fallback), otherwise deep links 404. The Vercel rewrite is committed in `vercel.json`; redeploy after changing it.
 - If the host cannot rewrite, switch to `HashRouter` rather than adding per-route HTML files.
 - Assets are local under `public/assets/`; no remote image URLs are required.
 - `localStorage` is origin-scoped. Moving to a different host or clearing site data resets the demo.
